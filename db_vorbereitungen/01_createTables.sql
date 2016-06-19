@@ -1,5 +1,5 @@
 -- Benutzerart
-create table `Benutzerarten` (
+create table `Benutzerart` (
 	`BenutzerartId`   int primary key auto_increment,
 	`Bezeichnung`     varchar(50) not null,
 	`SchreibRecht`    boolean default false
@@ -20,7 +20,7 @@ create table `Benutzer` (
 );
 
 -- Adresse
-create table `Adressen` (
+create table `Adresse` (
 	`AdresseId`         int primary key auto_increment,
 	`Strasse`           varchar(50) not null,
 	`Hausnummer`        int not null,
@@ -30,8 +30,8 @@ create table `Adressen` (
 	`Land`              varchar(50) not null
 );
 
--- Kunden
-create table `Kunden` (
+-- Kunde
+create table `Kunde` (
 	`KundeId`         int primary key auto_increment,
 	`Kundennummer`    varchar(20) not null unique key,
 	`Bezeichnung`     varchar(20) not null,
@@ -40,14 +40,14 @@ create table `Kunden` (
 	`Mail`            varchar(50)
 );
 
--- AnforderungsArten
-create table AnforderungsArten (
+-- AnforderungsArt
+create table AnforderungsArt (
 	`AnforderungsartId`      int primary key auto_increment,
 	`Bezeichnung`            varchar(100) not null
 );
 
--- Anforderungen
-create table `Anforderungen` (
+-- Anforderung
+create table `Anforderung` (
 	`AnforderungId`         int primary key auto_increment,
 	`Titel`                 varchar(2000) not null,
 	`Beschreibung`          text not null,
@@ -69,8 +69,8 @@ create table `Anforderungen` (
 	`SchluesselBegriffe`    varchar(32000)
 );
 
--- Anhaenge
-create table `Anhaenge` (
+-- Anhang
+create table `Anhang` (
 	`AnhangId`       int primary key auto_increment,
 	`Datei`          blob not null,
 	`Name`           varchar(2000) not null,
@@ -84,22 +84,22 @@ create table `KopieAn` (
 	primary key (`AnforderungId`,`BenutzerId`)
 );
 
--- Beziehungstabelle "verwandteAnforderungen"
-create table `VerwandteAnforderungen` (
+-- Beziehungstabelle "verwandteAnforderung"
+create table `VerwandteAnforderung` (
 	`MasterAnforderungId` int, /* FK zu Anforderungen */
 	`AnforderungId`       int, /* FK zu Anforderungen */
 	primary key (`MasterAnforderungId`,`AnforderungId`)
 );
 
--- Beziehungstabelle "AnforderungAnhaenge"
-create table `AnforderungAnhaenge` (
+-- Beziehungstabelle "AnforderungAnhang"
+create table `AnforderungAnhang` (
 	`AnforderungId` int, /* FK zu Anforderungen */
 	`AnhangId`      int, /* FK zu Anhaenge */
 	primary key (`AnforderungId`,`AnhangId`)
 );
 
 -- Kommentar
-create table `Kommentare` (
+create table `Kommentar` (
 	`KommentarId`      int primary key auto_increment,
 	`Anforderung`      int not null, /* FK zu Anforderungen */
 	`BearbeitetVon`    date not null,
@@ -110,8 +110,8 @@ create table `Kommentare` (
 	`HinzugefuegtAm`   date not null
 );
 
--- Beziehungstabelle "KommentarAnhaenge"
-create table `KommentarAnhaenge` (
+-- Beziehungstabelle "KommentarAnhang"
+create table `KommentarAnhang` (
 	`KommentarId`      int, /* FK zu Kommentare */
 	`AnhangId`         int,  /* FK zu Anhaenge */
 	primary key (`KommentarId`,`AnhangId`)
@@ -124,7 +124,13 @@ create table `Status` (
 );
 
 -- Modul
-create table `Module` (
+create table `Modul` (
 	`ModulId`       int primary key auto_increment,
 	`Bezeichnung`   varchar(100) not null
+);
+
+-- Priorität
+create table Prioritaet (
+	`PrioritaetId`      int primary key auto_increment,
+	`Bezeichnung`            varchar(100) not null
 );
