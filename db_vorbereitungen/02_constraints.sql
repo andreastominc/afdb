@@ -45,12 +45,12 @@ alter table VerwandteAnforderungen add constraint VerwandteAnfMasterAnf_FK
 alter table VerwandteAnforderungen add constraint VerwandteAnfSlaveAnf_FK
 	foreign key (AnforderungId) references Anforderungen(AnforderungId);
 
--- AnforderungAnhänge
-alter table AnforderungAnhänge add constraint AnfAnhangAnforderung_FK
+-- AnforderungAnhaenge
+alter table AnforderungAnhaenge add constraint AnfAnhangAnforderung_FK
 	foreign key (AnforderungId) references Anforderungen(AnforderungId);
 
-alter table AnforderungAnhänge add constraint AnfAnhangAnhang_FK
-	foreign key (AnhangId) references Anhänge(AnhangId);
+alter table AnforderungAnhaenge add constraint AnfAnhangAnhang_FK
+	foreign key (AnhangId) references Anhaenge(AnhangId);
 
 -- Kommentare
 alter table Kommentare add constraint KommentarAnforderung_FK
@@ -59,9 +59,9 @@ alter table Kommentare add constraint KommentarAnforderung_FK
 alter table Kommentare add constraint KommentarBenutzer_FK
 	foreign key (Benutzer) references Benutzer(BenutzerId);
 
--- KommentarAnhänge
-alter table KommentarAnhänge add constraint KommentarAnhangKommentar_FK
+-- KommentarAnhaenge
+alter table KommentarAnhaenge add constraint KommentarAnhangKommentar_FK
 	foreign key (KommentarId) references Kommentare(KommentarId);
 
-alter table KommentarAnhänge add constraint KommentarAnhangAnhang_FK
-	foreign key (AnhangId) references Anhänge(AnhangId);
+alter table KommentarAnhaenge add constraint KommentarAnhangAnhang_FK
+	foreign key (AnhangId) references Anhaenge(AnhangId);
