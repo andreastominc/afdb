@@ -9,4 +9,44 @@
 		<property name="first" column="FIRST" type="string"></property>
 		<property name="last" column="LAST" type="string"></property>
 	</class> -->
+	
+	<!-- mapping Status -->
+	<class name="data.Status" table="status">
+		<id name="statusId" column="StatusId" type="integer">
+			<generator class="assigned"></generator>
+		</id>
+		<property name="bezeichnung" column="Bezeichnung" type="string"></property>
+	</class>
+	
+	<!-- mapping Modul -->
+	<class name="data.Modul" table="modul">
+		<id name="modulId" column="ModulId" type="integer">
+			<generator class="assigned"></generator>
+		</id>
+		<property name="bezeichnung" column="Bezeichnung" type="string"></property>
+	</class>
+	
+	<!-- mapping AnforderungsArt -->
+	<class name="data.AnforderungsArt" table="anforderungsart">
+		<id name="anforderungsArtId" column="AnforderungsartId" type="integer">
+			<generator class="assigned"></generator>
+		</id>
+		<property name="bezeichnung" column="Bezeichnung" type="string"></property>
+	</class>
+	
+	<!-- mapping Prioritaet -->
+	<class name="data.Prioritaet" table="prioritaet">
+		<id name="prioritaetId" column="PrioritaetId" type="integer">
+			<generator class="assigned"></generator>
+		</id>
+		<property name="bezeichnung" column="Bezeichnung" type="string"></property>
+	</class>
+	
+	<!-- mapping Version -->
+	<class name="data.Version" table="version">
+		<id name="versionId" column="VersionId" type="integer">
+			<generator class="assigned"></generator>
+		</id>
+		<property name="bezeichnung" column="Bezeichnung" type="string"></property>
+	</class>
 </hibernate-mapping>

@@ -9,6 +9,14 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+
+import dal.QueryHelper;
+import data.AnforderungsArt;
+import data.Modul;
+import data.Prioritaet;
+import data.Status;
+import data.Version;
+
 import java.awt.GridLayout;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
@@ -26,6 +34,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JFileChooser;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 public class AfdbFrame extends JFrame {
 
@@ -41,6 +50,11 @@ public class AfdbFrame extends JFrame {
 	private JTextField tfGespAnhaenge;
 	private JTextField tfAufwand;
 	private JTextField tfGeplFertigstellung;
+	private JComboBox<String> cbStatus;
+	private JComboBox<String> cbModul;
+	private JComboBox<String> cbAnforderungsArt;
+	private JComboBox<String> cbPrio;
+	private JComboBox<String> cbVersion;
 
 	/**
 	 * Launch the application.
@@ -53,11 +67,23 @@ public class AfdbFrame extends JFrame {
 					frame.setVisible(true);
 					frame.setBounds(300, 100, 1000, 600);
 					frame.setMinimumSize(new Dimension(1100, 700));
+					
+					frame.initializeData();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
+
+
 		});
+	}
+	
+	private void initializeData() {
+		initializeCbStatus();
+		initializeCbModul();
+		initializeCbPrio();
+		initializeCbAnforderungsArt();
+		initializeCbVersion();
 	}
 
 	/**
@@ -139,29 +165,29 @@ public class AfdbFrame extends JFrame {
 		panel_6.add(tfAnsprechpersion);
 		tfAnsprechpersion.setColumns(10);
 		
-		JComboBox cbAnforderungsArt = new JComboBox();
+		cbAnforderungsArt = new JComboBox();
 		panel_6.add(cbAnforderungsArt);
 		
 		JPanel panel_7 = new JPanel();
 		panel_6.add(panel_7);
 		panel_7.setLayout(new GridLayout(0, 3, 0, 0));
 		
-		JComboBox cbPrio = new JComboBox();
+		cbPrio = new JComboBox();
 		panel_7.add(cbPrio);
 		
 		JLabel lblStatus = new JLabel("Status:");
 		lblStatus.setHorizontalAlignment(JLabel.RIGHT);
 		lblStatus.setBorder(BorderFactory.createEmptyBorder(0,0,0,80));
 		panel_7.add(lblStatus);
-		
-		JComboBox cbStatus = new JComboBox();
+				
+		cbStatus = new JComboBox();
 		panel_7.add(cbStatus);
 		
 		JPanel panel_8 = new JPanel();
 		panel_6.add(panel_8);
 		panel_8.setLayout(new GridLayout(0, 3, 0, 0));
 		
-		JComboBox cbVersion = new JComboBox();
+		cbVersion = new JComboBox();
 		panel_8.add(cbVersion);
 		
 		JLabel lblModul = new JLabel("Modul:");
@@ -169,7 +195,7 @@ public class AfdbFrame extends JFrame {
 		lblModul.setBorder(BorderFactory.createEmptyBorder(0,0,0,80));
 		panel_8.add(lblModul);
 		
-		JComboBox cbModul = new JComboBox();
+		cbModul = new JComboBox();
 		panel_8.add(cbModul);
 		
 		tfHelpdesknummer = new JTextField();
@@ -290,6 +316,56 @@ public class AfdbFrame extends JFrame {
 		
 		JButton btnAbbrechen = new JButton("Abbrechen");
 		panel_14.add(btnAbbrechen);
+	}
+	
+	private void initializeCbStatus()
+	{
+		List<Status> statusListe = QueryHelper.getAllStatus();
+		for(Status status : statusListe)
+		{
+			cbStatus.addItem(status.getBezeichnung());
+		}
+
+	}
+	
+	private void initializeCbModul()
+	{
+		List<Modul> modulListe = QueryHelper.getAllModul();
+		for(Modul modul : modulListe)
+		{
+			cbModul.addItem(modul.getBezeichnung());
+		}
+
+	}
+	
+	private void initializeCbAnforderungsArt()
+	{
+		List<AnforderungsArt> anfArtListe = QueryHelper.getAllAnforderungsArt();
+		for(AnforderungsArt anfArt : anfArtListe)
+		{
+			cbAnforderungsArt.addItem(anfArt.getBezeichnung());
+		}
+
+	}
+	
+	private void initializeCbPrio()
+	{
+		List<Prioritaet> prioListe = QueryHelper.getAllPrioritaet();
+		for(Prioritaet prio : prioListe)
+		{
+			cbPrio.addItem(prio.getBezeichnung());
+		}
+
+	}
+	
+	private void initializeCbVersion()
+	{
+		List<Version> versionListe = QueryHelper.getAllVersion();
+		for(Version version : versionListe)
+		{
+			cbVersion.addItem(version.getBezeichnung());
+		}
+
 	}
 
 }
