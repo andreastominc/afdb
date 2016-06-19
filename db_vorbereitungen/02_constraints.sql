@@ -31,6 +31,9 @@ alter table Anforderung add constraint AnforderungZugewiesenAn_FK
 alter table Anforderung add constraint AnforderungModul_FK
 	foreign key (Modul) references Modul(ModulId);
 
+alter table Anforderung add constraint AnforderungPrioritaet_FK
+	foreign key (Prioritaet) references Prioritaet(PrioritaetId);
+
 -- KopieAn
 alter table KopieAn add constraint KopieAnAnforderung_FK
 	foreign key (AnforderungId) references Anforderung(AnforderungId);
