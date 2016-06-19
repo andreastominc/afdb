@@ -134,3 +134,10 @@ create table Prioritaet (
 	`PrioritaetId`      int primary key auto_increment,
 	`Bezeichnung`            varchar(100) not null
 );
+
+-- Version
+create table Version (
+	`VersionId`      int primary key auto_increment,
+	`Bezeichnung`            varchar(100) not null
+);
+
