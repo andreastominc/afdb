@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+<session-factory>
+<!-- connection to the database -->
+<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/afdb</property>
+<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+<property name="hibernate.connection.username">afdb</property>
+<property name="hibernate.connection.password">afdb</property>
+<!-- autocommit disable -->
+<property name="hibernate.connection.autocommit">false</property>
+<!-- sql query shown -->
+<property name="show_sql">true</property>
+<property name="format_sql">true</property>
+<property name="user_sql_comments">true</property>
+<!-- using for jdbc transaction -->
+<property name="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property>
+<mapping resource="mapping.hbm.xml"></mapping>
+</session-factory>
+</hibernate-configuration>
