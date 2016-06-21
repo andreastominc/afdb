@@ -10,6 +10,97 @@
 		<property name="last" column="LAST" type="string"></property>
 	</class> -->
 	
+	<!-- mapping Adresse -->
+	<class name="data.Adresse" table="adresse">
+		<id name="adresseId" column="AdresseId" type="integer">
+			<generator class="assigned"></generator>
+		</id>
+		<property name="strasse" column="Strasse" type="string"></property>
+		<property name="hausnr" column="Hausnummer" type="integer"></property>
+		<property name="hausnrzusatz" column="HausnummerZusatz" type="string"></property>
+		<property name="plz" column="Postleitzahl" type="integer"></property>
+		<property name="ort" column="Ort" type="string"></property>
+		<property name="land" column="Land" type="string"></property>
+	</class>
+	
+	<!-- mapping Kunde -->
+	<class name="data.Kunde" table="kunde">
+		<id name="kundenId" column="KundeId" type="integer">
+			<generator class="assigned"></generator>
+		</id>
+		<property name="kundennummer" column="Kundennummer" type="string"></property>
+		<property name="bezeichnung" column="Bezeichnung" type="string"></property>
+		
+		<one-to-one name="adresse" class="data.Adresse" />
+			
+		<many-to-one name="kontaktPerson" column="KontaktPerson"
+			class="data.Benutzer" not-null="true"/>
+		
+		<property name="mail" column="Mail" type="string"></property>
+	</class>
+	
+	<!-- mapping Anforderung -->
+	<class name="data.Anforderung" table="anforderung">
+		<id name="anfId" column="AnforderungId" type="integer">
+			<generator class="assigned"></generator>
+		</id>
+		<property name="titel" column="Titel" type="string"></property>
+		<property name="beschreibung" column="Beschreibung" type="string"></property>
+		<many-to-one name="angelegtVon" column="AngelegtVon"
+			class="data.Benutzer" not-null="true"/>
+		<property name="erfassungsDatum" column="ErfassungsDatum" type="date"></property>
+		<many-to-one name="ansprechPerson" column="AnsprechPerson"
+			class="data.Benutzer" not-null="true"/>
+		<many-to-one name="kunde" column="Kunde"
+			class="data.Kunde" not-null="true"/>
+		<many-to-one name="anfArt" column="AnforderungsArt"
+			class="data.AnforderungsArt" not-null="true"/>
+		<many-to-one name="prio" column="Prioritaet"
+			class="data.Prioritaet" not-null="true"/>
+		<many-to-one name="status" column="Status"
+			class="data.Status" not-null="true"/>
+		<many-to-one name="zugewiesenAn" column="ZugewiesenAn"
+			class="data.Benutzer" not-null="true"/>
+		<many-to-one name="modul" column="Modul"
+			class="data.Modul" not-null="true"/>
+		<many-to-one name="version" column="Version"
+			class="data.Version" not-null="true"/>
+		<property name="hdNummer" column="HelpdeskNummer" type="string"></property>
+		<property name="aufwandGeschaetzt" column="AufwandGeschaetzt" type="float"></property>
+		<property name="fertiggeplant" column="FertigstellungGeplant" type="date"></property>
+		<property name="fertigIst" column="FertigstellungIst" type="date"></property>
+		<property name="auftragsnummer" column="Auftragsnummer" type="string"></property>
+		<property name="schluesselBegriffe" column="SchluesselBegriffe" type="string"></property>
+	</class>
+	
+	<!-- mapping Benutzerart -->
+	<class name="data.Benutzerart" table="benutzerart">
+		<id name="benutzerArtId" column="BenutzerartId" type="integer">
+			<generator class="assigned"></generator>
+		</id>
+		<property name="bezeichnung" column="Bezeichnung" type="string"></property>
+		<property name="schreibRecht" column="SchreibRecht" type="boolean"></property>
+	</class>
+	
+	<!-- mapping Benutzer -->
+	<class name="data.Benutzer" table="benutzer">
+		<id name="benutzerId" column="BenutzerId" type="integer">
+			<generator class="assigned"></generator>
+		</id>
+		<property name="vorname" column="Vorname" type="string"></property>
+		<property name="nachname" column="Nachname" type="string"></property>
+		<property name="benutzername" column="Benutzername" type="string"></property>
+		<property name="passwort" column="Passwort" type="string"></property>
+		<property name="anlegeDatum" column="AnlegeDatum" type="date"></property>
+		<property name="gueltigBis" column="GueltigBis" type="date"></property>
+		
+		<many-to-one name="art" column="Benutzerart"
+			class="data.Benutzerart" not-null="true"/>
+
+		<property name="telefon" column="Telefon" type="string"></property>
+		<property name="mail" column="Mail" type="string"></property>
+	</class>
+	
 	<!-- mapping Status -->
 	<class name="data.Status" table="status">
 		<id name="statusId" column="StatusId" type="integer">
@@ -49,4 +140,6 @@
 		</id>
 		<property name="bezeichnung" column="Bezeichnung" type="string"></property>
 	</class>
+	
+	
 </hibernate-mapping>
