@@ -13,7 +13,7 @@ create table `Benutzer` (
 	`Benutzername`  varchar(50) not null unique key,
 	`Passwort`      varchar(32) not null, /* encrypted pwd */
 	`AnlegeDatum`   date not null,
-	`GueltiBis`     date,
+	`GueltigBis`     date,
 	`Benutzerart`	int not null, /* FK zu Benutzerart */
 	`Telefon`       varchar(20),
 	`Mail`          varchar(100) not null
@@ -34,7 +34,7 @@ create table `Adresse` (
 create table `Kunde` (
 	`KundeId`         int primary key auto_increment,
 	`Kundennummer`    varchar(20) not null unique key,
-	`Bezeichnung`     varchar(20) not null,
+	`Bezeichnung`     varchar(20) not null unique key,
 	`Adresse`         int not null, /* FK zu Adressen */
 	`KontaktPerson`   int, /* FK zu Benutzer */
 	`Mail`            varchar(50)

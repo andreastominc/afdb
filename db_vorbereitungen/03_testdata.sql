@@ -47,4 +47,28 @@ INSERT INTO Version VALUES(14,'V6R4.0');
 INSERT INTO Version VALUES(15,'V7R0.0');
 INSERT INTO Version VALUES(16,'V7R1.0');
 
+--Testdaten für Adresse
+INSERT INTO `adresse` (`AdresseId`, `Strasse`, `Hausnummer`, `HausnummerZusatz`, `Postleitzahl`, `Ort`, `Land`) VALUES
+(1, 'Hauptstraße', 1, 'a', 8430, 'Leibnitz', 'Österreich'),
+(2, 'Conrad von Hötzendorf ', 10, '', 8010, 'Graz', 'Österreich'),
+(3, 'Feldweg', 5, '/5', 80331, 'München', 'Deutschland');
 
+--Testdaten für Benutzerart
+INSERT INTO `benutzerart` (`BenutzerartId`, `Bezeichnung`, `SchreibRecht`) VALUES
+(1, 'MD-Mitarbeiter', 1),
+(2, 'Kunde', 0);
+
+--Testdaten für Benutzer
+INSERT INTO `benutzer` (`BenutzerId`, `Vorname`, `Nachname`, `Benutzername`, `Passwort`, `AnlegeDatum`, `GueltigBis`, `Benutzerart`, `Telefon`, `Mail`) VALUES
+(1, 'Andreas', 'Tominc', 'atominc', 'atominc', '2016-06-20', '2016-06-20', 1, '+436641234567', 'andreas.tominc@edu.campus02.at'),
+(2, 'Philipp', 'Hiezer', 'phierzer', 'phierzer', '2016-06-20', '2016-06-20', 1, '+436641234568', 'philipp.hierzer@edu.campus02.at'),
+(3, 'Thomas', 'Muster', 'tmuster', 'tmuster', '2016-06-20', '2016-06-20', 2, '+436641234569', 'max.mustermann@edu.campus02.at'),
+(4, 'Franz', 'Huber', 'fhuber', 'fhuber', '2016-06-21', '2016-06-21', 2, '+436641234570', 'franz.huber@authaus-huber.at'),
+(5, 'Josef', 'Max', 'jmax', 'jmax', '2016-06-21', '2016-06-21', 2, '+436641234571', 'josef.max@autohaus-max.at'),
+(6, 'Max', 'Mustermann', 'mmustermann', 'mmustermann', '2016-06-20', '2016-06-20', 2, '+436641234572', 'max.mustermann@autohaus-mustermann.at');
+
+--Testdaten für Kunde
+INSERT INTO `kunde` (`KundeId`, `Kundennummer`, `Bezeichnung`, `Adresse`, `KontaktPerson`, `Mail`) VALUES
+(1, '4711', 'Autohaus Huber', 1, 4, 'office@autohaus-huber.at'),
+(2, '4712', 'Autohaus Mustermann', 2, 6, 'office@autohaus-mustermann.at'),
+(3, '4713', 'Autohaus Max', 3, 5, 'office@autohaus-max.at');
