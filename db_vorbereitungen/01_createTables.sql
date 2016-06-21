@@ -56,11 +56,11 @@ create table `Anforderung` (
 	`AnsprechPerson`        int, /* FK zu Benutzer */
 	`Kunde`                 int not null, /* FK zu Kunden */
 	`AnforderungsArt`       int not null, /* FK zu AnforderungsArten */
-	`Prioritaet`            int not null,
+	`Prioritaet`            int not null, /* FK zu Prioritaet */
 	`Status`                int not null, /* FK zu Status */
 	`ZugewiesenAn`          int not null, /* FK zu Benutzer */
 	`Modul`                 int, /* FK zu Modul */
-	`Version`               varchar(10),
+	`Version`               int not null, /* FK zu Version */
 	`HelpdeskNummer`        varchar(10),
 	`AufwandGeschaetzt`     float not null,
 	`FertigstellungGeplant` date not null,
@@ -132,12 +132,12 @@ create table `Modul` (
 -- Priorität
 create table Prioritaet (
 	`PrioritaetId`      int primary key auto_increment,
-	`Bezeichnung`            varchar(100) not null
+	`Bezeichnung`       varchar(100) not null
 );
 
 -- Version
 create table Version (
 	`VersionId`      int primary key auto_increment,
-	`Bezeichnung`            varchar(100) not null
+	`Bezeichnung`    varchar(100) not null
 );
 
