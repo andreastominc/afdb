@@ -12,6 +12,8 @@ import javax.swing.border.EmptyBorder;
 
 import dal.QueryHelper;
 import data.AnforderungsArt;
+import data.Benutzer;
+import data.Kunde;
 import data.Modul;
 import data.Prioritaet;
 import data.Status;
@@ -35,12 +37,19 @@ import javax.swing.JFileChooser;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
+import com.toedter.calendar.JDateChooser;
+
+import bl.AfdbHinzufuegen;
+
+import com.toedter.calendar.JCalendar;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
 
 public class AfdbFrame extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField tfKunde;
-	private JTextField tfAnsprechpersion;
 	private JTextField tfHelpdesknummer;
 	private JTextField tfTitel;
 	private JTextField tfKopieAn;
@@ -49,12 +58,17 @@ public class AfdbFrame extends JFrame {
 	private JTextField textField;
 	private JTextField tfGespAnhaenge;
 	private JTextField tfAufwand;
-	private JTextField tfGeplFertigstellung;
 	private JComboBox<String> cbStatus;
 	private JComboBox<String> cbModul;
 	private JComboBox<String> cbAnforderungsArt;
 	private JComboBox<String> cbPrio;
 	private JComboBox<String> cbVersion;
+	private JComboBox cbZugewiesen;
+	private JComboBox cbKunde;
+	private JComboBox cbAnsprechperson;
+	
+	//Object for Business Logic
+	private AfdbHinzufuegen afdbBl = new AfdbHinzufuegen();
 
 	/**
 	 * Launch the application.
@@ -84,6 +98,9 @@ public class AfdbFrame extends JFrame {
 		initializeCbPrio();
 		initializeCbAnforderungsArt();
 		initializeCbVersion();
+		initializecbZugewiesen();
+		initializecbKunde();
+		//initializecbAnsprechperson();
 	}
 
 	/**
@@ -157,13 +174,25 @@ public class AfdbFrame extends JFrame {
 		panel_2.add(panel_6, BorderLayout.CENTER);
 		panel_6.setLayout(new GridLayout(8, 1, 0, 0));
 		
-		tfKunde = new JTextField();
-		panel_6.add(tfKunde);
-		tfKunde.setColumns(10);
+		cbKunde = new JComboBox();
+		cbKunde.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String kundenname = (String) cbKunde.getSelectedItem();
+				Kunde kd = afdbBl.getKundeVonBezeichnung(kundenname);
+				List<Benutzer> ansprPersList = afdbBl.getAnsprechpersonVonKunde(kd);
+				cbAnsprechperson.removeAllItems();
+				for(Benutzer ansprPers : ansprPersList)
+				{
+					String name = ansprPers.getVorname()+" "+ansprPers.getNachname();
+					cbAnsprechperson.addItem(name);
+				}
+			}
+		});
 		
-		tfAnsprechpersion = new JTextField();
-		panel_6.add(tfAnsprechpersion);
-		tfAnsprechpersion.setColumns(10);
+		panel_6.add(cbKunde);
+		
+		cbAnsprechperson = new JComboBox();
+		panel_6.add(cbAnsprechperson);
 		
 		cbAnforderungsArt = new JComboBox();
 		panel_6.add(cbAnforderungsArt);
@@ -266,9 +295,12 @@ public class AfdbFrame extends JFrame {
 		lblGeplFertigstellung.setBorder(BorderFactory.createEmptyBorder(0,0,0,80));
 		panel_12.add(lblGeplFertigstellung);
 		
-		tfGeplFertigstellung = new JTextField();
-		panel_12.add(tfGeplFertigstellung);
-		tfGeplFertigstellung.setColumns(10);
+		JPanel panel_16 = new JPanel();
+		panel_12.add(panel_16);
+		panel_16.setLayout(new GridLayout(0, 1, 0, 0));
+		
+		JDateChooser dateChooser = new JDateChooser();
+		panel_16.add(dateChooser);
 		
 		tfVerwAnf = new JTextField();
 		panel_11.add(tfVerwAnf);
@@ -278,7 +310,7 @@ public class AfdbFrame extends JFrame {
 		panel_11.add(tfSchluesselbegriffe);
 		tfSchluesselbegriffe.setColumns(10);
 		
-		JComboBox cbZugewiesen = new JComboBox();
+		cbZugewiesen = new JComboBox();
 		panel_11.add(cbZugewiesen);
 		
 		JPanel panel_15 = new JPanel();
@@ -320,7 +352,7 @@ public class AfdbFrame extends JFrame {
 	
 	private void initializeCbStatus()
 	{
-		List<Status> statusListe = QueryHelper.getAllStatus();
+		List<Status> statusListe = afdbBl.getAllStatus();
 		for(Status status : statusListe)
 		{
 			cbStatus.addItem(status.getBezeichnung());
@@ -330,7 +362,7 @@ public class AfdbFrame extends JFrame {
 	
 	private void initializeCbModul()
 	{
-		List<Modul> modulListe = QueryHelper.getAllModul();
+		List<Modul> modulListe = afdbBl.getAllModule();
 		for(Modul modul : modulListe)
 		{
 			cbModul.addItem(modul.getBezeichnung());
@@ -340,7 +372,7 @@ public class AfdbFrame extends JFrame {
 	
 	private void initializeCbAnforderungsArt()
 	{
-		List<AnforderungsArt> anfArtListe = QueryHelper.getAllAnforderungsArt();
+		List<AnforderungsArt> anfArtListe = afdbBl.getAllAnforderungsart();
 		for(AnforderungsArt anfArt : anfArtListe)
 		{
 			cbAnforderungsArt.addItem(anfArt.getBezeichnung());
@@ -350,7 +382,7 @@ public class AfdbFrame extends JFrame {
 	
 	private void initializeCbPrio()
 	{
-		List<Prioritaet> prioListe = QueryHelper.getAllPrioritaet();
+		List<Prioritaet> prioListe = afdbBl.getAllPrioritaeten();
 		for(Prioritaet prio : prioListe)
 		{
 			cbPrio.addItem(prio.getBezeichnung());
@@ -360,7 +392,7 @@ public class AfdbFrame extends JFrame {
 	
 	private void initializeCbVersion()
 	{
-		List<Version> versionListe = QueryHelper.getAllVersion();
+		List<Version> versionListe = afdbBl.getAllVersionen();
 		for(Version version : versionListe)
 		{
 			cbVersion.addItem(version.getBezeichnung());
@@ -368,4 +400,37 @@ public class AfdbFrame extends JFrame {
 
 	}
 
+	private void initializecbZugewiesen()
+	{
+		boolean schreibRecht = true;
+		List<Benutzer> benutzerListe = afdbBl.getBenutzerMitSchreibRecht(schreibRecht);
+		for(Benutzer benutzer : benutzerListe)
+		{
+			cbZugewiesen.addItem(benutzer.getBenutzername());
+		}
+
+	}
+	
+	private void initializecbKunde()
+	{
+		List<Kunde> kundenListe = afdbBl.getAllKunden();
+		for(Kunde kunde : kundenListe)
+		{
+			cbKunde.addItem(kunde.getBezeichnung());
+		}
+	}
+	
+	private void initializecbAnsprechperson()
+	{
+		List<Benutzer> ansprechPersionListe = afdbBl.getAllAnsprechpersonen();
+		for(Benutzer ap : ansprechPersionListe)
+		{
+			String name = ap.getVorname()+" "+ap.getNachname();
+			cbAnsprechperson.addItem(name);
+		}
+		
+	}
+	
+	
+	
 }
