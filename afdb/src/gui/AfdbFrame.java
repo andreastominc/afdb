@@ -26,6 +26,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JMenu;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
@@ -40,18 +41,8 @@ import java.awt.event.MouseEvent;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Vector;
-
 import com.toedter.calendar.JDateChooser;
-import com.toedter.calendar.demo.DateChooserPanel;
-
 import bl.AfdbHinzufuegen;
-
-import com.toedter.calendar.JCalendar;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
 
 public class AfdbFrame extends JFrame {
 
@@ -130,9 +121,6 @@ public class AfdbFrame extends JFrame {
 		JPanel panel = new JPanel();
 		contentPane.add(panel, BorderLayout.NORTH);
 		panel.setLayout(new GridLayout(0, 1, 0, 0));
-		
-		JMenuBar menuBar = new JMenuBar();
-		panel.add(menuBar);
 		
 		//----------------------------------------------------------------
 		JMenuBar menuBar = new JMenuBar();
@@ -565,8 +553,23 @@ public class AfdbFrame extends JFrame {
 		
 		
 		
-		afdbBl.createAfdb(titel, beschreibung, benutzer, erfDatum, ansprPers, kd, anfArt, prio, status, benutzer, modul, version, hdNr,
+		boolean speicherung = afdbBl.createAfdb(titel, beschreibung, benutzer, erfDatum, ansprPers, kd, anfArt, prio, status, benutzer, modul, version, hdNr,
 				aufwandGesch, fertigStellGepl, fertigStellIst, schluesselBegriffe);
+		
+		if(speicherung)
+		{
+			JOptionPane.showMessageDialog(this,
+				    "Speicherung erfolgreich!");
+			//todo
+			System.exit(0);
+		}
+		else {
+			JOptionPane.showMessageDialog(this,
+				    "Speicherung nicht erfolgreich!");
+			//todo
+			System.exit(0);
+		}
+
 	}
 
 	

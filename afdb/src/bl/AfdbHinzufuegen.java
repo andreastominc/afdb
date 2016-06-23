@@ -59,9 +59,15 @@ public class AfdbHinzufuegen {
 	}
 
 	public boolean createAfdb(String titel, String beschreibung, Benutzer benutzer, Date erfDatum, Benutzer ansprPers, Kunde kd, AnforderungsArt anfArt, Prioritaet prio, Status status, Benutzer benutzer2, Modul modul, Version version, String hdNr, float aufwandGesch, Date fertigStellGepl, Date fertigStellIst, String schluesselBegriffe) {
-		Anforderung anf = new Anforderung(1, titel, beschreibung, benutzer, erfDatum, ansprPers, kd, anfArt, prio, status, benutzer, modul, version, hdNr, aufwandGesch, fertigStellGepl, fertigStellIst,schluesselBegriffe);
-		QueryHelper.saveAnf(anf);
-		return true;
+		Anforderung anf = new Anforderung(titel, beschreibung, benutzer, erfDatum, ansprPers, kd, anfArt, prio, status, benutzer, modul, version, hdNr, aufwandGesch, fertigStellGepl, fertigStellIst,schluesselBegriffe);
+		try {
+			QueryHelper.saveAnf(anf);
+			return true;
+		} catch(Exception e)
+		{
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 
