@@ -67,7 +67,7 @@ public class AfdbFrame extends JFrame {
 	private JComboBox cbKunde;
 	private JComboBox cbAnsprechperson;
 	
-	//Object for Business Logic
+	//Object for Business Logic Test
 	private AfdbHinzufuegen afdbBl = new AfdbHinzufuegen();
 
 	/**
