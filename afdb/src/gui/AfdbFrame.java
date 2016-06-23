@@ -32,12 +32,18 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.SwingConstants;
 import javax.swing.JFileChooser;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Vector;
+
 import com.toedter.calendar.JDateChooser;
+import com.toedter.calendar.demo.DateChooserPanel;
 
 import bl.AfdbHinzufuegen;
 
@@ -50,26 +56,33 @@ import java.beans.PropertyChangeEvent;
 public class AfdbFrame extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField tfHelpdesknummer;
 	private JTextField tfTitel;
+	private JTextField tfHelpdesknummer;
 	private JTextField tfKopieAn;
 	private JTextField tfVerwAnf;
 	private JTextField tfSchluesselbegriffe;
 	private JTextField textField;
 	private JTextField tfGespAnhaenge;
 	private JTextField tfAufwand;
-	private JComboBox<String> cbStatus;
-	private JComboBox<String> cbModul;
-	private JComboBox<String> cbAnforderungsArt;
-	private JComboBox<String> cbPrio;
-	private JComboBox<String> cbVersion;
+	private JComboBox cbStatus;
+	private JComboBox cbModul;
+	private JComboBox cbAnforderungsArt;
+	private JComboBox cbPrio;
+	private JComboBox cbVersion;
 	private JComboBox cbZugewiesen;
 	private JComboBox cbKunde;
 	private JComboBox cbAnsprechperson;
+	private JTextArea taBeschreibung;
+	private JLabel lblTitel;
+	private JLabel lblBeschreibung;
+	private JLabel lblHelpdesknummer;
+	private JDateChooser dcFertigStellGepl;
 	
-	//Object for Business Logic Test
+	//Object for Business Logic
 	private AfdbHinzufuegen afdbBl = new AfdbHinzufuegen();
-
+	private List<Benutzer> ansprPersListe;
+	private List<Benutzer> benutzerListe;
+		
 	/**
 	 * Launch the application.
 	 */
@@ -117,6 +130,9 @@ public class AfdbFrame extends JFrame {
 		JPanel panel = new JPanel();
 		contentPane.add(panel, BorderLayout.NORTH);
 		panel.setLayout(new GridLayout(0, 1, 0, 0));
+		
+		JMenuBar menuBar = new JMenuBar();
+		panel.add(menuBar);
 		
 		//----------------------------------------------------------------
 		JMenuBar menuBar = new JMenuBar();
@@ -182,13 +198,13 @@ public class AfdbFrame extends JFrame {
 		JLabel lblVerison = new JLabel("Version:");
 		panel_9.add(lblVerison);
 		
-		JLabel lblTitel = new JLabel("Titel:");
+		lblTitel = new JLabel("Titel:");
 		panel_9.add(lblTitel);
 		
-		JLabel lblHelpdesknummer = new JLabel("Helpdesknummer:");
+		lblHelpdesknummer = new JLabel("Helpdesknummer:");
 		panel_9.add(lblHelpdesknummer);
 		
-		JLabel lblBeschreibung = new JLabel("Beschreibung:");
+		lblBeschreibung = new JLabel("Beschreibung:");
 		panel_9.add(lblBeschreibung);
 		
 		JPanel panel_6 = new JPanel();
@@ -198,14 +214,13 @@ public class AfdbFrame extends JFrame {
 		cbKunde = new JComboBox();
 		cbKunde.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String kundenname = (String) cbKunde.getSelectedItem();
-				Kunde kd = afdbBl.getKundeVonBezeichnung(kundenname);
-				List<Benutzer> ansprPersList = afdbBl.getAnsprechpersonVonKunde(kd);
+				Kunde selektierterKd = (Kunde) cbKunde.getSelectedItem();
+				//Ansprechpersonen des Kunden setzen
+				ansprPersListe = afdbBl.getAnsprechpersonVonKunde(selektierterKd);
 				cbAnsprechperson.removeAllItems();
-				for(Benutzer ansprPers : ansprPersList)
+				for(Benutzer ansprPers : ansprPersListe)
 				{
-					String name = ansprPers.getVorname()+" "+ansprPers.getNachname();
-					cbAnsprechperson.addItem(name);
+					cbAnsprechperson.addItem(ansprPers);
 				}
 			}
 		});
@@ -248,19 +263,19 @@ public class AfdbFrame extends JFrame {
 		cbModul = new JComboBox();
 		panel_8.add(cbModul);
 		
-		tfHelpdesknummer = new JTextField();
-		panel_6.add(tfHelpdesknummer);
-		tfHelpdesknummer.setColumns(10);
-		
 		tfTitel = new JTextField();
 		panel_6.add(tfTitel);
 		tfTitel.setColumns(10);
+		
+		tfHelpdesknummer = new JTextField();
+		panel_6.add(tfHelpdesknummer);
+		tfHelpdesknummer.setColumns(10);
 		
 		JPanel panel_4 = new JPanel();
 		panel_1.add(panel_4);
 		panel_4.setLayout(new BorderLayout(0, 0));
 		
-		JTextArea taBeschreibung = new JTextArea();
+		taBeschreibung = new JTextArea();
 		panel_4.add(taBeschreibung, BorderLayout.CENTER);
 		
 		Border border = BorderFactory.createLineBorder(Color.BLACK);
@@ -320,8 +335,13 @@ public class AfdbFrame extends JFrame {
 		panel_12.add(panel_16);
 		panel_16.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		JDateChooser dateChooser = new JDateChooser();
-		panel_16.add(dateChooser);
+		dcFertigStellGepl = new JDateChooser();
+		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		cal.add(Calendar.DATE, 15); // 15 hinzufügen zum aktuellen als default Wert
+		dcFertigStellGepl.setDate(cal.getTime());
+		panel_16.add(dcFertigStellGepl);
 		
 		tfVerwAnf = new JTextField();
 		panel_11.add(tfVerwAnf);
@@ -365,9 +385,24 @@ public class AfdbFrame extends JFrame {
 		panel_14.setLayout(new GridLayout(0, 2, 0, 0));
 		
 		JButton btnSpeichern = new JButton("Speichern");
+		btnSpeichern.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				if(pruefePflichtfelder())
+				{
+					createAfdb();
+				};
+			}
+		});
 		panel_14.add(btnSpeichern);
 		
 		JButton btnAbbrechen = new JButton("Abbrechen");
+		btnAbbrechen.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				System.exit(0);
+			}
+		});
 		panel_14.add(btnAbbrechen);
 	}
 	
@@ -376,7 +411,7 @@ public class AfdbFrame extends JFrame {
 		List<Status> statusListe = afdbBl.getAllStatus();
 		for(Status status : statusListe)
 		{
-			cbStatus.addItem(status.getBezeichnung());
+			cbStatus.addItem(status);
 		}
 
 	}
@@ -386,17 +421,17 @@ public class AfdbFrame extends JFrame {
 		List<Modul> modulListe = afdbBl.getAllModule();
 		for(Modul modul : modulListe)
 		{
-			cbModul.addItem(modul.getBezeichnung());
+			cbModul.addItem(modul);
 		}
 
 	}
 	
 	private void initializeCbAnforderungsArt()
 	{
-		List<AnforderungsArt> anfArtListe = afdbBl.getAllAnforderungsart();
+		List<AnforderungsArt> anfArtListe =  afdbBl.getAllAnforderungsart();
 		for(AnforderungsArt anfArt : anfArtListe)
 		{
-			cbAnforderungsArt.addItem(anfArt.getBezeichnung());
+			cbAnforderungsArt.addItem(anfArt);
 		}
 
 	}
@@ -406,7 +441,7 @@ public class AfdbFrame extends JFrame {
 		List<Prioritaet> prioListe = afdbBl.getAllPrioritaeten();
 		for(Prioritaet prio : prioListe)
 		{
-			cbPrio.addItem(prio.getBezeichnung());
+			cbPrio.addItem(prio);
 		}
 
 	}
@@ -416,7 +451,7 @@ public class AfdbFrame extends JFrame {
 		List<Version> versionListe = afdbBl.getAllVersionen();
 		for(Version version : versionListe)
 		{
-			cbVersion.addItem(version.getBezeichnung());
+			cbVersion.addItem(version);
 		}
 
 	}
@@ -424,7 +459,7 @@ public class AfdbFrame extends JFrame {
 	private void initializecbZugewiesen()
 	{
 		boolean schreibRecht = true;
-		List<Benutzer> benutzerListe = afdbBl.getBenutzerMitSchreibRecht(schreibRecht);
+		benutzerListe = afdbBl.getBenutzerMitSchreibRecht(schreibRecht);
 		for(Benutzer benutzer : benutzerListe)
 		{
 			cbZugewiesen.addItem(benutzer.getBenutzername());
@@ -437,7 +472,7 @@ public class AfdbFrame extends JFrame {
 		List<Kunde> kundenListe = afdbBl.getAllKunden();
 		for(Kunde kunde : kundenListe)
 		{
-			cbKunde.addItem(kunde.getBezeichnung());
+			cbKunde.addItem(kunde);
 		}
 	}
 	
@@ -446,11 +481,94 @@ public class AfdbFrame extends JFrame {
 		List<Benutzer> ansprechPersionListe = afdbBl.getAllAnsprechpersonen();
 		for(Benutzer ap : ansprechPersionListe)
 		{
-			String name = ap.getVorname()+" "+ap.getNachname();
-			cbAnsprechperson.addItem(name);
+			cbAnsprechperson.addItem(ap);
 		}
 		
 	}
+	
+	private boolean pruefePflichtfelder() {
+		boolean befuellt = true;
+		lblTitel.setForeground(Color.BLACK);
+		lblBeschreibung.setForeground(Color.BLACK);
+		lblHelpdesknummer.setForeground(Color.BLACK);
+		
+		if(tfTitel.getText().isEmpty())
+		{
+			lblTitel.setForeground(Color.RED);
+			befuellt = false;
+		}
+		if(taBeschreibung.getText().isEmpty())
+		{
+			lblBeschreibung.setForeground(Color.RED);
+			befuellt = false;
+		}
+		if(tfHelpdesknummer.getText().isEmpty())
+		{
+			lblHelpdesknummer.setForeground(Color.RED);
+			befuellt = false;
+		}
+		if(!befuellt)
+		{
+			return false;
+		}
+		return true;
+	}
+	
+	private Benutzer getBenutzerVonUsername()
+	{
+		String benutzername = (String) cbZugewiesen.getSelectedItem();
+		Benutzer zugewiesenAn = null;
+		for(int i = 0; i<benutzerListe.size(); i++)
+		{
+			zugewiesenAn = benutzerListe.get(i);
+			if(benutzername.equals(zugewiesenAn.getBenutzername()))
+			{
+				break;
+			}
+		}
+		return zugewiesenAn;
+	}
+
+	private void createAfdb() {
+		String titel = tfTitel.getText();
+		String beschreibung = taBeschreibung.getText();
+		Benutzer benutzer = getBenutzerVonUsername();
+		Date erfDatum = new Date();
+		Benutzer ansprPers = (Benutzer) cbAnsprechperson.getSelectedItem();
+		Kunde kd = (Kunde) cbKunde.getSelectedItem();
+		AnforderungsArt anfArt = (AnforderungsArt) cbAnforderungsArt.getSelectedItem();
+		Prioritaet prio = (Prioritaet) cbPrio.getSelectedItem();
+		Status status = (Status) cbStatus.getSelectedItem();
+		//zugewiesen an = anlegeBenutzer
+		Modul modul = (Modul) cbModul.getSelectedItem();
+		Version version = (Version) cbVersion.getSelectedItem();
+		
+		String hdNr = tfHelpdesknummer.getText();
+		String aufwand = tfAufwand.getText();
+		if(aufwand.isEmpty())
+		{
+			aufwand = "0";
+		}
+		float aufwandGesch = Float.parseFloat(aufwand);
+		Date fertigStellGepl = dcFertigStellGepl.getDate();
+		if(fertigStellGepl == null)
+		{
+			fertigStellGepl = new Date();
+		}
+		//fertigStellIst noch implementieren
+		Date fertigStellIst = new Date();
+		String schluesselBegriffe = tfSchluesselbegriffe.getText();
+		if(schluesselBegriffe.isEmpty())
+		{
+			schluesselBegriffe = "";
+		}
+		
+		
+		
+		afdbBl.createAfdb(titel, beschreibung, benutzer, erfDatum, ansprPers, kd, anfArt, prio, status, benutzer, modul, version, hdNr,
+				aufwandGesch, fertigStellGepl, fertigStellIst, schluesselBegriffe);
+	}
+
 	
 	
 	

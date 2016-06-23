@@ -32,9 +32,11 @@ public class Version {
 
 
 	@Override
+	//nötig für ComboBox Anzeige
 	public String toString() {
-		return "Version [versionId=" + versionId + ", bezeichnung=" + bezeichnung + "]";
+		return bezeichnung;
 	}
+		
 
 
 }

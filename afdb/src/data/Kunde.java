@@ -72,9 +72,9 @@ public class Kunde {
 	}
 
 	@Override
+	//nötig für ComboBox Anzeige
 	public String toString() {
-		return "Kunde [kundenId=" + kundenId + ", kundennummer=" + kundennummer + ", bezeichnung=" + bezeichnung
-				+ ", kontaktPerson=" + kontaktPerson + ", mail=" + mail + "]";
+		return bezeichnung;
 	}
 	
 	

@@ -1,5 +1,6 @@
 package bl;
 
+import java.util.Date;
 import java.util.List;
 
 import dal.QueryHelper;
@@ -56,15 +57,12 @@ public class AfdbHinzufuegen {
 	{
 		return QueryHelper.getAnsprechpersonVonKunde(kd);
 	}
-	
-	public Kunde getKundeVonBezeichnung(String bezeichnung)
-	{
-		try {
-			return QueryHelper.getKundeVonBezeichnung(bezeichnung);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new Kunde();
+
+	public boolean createAfdb(String titel, String beschreibung, Benutzer benutzer, Date erfDatum, Benutzer ansprPers, Kunde kd, AnforderungsArt anfArt, Prioritaet prio, Status status, Benutzer benutzer2, Modul modul, Version version, String hdNr, float aufwandGesch, Date fertigStellGepl, Date fertigStellIst, String schluesselBegriffe) {
+		Anforderung anf = new Anforderung(1, titel, beschreibung, benutzer, erfDatum, ansprPers, kd, anfArt, prio, status, benutzer, modul, version, hdNr, aufwandGesch, fertigStellGepl, fertigStellIst,schluesselBegriffe);
+		QueryHelper.saveAnf(anf);
+		return true;
 	}
+
 
 }

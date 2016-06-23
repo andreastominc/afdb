@@ -69,7 +69,6 @@
 		<property name="aufwandGeschaetzt" column="AufwandGeschaetzt" type="float"></property>
 		<property name="fertiggeplant" column="FertigstellungGeplant" type="date"></property>
 		<property name="fertigIst" column="FertigstellungIst" type="date"></property>
-		<property name="auftragsnummer" column="Auftragsnummer" type="string"></property>
 		<property name="schluesselBegriffe" column="SchluesselBegriffe" type="string"></property>
 	</class>
 	

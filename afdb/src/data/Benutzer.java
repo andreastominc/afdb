@@ -113,12 +113,11 @@ public class Benutzer {
 		this.mail = mail;
 	}
 
-	@Override
+	//nötig für ComboBox Anzeige
 	public String toString() {
-		return "Benutzer [benutzerId=" + benutzerId + ", vorname=" + vorname + ", nachname=" + nachname
-				+ ", benutzername=" + benutzername + ", passwort=" + passwort + ", anlegeDatum=" + anlegeDatum
-				+ ", gueltigBis=" + gueltigBis + ", art=" + art + ", telefon=" + telefon + ", mail=" + mail + "]";
+		return vorname + " " +nachname;
 	}
+		
 	
 	
 

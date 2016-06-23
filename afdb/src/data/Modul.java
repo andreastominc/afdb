@@ -25,8 +25,9 @@ public class Modul {
 	}
 
 	@Override
+	//nötig für ComboBox Anzeige
 	public String toString() {
-		return "Modul [modulId=" + modulId + ", bezeichnung=" + bezeichnung + "]";
+		return bezeichnung;
 	}
 	
 	

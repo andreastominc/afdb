@@ -23,11 +23,11 @@ public class Status {
 		this.bezeichnung = bezeichnung;
 	}
 
-	@Override
+	//nötig für ComboBox Anzeige
 	public String toString() {
-		return "Status [statusId=" + statusId + ", bezeichnung=" + bezeichnung + "]";
+		return bezeichnung;
 	}
-	
+		
 	
 	
 	

@@ -16,39 +16,32 @@ public class Anforderung {
 	private Benutzer zugewiesenAn;
 	private Modul modul;
 	private Version version;
-	private String hdNummer;
 	private float aufwandGeschaetzt;
 	private Date fertiggeplant;
 	private Date fertigIst;
-	private String auftragsnummer;
+	private String hdNummer;
 	private String schluesselBegriffe;
 	
-	public Anforderung(){
-		
-	}
 	
-	public Anforderung(int anfId, String titel, String beschreibung, Benutzer angelegtVon, Date erfassungsDatum,
-			Benutzer ansprechPerson, Kunde kunde, AnforderungsArt anfArt, Prioritaet prio, Status status,
-			Benutzer zugewiesenAn, Modul modul, Version version, String hdNummer, float aufwandGeschaetzt,
-			Date fertiggeplant, Date fertigIst, String auftragsnummer, String schluesselBegriffe) {
+	
+	public Anforderung(int anfId, String titel, String beschreibung, Benutzer benutzer, Date erfDatum, Benutzer ansprPers, Kunde kd, AnforderungsArt anfArt, Prioritaet prio, Status status, Benutzer zugBenutzer, Modul modul, Version version, String hdNr, float aufwandGesch, Date fertigStellGepl, Date fertigStellIst, String schluesselBegriffe) {
 		this.anfId = anfId;
 		this.titel = titel;
 		this.beschreibung = beschreibung;
-		this.angelegtVon = angelegtVon;
-		this.erfassungsDatum = erfassungsDatum;
-		this.ansprechPerson = ansprechPerson;
-		this.kunde = kunde;
+		this.angelegtVon = benutzer;
+		this.erfassungsDatum = erfDatum;
+		this.ansprechPerson = ansprPers;
+		this.kunde = kd;
 		this.anfArt = anfArt;
 		this.prio = prio;
 		this.status = status;
-		this.zugewiesenAn = zugewiesenAn;
+		this.zugewiesenAn = zugBenutzer;
 		this.modul = modul;
 		this.version = version;
-		this.hdNummer = hdNummer;
-		this.aufwandGeschaetzt = aufwandGeschaetzt;
-		this.fertiggeplant = fertiggeplant;
-		this.fertigIst = fertigIst;
-		this.auftragsnummer = auftragsnummer;
+		this.hdNummer = hdNr;
+		this.aufwandGeschaetzt = aufwandGesch;
+		this.fertiggeplant = fertigStellGepl;
+		this.fertigIst = fertigStellIst;
 		this.schluesselBegriffe = schluesselBegriffe;
 	}
 
@@ -188,14 +181,6 @@ public class Anforderung {
 		this.fertigIst = fertigIst;
 	}
 
-	public String getAuftragsnummer() {
-		return auftragsnummer;
-	}
-
-	public void setAuftragsnummer(String auftragsnummer) {
-		this.auftragsnummer = auftragsnummer;
-	}
-
 	public String getSchluesselBegriffe() {
 		return schluesselBegriffe;
 	}
@@ -211,7 +196,7 @@ public class Anforderung {
 				+ ", kunde=" + kunde + ", anfArt=" + anfArt + ", prio=" + prio + ", status=" + status
 				+ ", zugewiesenAn=" + zugewiesenAn + ", modul=" + modul + ", version=" + version + ", hdNummer="
 				+ hdNummer + ", aufwandGeschaetzt=" + aufwandGeschaetzt + ", fertiggeplant=" + fertiggeplant
-				+ ", fertigIst=" + fertigIst + ", auftragsnummer=" + auftragsnummer + ", schluesselBegriffe="
+				+ ", fertigIst=" + fertigIst + ", auftragsnummer="  + ", schluesselBegriffe="
 				+ schluesselBegriffe + "]";
 	}
 	

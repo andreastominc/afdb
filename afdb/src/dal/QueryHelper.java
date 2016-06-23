@@ -7,6 +7,7 @@ import javax.management.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import data.Anforderung;
 import data.AnforderungsArt;
 import data.Benutzer;
 import data.Kunde;
@@ -112,29 +113,20 @@ public class QueryHelper {
 		return benutzer;
 	}
 	
-	public static Kunde getKundeVonBezeichnung(String bezeichnung) throws Exception {
-		Session session = HibernateUtil.session;
-	
-		List<Kunde> kdList = session.createQuery(" from Kunde where bezeichnung= :bez").setString("bez", bezeichnung).list();
-		
-		logData(kdList);
-		
-		if(kdList.size()>1)
-		{
-			throw new Exception("Mehr als ein Kunde mit selber Bezeichnung");
-		}
-		
-		return kdList.get(0);
-	}
-	
-	
-	
 	private static void logData(List liste)
 	{
 		for(int i = 0; i<liste.size(); i++)
 		{
 			System.out.println(liste.get(i).toString());
 		}
+	}
+
+	public static void saveAnf(Anforderung anf) {
+		Session session = HibernateUtil.session;
+		Transaction tx = HibernateUtil.tx;
+		
+		session.save(anf);
+		tx.commit();
 	}
 	
 	

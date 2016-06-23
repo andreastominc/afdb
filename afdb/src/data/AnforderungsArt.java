@@ -25,8 +25,9 @@ public class AnforderungsArt {
 	}
 
 	@Override
+	//nötig für ComboBox Anzeige
 	public String toString() {
-		return "AnforderungsArt [anforderungsArtId=" + anforderungsArtId + ", bezeichnung=" + bezeichnung + "]";
+		return bezeichnung;
 	}
 	
 	

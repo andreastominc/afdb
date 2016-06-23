@@ -23,10 +23,11 @@ public class Prioritaet {
 		this.bezeichnung = bezeichnung;
 	}
 
-	@Override
+	//nötig für ComboBox Anzeige
 	public String toString() {
-		return "Prioritaet [prioritaetsId=" + prioritaetId + ", bezeichnung=" + bezeichnung + "]";
+		return bezeichnung;
 	}
+		
 	
 	
 	

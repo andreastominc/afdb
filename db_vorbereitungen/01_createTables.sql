@@ -59,13 +59,12 @@ create table `Anforderung` (
 	`Prioritaet`            int not null, /* FK zu Prioritaet */
 	`Status`                int not null, /* FK zu Status */
 	`ZugewiesenAn`          int not null, /* FK zu Benutzer */
-	`Modul`                 int, /* FK zu Modul */
+	`Modul`                 int not null, /* FK zu Modul */
 	`Version`               int not null, /* FK zu Version */
 	`HelpdeskNummer`        varchar(10),
-	`AufwandGeschaetzt`     float not null,
-	`FertigstellungGeplant` date not null,
+	`AufwandGeschaetzt`     float,
+	`FertigstellungGeplant` date,
 	`FertigstellungIst`     date,
-	`Auftragsnummer`        varchar(10),
 	`SchluesselBegriffe`    varchar(32000)
 );
 
