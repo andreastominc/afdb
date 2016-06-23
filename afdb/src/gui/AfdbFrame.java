@@ -118,17 +118,38 @@ public class AfdbFrame extends JFrame {
 		contentPane.add(panel, BorderLayout.NORTH);
 		panel.setLayout(new GridLayout(0, 1, 0, 0));
 		
+		//----------------------------------------------------------------
 		JMenuBar menuBar = new JMenuBar();
 		panel.add(menuBar);
 		
-		JMenu mnMirZugewiesen = new JMenu("Mir zugewiesen");
-		menuBar.add(mnMirZugewiesen);
+		JMenuItem mntmMirZugewiesen = new JMenuItem("Mir zugewiesen");
+		mntmMirZugewiesen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Mir zugewiesen");
+				// to do ....
+			}
+		});
+		menuBar.add(mntmMirZugewiesen);
 		
-		JMenu mnBearbeiten = new JMenu("Bearbeiten");
-		menuBar.add(mnBearbeiten);
+		JMenuItem mntmBearbeiten = new JMenuItem("Bearbeiten");
+		mntmBearbeiten.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Bearbeiten");
+				// to do ....
+			}
+		});
+		menuBar.add(mntmBearbeiten);
 		
-		JMenu mnSuchen = new JMenu("Suchen");
-		menuBar.add(mnSuchen);
+		JMenuItem mntmSuchen = new JMenuItem("Suchen");
+		mntmSuchen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Suchen");
+				// to do ....
+			}
+		});
+		menuBar.add(mntmSuchen);
+		//----------------------------------------------------------------
+
 		
 		JPanel panel_1 = new JPanel();
 		contentPane.add(panel_1, BorderLayout.CENTER);
