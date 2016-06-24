@@ -24,6 +24,15 @@ public class QueryHelper {
 		
 	}
 	
+	public static List<Anforderung> getAllAnforderungen() {
+		Session session = HibernateUtil.session;
+		
+		List<Anforderung> anforderungen = session.createQuery(" from anforderung").list();
+		logData(anforderungen);
+		
+		return anforderungen;
+	}
+	
 	public static List<Status> getAllStatus() {
 		Session session = HibernateUtil.session;
 		
