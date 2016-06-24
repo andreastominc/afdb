@@ -7,16 +7,22 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
 import java.awt.GridLayout;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JMenuItem;
+import javax.swing.JTable;
+import javax.swing.JScrollPane;
 
 public class Suchen extends JFrame {
 
 	private JPanel contentPane;
+	private JTable table;
 
 	/**
 	 * Launch the application.
@@ -77,6 +83,37 @@ public class Suchen extends JFrame {
 			}
 		});
 		menuBar.add(mntmSuchen);
+		
+		JPanel panel_1 = new JPanel();
+		contentPane.add(panel_1, BorderLayout.CENTER);
+		panel_1.setLayout(new GridLayout(2, 1, 0, 0));
+		
+		JPanel panel_2 = new JPanel();
+		panel_1.add(panel_2);
+		
+		JPanel panel_3 = new JPanel();
+		panel_1.add(panel_3);
+		
+
+		
+		
+		Object rowData[][] = { { "Row1-Column1", "Row1-Column2", "Row1-Column3" },
+		        			   { "Row2-Column1", "Row2-Column2", "Row2-Column3" } 
+							 };
+		Object columnNames[] = { "Column One", "Column Two", "Column Three" };
+		TableModel model = new DefaultTableModel(rowData, columnNames);
+		panel_3.setLayout(new GridLayout(1, 1, 0, 0));
+		
+		table = new JTable();
+		
+		JScrollPane scrollPane = new JScrollPane(table);
+		panel_3.add(scrollPane);
+	    
+		
+		//panel_3.add(table);
+		table.setModel(model);
+		
+		
 		
 
 	}
