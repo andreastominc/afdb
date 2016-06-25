@@ -23,6 +23,24 @@
 		<property name="land" column="Land" type="string"></property>
 	</class>
 	
+	<!-- mapping Anhang -->
+	<class name="data.Anhang" table="anhang">
+		<id name="anhangId" column="AnhangId" type="integer">
+			<generator class="assigned"></generator>
+		</id>
+		<property name="datei" column="Datei" type="blob"></property>
+		<property name="name" column="Name" type="string"></property>
+		<property name="hinzugefuegtAm" column="HinzugefuegtAm" type="date"></property>
+	</class>
+	
+	<!-- mapping AnforderungAnhang -->
+	<class name="data.AnforderungAnhang" table="anforderunganhang">
+		<composite-id>
+			<key-many-to-one name="anforderung" class="data.Anfoderung" column="anforderung"/>
+			<key-many-to-one name="anhang" class="data.Anhang" column="anhang"/>
+		</composite-id>
+	</class>
+	
 	<!-- mapping Kunde -->
 	<class name="data.Kunde" table="kunde">
 		<id name="kundenId" column="KundeId" type="integer">
