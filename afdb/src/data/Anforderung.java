@@ -23,8 +23,6 @@ public class Anforderung {
 	private String schluesselBegriffe;
 	
 	
-	
-
 	public Anforderung(String titel, String beschreibung, Benutzer benutzer, Date erfDatum, Benutzer ansprPers, Kunde kd, AnforderungsArt anfArt, Prioritaet prio, Status status, Benutzer zugBenutzer, Modul modul, Version version, String hdNr, float aufwandGesch, Date fertigStellGepl, Date fertigStellIst, String schluesselBegriffe) {
 		this.titel = titel;
 		this.beschreibung = beschreibung;
@@ -43,6 +41,11 @@ public class Anforderung {
 		this.fertiggeplant = fertigStellGepl;
 		this.fertigIst = fertigStellIst;
 		this.schluesselBegriffe = schluesselBegriffe;
+	}
+	
+	public Anforderung()
+	{
+		
 	}
 
 	public int getAnfId() {

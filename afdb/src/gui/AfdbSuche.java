@@ -5,11 +5,11 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import bl.AfdbSuchen;
-import data.Benutzer;
-import data.Status;
+import data.*;
 
 import java.awt.GridLayout;
 import javax.swing.JMenuBar;
@@ -22,11 +22,16 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.util.List;
 
-
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
+import java.awt.Component;
 
 public class AfdbSuche extends JFrame {
 
@@ -39,9 +44,10 @@ public class AfdbSuche extends JFrame {
 	
 	private JComboBox cbStatus;
 	private JComboBox cbZugewiesen;
+	private JScrollPane scrollPane;
 
 	private AfdbSuchen afdbSuchen = new AfdbSuchen();
-	private List<Benutzer> benutzerListe;
+	private JTable table;
 	
 	/**
 	 * Launch the application.
@@ -83,7 +89,7 @@ public class AfdbSuche extends JFrame {
 	{
 		cbZugewiesen.addItem("");
 		boolean schreibRecht = true;
-		benutzerListe = afdbSuchen.getBenutzerMitSchreibRecht(schreibRecht);
+		List<Benutzer> benutzerListe = afdbSuchen.getBenutzerMitSchreibRecht(schreibRecht);
 		for(Benutzer benutzer : benutzerListe)
 		{
 			cbZugewiesen.addItem(benutzer.getBenutzername());
@@ -95,7 +101,7 @@ public class AfdbSuche extends JFrame {
 	 */
 	public AfdbSuche() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 500);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -124,9 +130,9 @@ public class AfdbSuche extends JFrame {
 		JPanel panel_2 = new JPanel();
 		GridBagLayout gbl_panel_2 = new GridBagLayout();
 		gbl_panel_2.columnWidths = new int[] {120, 150, 100, 100};
-		gbl_panel_2.rowHeights = new int[] {20, 20, 20, 0, 0, 0, 0, 0, 0};
+		gbl_panel_2.rowHeights = new int[] {20, 20, 20, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_panel_2.columnWeights = new double[]{1.0, 1.0};
-		gbl_panel_2.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_2.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		panel_2.setLayout(gbl_panel_2);
 		panel_1.add(panel_2);
 		
@@ -268,7 +274,7 @@ public class AfdbSuche extends JFrame {
 		});
 		GridBagConstraints gbc_btnSuchen = new GridBagConstraints();
 		gbc_btnSuchen.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnSuchen.insets = new Insets(0, 0, 0, 5);
+		gbc_btnSuchen.insets = new Insets(0, 0, 5, 5);
 		gbc_btnSuchen.gridx = 2;
 		gbc_btnSuchen.gridy = 7;
 		panel_2.add(btnSuchen, gbc_btnSuchen);
@@ -280,35 +286,75 @@ public class AfdbSuche extends JFrame {
 			}
 		});
 		GridBagConstraints gbc_btnAbbrechen = new GridBagConstraints();
+		gbc_btnAbbrechen.insets = new Insets(0, 0, 5, 0);
 		gbc_btnAbbrechen.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnAbbrechen.gridx = 3;
 		gbc_btnAbbrechen.gridy = 7;
 		panel_2.add(btnAbbrechen, gbc_btnAbbrechen);
+		
+		this.scrollPane = new JScrollPane((Component) null);
+		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+		gbc_scrollPane.gridwidth = 4;
+		gbc_scrollPane.insets = new Insets(0, 0, 0, 5);
+		gbc_scrollPane.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane.gridx = 0;
+		gbc_scrollPane.gridy = 9;
+		panel_2.add(scrollPane, gbc_scrollPane);
+		
+		//table = new JTable();
+		
+		
 	}
 
 	private void suchen()
 	{
-		int AnfID = Integer.parseInt(tfAnfid.getText());
-		
-		/*
+		// Selected Items
+		int anfID = Integer.parseInt(this.tfAnfid.getText());
 		String titel = this.tfTitel.getText();
 		String kunde = this.tfKunde.getText();
 		String verwandteAnf = this.tfVerwandteAnf.getText();
-		Benutzer zugewiesen = (Benutzer)this.cbZugewiesen.getSelectedItem();
-		Status status = (Status)this.cbStatus.getSelectedItem();
+		//Benutzer zugewiesen = (Benutzer)this.cbZugewiesen.getSelectedItem();
+		String zugewiesen = this.cbZugewiesen.getSelectedItem().toString();
+		//Status status = (Status)this.cbStatus.getSelectedItem();
+		String status = this.cbStatus.getSelectedItem().toString();
 		String schluesselbegriffe = this.tfSchluesselbegriffe.getText();
-		*/
-		
+
 		// Test: Check AnfID
-		boolean gefunden = this.afdbSuchen.suchen(AnfID);
-		if(gefunden)
+		List<Anforderung> anforderungen = this.afdbSuchen.suchen(anfID,titel,kunde,verwandteAnf,zugewiesen,status,schluesselbegriffe);
+		if(anforderungen.isEmpty())
 		{
-			JOptionPane.showMessageDialog(this,"Suche erfolgreich!");
+			JOptionPane.showMessageDialog(this,"Suche nicht erfolgreich!");	
 		}
 		else
 		{
-			JOptionPane.showMessageDialog(this,"Suche nicht erfolgreich!");
+			JOptionPane.showMessageDialog(this,"Suche erfolgreich!");
+			this.anforderungenAnzeigen(anforderungen);
+		}
+	}
+	
+	private void anforderungenAnzeigen(List<Anforderung> anforderungen)
+	{
+		/*
+		this.table.setModel(new DefaultTableModel(
+			new Object[][] {
+				{null, null, null, null, null, null, null},
+			},
+			new String[] {
+				"AnfID", "Priorität", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."
+			}
+		));
+		*/
+		
+		Object[][] data = { null };
+		String[] columnNames = {"AnfID", "Priorität", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
+		DefaultTableModel datamodel = new DefaultTableModel(data,columnNames);
+		
+		for (Anforderung anf : anforderungen)
+		{
+			//datamodel.addRow("Test");
 		}
 		
+		this.table = new JTable(datamodel);
+		this.scrollPane.setViewportView(table);
 	}
 }

@@ -21,21 +21,10 @@ public class AfdbSuchen {
 		return QueryHelper.getBenutzerMitSchreibRecht(schreibRecht);
 	}
 	
-	public boolean suchen(int AnfID)
+	public List<Anforderung> suchen(int anfID, String titel, String kunde, String verwandteAnf, String zugewiesen, String status, String schluesselbegriffe)
 	{
-		boolean gefunden = false;
-		try {
-			List<Anforderung> anforderungen = QueryHelper.getAllAnforderungen();
-			for (Anforderung anf : anforderungen )
-			{
-				if ((anf.getAnfId() == AnfID))
-					gefunden = true;
-			}
-			return gefunden;
-		} catch(Exception e)
-		{
-			e.printStackTrace();
-			return false;
-		}
+		List<Anforderung> anforderungen = QueryHelper.getFilteredAnforderungen(anfID, titel, kunde, verwandteAnf, zugewiesen, status, schluesselbegriffe);
+		return anforderungen;
+		
 	}
 }

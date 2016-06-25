@@ -2,20 +2,13 @@ package dal;
 
 import java.util.List;
 
-import javax.management.Query;
+//import javax.management.Query;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import data.Anforderung;
-import data.AnforderungsArt;
-import data.Benutzer;
-import data.Kunde;
-import data.Modul;
-import data.Prioritaet;
-import data.Status;
-import data.Version;
-
+import data.*;
 
 
 public class QueryHelper {
@@ -24,10 +17,33 @@ public class QueryHelper {
 		
 	}
 	
-	public static List<Anforderung> getAllAnforderungen() {
+	public static List<Anforderung> getFilteredAnforderungen(int anfID, String titel, String kunde, String verwandteAnf, String zugewiesen, String status, String schluesselbegriffe) {
 		Session session = HibernateUtil.session;
+			
+		String stmt = "FROM Anforderung WHERE ";
+		if (anfID != 0)
+			stmt += "AnforderungID = :anfID";
+		if (!titel.isEmpty())
+			stmt += " and Titel = :titel";
 		
-		List<Anforderung> anforderungen = session.createQuery(" from anforderung").list();
+		/*
+		if (!kunde.isEmpty())
+			stmt += " and kunde.Bezeichnung = :kunde";
+		*/
+		
+		
+		Query query = session.createQuery(stmt);
+		if (anfID != 0)
+			query.setParameter("anfID", anfID);
+		if (!titel.isEmpty())
+			query.setParameter("titel", titel);
+		
+		/*
+		if (!kunde.isEmpty())
+			query.setParameter("kunde", kunde);
+		*/
+		
+		List<Anforderung> anforderungen = query.list();
 		logData(anforderungen);
 		
 		return anforderungen;
