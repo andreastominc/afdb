@@ -9,11 +9,11 @@ public class Anhang {
 	private Blob datei;
 	private String name;
 	private Date hinzugefuegtAm;
+	private Anforderung anforderung;
 	
-	public Anhang()
-	{
-		
+	public Anhang(){
 	}
+	
 	public Anhang(int anhangId, Blob datei, String name, Date hinzugefuegtAm) {
 		super();
 		this.anhangId = anhangId;
@@ -45,9 +45,15 @@ public class Anhang {
 	public void setHinzugefuegtAm(Date hinzugefuegtAm) {
 		this.hinzugefuegtAm = hinzugefuegtAm;
 	}
-	
-	
-	
-	
+
+	public Anforderung getAnforderung() {
+		return anforderung;
+	}
+
+	public void setAnforderung(Anforderung anforderung) {
+		this.anforderung = anforderung;
+	}
+
+
 
 }

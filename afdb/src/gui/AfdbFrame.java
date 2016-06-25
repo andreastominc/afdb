@@ -40,6 +40,7 @@ import javax.swing.JFileChooser;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.Blob;
@@ -584,29 +585,33 @@ public class AfdbFrame extends JFrame {
 		boolean speicherung = afdbBl.createAfdb(titel, beschreibung, benutzer, erfDatum, ansprPers, kd, anfArt, prio, status, benutzer, modul, version, hdNr,
 				aufwandGesch, fertigStellGepl, fertigStellIst, schluesselBegriffe);
 		
-		System.out.println("filepath length: "+frame.filepath.length());
-		// wenn file nicht leer ist:
-		if (frame.filepath.length() > 0){
-			// Anhang hinzufuegen:
-			Anhang anh = new Anhang();
-			anh.setName(frame.getFile().getName());
-			anh.setHinzugefuegtAm(new Date());
-			// to do: anh.setDatei(new Blob(...));
-			frame.afdbBl.getAnf().addAnhang(anh);
-			
-			for(Anhang a : frame.afdbBl.getAnf().getAnhaenge()){
-				boolean anhSave = afdbBl.createAnhang(a, frame.afdbBl.getAnf());
-				System.out.println("Anhang: ("+anhSave+") ------- "+a.getName());
-			}
-		
-		}
+
 		
 		if(speicherung)
 		{
+
+			System.out.println("filepath length: "+frame.filepath.length());
+			// wenn file nicht leer ist:
+			if (frame.filepath.length() > 0){
+				// Anhang hinzufuegen:
+				Anhang anh = new Anhang();
+				anh.setName(frame.getFile().getName());
+				anh.setHinzugefuegtAm(new Date());
+				anh.setAnforderung(afdbBl.getAnf());
+				// to do: anh.setDatei(new Blob(...));
+				boolean anhSave = afdbBl.createAnhang(anh);
+				if(anhSave){
+					System.out.println("Anhang erfolgreich gespeichert.");
+				}
+				else{
+					System.out.println("Fehler beim Speichern des Anhanges.");
+				}
+			}
+			
 			JOptionPane.showMessageDialog(this,
 				    "Speicherung erfolgreich!");
 			//todo
-			System.exit(0);
+			//System.exit(0);
 		}
 		else {
 			JOptionPane.showMessageDialog(this,

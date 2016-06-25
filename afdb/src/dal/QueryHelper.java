@@ -1,6 +1,13 @@
 package dal;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.sql.Blob;
 import java.util.List;
+
+import org.hibernate.Hibernate;
+import org.hibernate.HibernateException;
 
 //import javax.management.Query;
 
@@ -13,11 +20,10 @@ import data.*;
 
 public class QueryHelper {
 	
-	private static Session anfsess;
-	private static Transaction anftx;;
+	protected static Session anfsession;
+	protected static Transaction anftx;
 	
 	public QueryHelper() {
-		
 	}
 	
 	public static List<Anforderung> getFilteredAnforderungen(int anfID, String titel, String kunde, String verwandteAnf, String zugewiesen, String status, String schluesselbegriffe) {
@@ -153,19 +159,41 @@ public class QueryHelper {
 		Session session = HibernateUtil.session;
 		Transaction tx = HibernateUtil.tx;
 		
-		session.save(anf);
-		tx.commit();
+		System.out.println("saveAnf="+anf.getTitel());
 		
-		anfsess = session;
-		anftx = tx;
+		session.save(anf);
+		
+		System.out.println("anfid (vor commit)="+anf.getAnfId());
+		
+		//session.persist(anf);
+		tx.commit();
+		System.out.println("anfid (nach commit)="+anf.getAnfId());
+		
+		anfsession = session;
+		//anftx = tx;
+		//anfsession.flush();
 	}
 	
-	public static void saveAnhang(Anhang anh, Anforderung anf) {
+	
+	
+	public static void saveAnhang(Anhang anh) {
 		//Session session = HibernateUtil.session;
 		//Transaction tx = HibernateUtil.tx;
-		System.out.println("Anforderung-Anhang: "+anh.getAnhangId()+" / "+anf.getAnfId());
-		anfsess.save(anh);
+		
+		//anfsession.save(anh);
 		//anftx.commit();
+		anftx = anfsession.beginTransaction();
+		//anfsession.save(anh);
+		anfsession.persist(anh);
+		anftx.commit();
+
+		    /*
+		    FileInputStream inputStream = new FileInputStream(file);
+	        Blob blob = Hibernate.getLobCreator(anfsess)
+	                            .createBlob(inputStream, file.length());
+		    anh.setDatei(blob);
+	        */
+		    
 	}	
 	
 	

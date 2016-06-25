@@ -79,9 +79,12 @@ create table `Anforderung` (
 drop table if exists `Anhang`;
 create table `Anhang` (
 	`AnhangId`       int primary key auto_increment,
-	`Datei`          blob not null,
+	`Datei`          blob, -- vorerst nicht als not null definieren
 	`Name`           varchar(2000) not null,
-	`HinzugefuegtAm` date not null
+	`HinzugefuegtAm` date not null,
+	`AnforderungId`  int,
+	`KommentarId`    int
+	
 );
 
 -- Beziehungstabelle "KopieAn"
@@ -100,13 +103,13 @@ create table `VerwandteAnforderung` (
 	primary key (`MasterAnforderungId`,`AnforderungId`)
 );
 
--- Beziehungstabelle "AnforderungAnhang"
-drop table if exists `AnforderungAnhang`;
-create table `AnforderungAnhang` (
-	`AnforderungId` int, /* FK zu Anforderungen */
-	`AnhangId`      int, /* FK zu Anhaenge */
-	primary key (`AnforderungId`,`AnhangId`)
-);
+-- -- Beziehungstabelle "AnforderungAnhang"
+-- drop table if exists `AnforderungAnhang`;
+-- create table `AnforderungAnhang` (
+-- 	`AnforderungId` int, /* FK zu Anforderungen */
+-- 	`AnhangId`      int, /* FK zu Anhaenge */
+-- 	primary key (`AnforderungId`,`AnhangId`)
+-- );
 
 -- Kommentar
 drop table if exists `Kommentar`;
@@ -121,13 +124,14 @@ create table `Kommentar` (
 	`HinzugefuegtAm`   date not null
 );
 
--- Beziehungstabelle "KommentarAnhang"
-drop table if exists `KommentarAnhang`;
-create table `KommentarAnhang` (
-	`KommentarId`      int, /* FK zu Kommentare */
-	`AnhangId`         int,  /* FK zu Anhaenge */
-	primary key (`KommentarId`,`AnhangId`)
-);
+
+-- -- Beziehungstabelle "KommentarAnhang"
+-- drop table if exists `KommentarAnhang`;
+-- create table `KommentarAnhang` (
+-- 	`KommentarId`      int, /* FK zu Kommentare */
+-- 	`AnhangId`         int,  /* FK zu Anhaenge */
+-- 	primary key (`KommentarId`,`AnhangId`)
+-- );
 
 -- Status
 drop table if exists `Status`;
@@ -143,7 +147,7 @@ create table `Modul` (
 	`Bezeichnung`   varchar(100) not null
 );
 
--- Priorität
+-- Prioritaet
 drop table if exists `Prioritaet`;
 create table Prioritaet (
 	`PrioritaetId`      int primary key auto_increment,

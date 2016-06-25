@@ -23,9 +23,7 @@ public class Anforderung {
 	private Date fertigIst;
 	private String hdNummer;
 	private String schluesselBegriffe;
-	
-	private Set<Anhang> anhaenge = new HashSet<Anhang>();
-	
+
 	
 	public Anforderung(String titel, String beschreibung, Benutzer benutzer, Date erfDatum, Benutzer ansprPers, Kunde kd, AnforderungsArt anfArt, Prioritaet prio, Status status, Benutzer zugBenutzer, Modul modul, Version version, String hdNr, float aufwandGesch, Date fertigStellGepl, Date fertigStellIst, String schluesselBegriffe) {
 		this.titel = titel;
@@ -207,25 +205,6 @@ public class Anforderung {
 				+ schluesselBegriffe + "]";
 	}
 
-	
-	/**
-	 * Einen Anhang zur Anhang-Collection hinzufuegen
-	 * @param anh
-	 */
-	public void addAnhang(Anhang anh) {
-        this.anhaenge.add(anh);
-    }
-
-	public Set<Anhang> getAnhaenge() {
-		return anhaenge;
-	}
-
-	public void setAnhaenge(Set<Anhang> anhaenge) {
-		this.anhaenge = anhaenge;
-	}
-	
-	
-	
 	
 
 }

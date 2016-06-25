@@ -15,12 +15,15 @@ alter table KopieAn drop foreign key KopieAnAnforderung_FK;
 alter table KopieAn drop foreign key KopieAnBenutzer_FK;
 alter table VerwandteAnforderung drop foreign key VerwandteAnfMasterAnf_FK;	
 alter table VerwandteAnforderung drop foreign key VerwandteAnfSlaveAnf_FK;
-alter table AnforderungAnhang drop foreign key AnfAnhangAnforderung_FK;
-alter table AnforderungAnhang drop foreign key AnfAnhangAnhang_FK;
+-- alter table AnforderungAnhang drop foreign key AnfAnhangAnforderung_FK;
+-- alter table AnforderungAnhang drop foreign key AnfAnhangAnhang_FK;
 alter table Kommentar drop foreign key KommentarAnforderung_FK;
 alter table Kommentar drop foreign key KommentarBenutzer_FK;
-alter table KommentarAnhang drop foreign key KommentarAnhangKommentar_FK;
-alter table KommentarAnhang drop foreign key KommentarAnhangAnhang_FK;
+-- alter table KommentarAnhang drop foreign key KommentarAnhangKommentar_FK;
+-- alter table KommentarAnhang drop foreign key KommentarAnhangAnhang_FK;
+alter table Anhang drop foreign key AnhangAnforderung_FK;
+alter table Anhang drop foreign key AnhangKommentar_FK;
+
 
 -- Foreign Keys neu erstellen:
 -- Benutzer
@@ -76,13 +79,22 @@ alter table VerwandteAnforderung add constraint VerwandteAnfMasterAnf_FK
 alter table VerwandteAnforderung add constraint VerwandteAnfSlaveAnf_FK
 	foreign key (AnforderungId) references Anforderung(AnforderungId);
 
--- AnforderungAnhang
-alter table AnforderungAnhang add constraint AnfAnhangAnforderung_FK
+-- -- AnforderungAnhang
+-- alter table AnforderungAnhang add constraint AnfAnhangAnforderung_FK
+-- 	foreign key (AnforderungId) references Anforderung(AnforderungId);
+
+-- alter table AnforderungAnhang add constraint AnfAnhangAnhang_FK
+-- 	foreign key (AnhangId) references Anhang(AnhangId);
+
+
+-- Anhang     
+alter table Anhang add constraint AnhangAnforderung_FK
 	foreign key (AnforderungId) references Anforderung(AnforderungId);
-
-alter table AnforderungAnhang add constraint AnfAnhangAnhang_FK
-	foreign key (AnhangId) references Anhang(AnhangId);
-
+    
+alter table Anhang add constraint AnhangKommentar_FK
+	foreign key (AnforderungId) references Kommentar(KommentarId); 
+	
+	
 -- Kommentar
 alter table Kommentar add constraint KommentarAnforderung_FK
 	foreign key (Anforderung) references Anforderung(AnforderungId);
@@ -90,9 +102,9 @@ alter table Kommentar add constraint KommentarAnforderung_FK
 alter table Kommentar add constraint KommentarBenutzer_FK
 	foreign key (Benutzer) references Benutzer(BenutzerId);
 
--- KommentarAnhang
-alter table KommentarAnhang add constraint KommentarAnhangKommentar_FK
-	foreign key (KommentarId) references Kommentar(KommentarId);
+-- -- KommentarAnhang
+-- alter table KommentarAnhang add constraint KommentarAnhangKommentar_FK
+-- 	foreign key (KommentarId) references Kommentar(KommentarId);
 
-alter table KommentarAnhang add constraint KommentarAnhangAnhang_FK
-	foreign key (AnhangId) references Anhang(AnhangId);
+-- alter table KommentarAnhang add constraint KommentarAnhangAnhang_FK
+-- 	foreign key (AnhangId) references Anhang(AnhangId);

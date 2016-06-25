@@ -1,5 +1,6 @@
 package bl;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 
@@ -72,9 +73,9 @@ public class AfdbHinzufuegen {
 		}
 	}
 
-	public boolean createAnhang(Anhang a, Anforderung anf){
+	public boolean createAnhang(Anhang a){
 		try {
-			QueryHelper.saveAnhang(a, anf);
+			QueryHelper.saveAnhang(a);
 			return true;
 		} catch(Exception e)
 		{

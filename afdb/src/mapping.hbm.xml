@@ -35,6 +35,7 @@
   <property column="Name" generated="never" lazy="false" name="name" type="string"/>
   <property column="HinzugefuegtAm" generated="never" lazy="false"
    name="hinzugefuegtAm" type="date"/>
+  <many-to-one class="data.Anforderung" column="AnforderungId" name="anforderung"/>
  </class>
  <!-- mapping Kunde -->
  <class name="data.Kunde" table="kunde">
@@ -83,10 +84,6 @@
    name="fertigIst" type="date"/>
   <property column="SchluesselBegriffe" generated="never" lazy="false"
    name="schluesselBegriffe" type="string"/>
-  <set cascade="save-update" name="anhaenge" sort="unsorted" table="AnforderungAnhang">
-   <key column="AnforderungId"/>
-   <many-to-many class="data.Anhang" column="AnhangId" unique="false"/>
-  </set>
  </class>
  <!-- mapping Benutzerart -->
  <class name="data.Benutzerart" table="benutzerart">
