@@ -1,4 +1,4 @@
---Testdaten für Status--
+-- Testdaten fuer Status --
 INSERT INTO status VALUES(1,'Offen');
 INSERT INTO status VALUES(2,'Programmierung genehmigt');
 INSERT INTO status VALUES(3,'In Programmierung');
@@ -7,20 +7,20 @@ INSERT INTO status VALUES(5,'in Test');
 INSERT INTO status VALUES(6,'Abgeschlossen');
 INSERT INTO status VALUES(7,'Abgelehnt');
 
---Testdaten für AnforderungsArt--
+-- Testdaten fuer AnforderungsArt--
 INSERT INTO AnforderungsArt VALUES(1,'Anforderung Software');
 INSERT INTO AnforderungsArt VALUES(2,'Anforderung Hardware');
 INSERT INTO AnforderungsArt VALUES(3,'Change Request');
 INSERT INTO AnforderungsArt VALUES(4,'Info');
 
---Testdaten für Prioritaet--
+-- Testdaten fuer Prioritaet--
 INSERT INTO Prioritaet VALUES(1,'Sehr Hoch');
 INSERT INTO Prioritaet VALUES(2,'Hoch');
 INSERT INTO Prioritaet VALUES(3,'Normal');
 INSERT INTO Prioritaet VALUES(4,'Niedrig');
 INSERT INTO Prioritaet VALUES(5,'Sehr niedrig');
 
---Testdaten für Modul--
+-- Testdaten fuer Modul--
 INSERT INTO Modul VALUES(1,'Basis');
 INSERT INTO Modul VALUES(2,'CRM');
 INSERT INTO Modul VALUES(3,'Fahrzeughandel');
@@ -29,7 +29,7 @@ INSERT INTO Modul VALUES(5,'Zeiterfassung');
 INSERT INTO Modul VALUES(6,'Teilehandel');
 INSERT INTO Modul VALUES(7,'Finanz');
 
---Testdaten für Version--
+-- Testdaten fuer Version--
 INSERT INTO Version VALUES(1,'V3.1');
 INSERT INTO Version VALUES(2,'VSR2.1');
 INSERT INTO Version VALUES(3,'VSR2.2');
@@ -47,18 +47,18 @@ INSERT INTO Version VALUES(14,'V6R4.0');
 INSERT INTO Version VALUES(15,'V7R0.0');
 INSERT INTO Version VALUES(16,'V7R1.0');
 
---Testdaten für Adresse
+-- Testdaten fuer Adresse
 INSERT INTO `adresse` (`AdresseId`, `Strasse`, `Hausnummer`, `HausnummerZusatz`, `Postleitzahl`, `Ort`, `Land`) VALUES
-(1, 'Hauptstraße', 1, 'a', 8430, 'Leibnitz', 'Österreich'),
-(2, 'Conrad von Hötzendorf ', 10, '', 8010, 'Graz', 'Österreich'),
-(3, 'Feldweg', 5, '/5', 80331, 'München', 'Deutschland');
+(1, 'Hauptstraï¿½e', 1, 'a', 8430, 'Leibnitz', 'ï¿½sterreich'),
+(2, 'Conrad von Hï¿½tzendorf ', 10, '', 8010, 'Graz', 'ï¿½sterreich'),
+(3, 'Feldweg', 5, '/5', 80331, 'Mï¿½nchen', 'Deutschland');
 
---Testdaten für Benutzerart
+-- Testdaten fuer Benutzerart
 INSERT INTO `benutzerart` (`BenutzerartId`, `Bezeichnung`, `SchreibRecht`) VALUES
 (1, 'MD-Mitarbeiter', 1),
 (2, 'Kunde', 0);
 
---Testdaten für Benutzer
+-- Testdaten fuer Benutzer
 INSERT INTO `benutzer` (`BenutzerId`, `Vorname`, `Nachname`, `Benutzername`, `Passwort`, `AnlegeDatum`, `GueltigBis`, `Benutzerart`, `Telefon`, `Mail`) VALUES
 (1, 'Andreas', 'Tominc', 'atominc', 'atominc', '2016-06-20', '2016-06-20', 1, '+436641234567', 'andreas.tominc@edu.campus02.at'),
 (2, 'Philipp', 'Hiezer', 'phierzer', 'phierzer', '2016-06-20', '2016-06-20', 1, '+436641234568', 'philipp.hierzer@edu.campus02.at'),
@@ -67,7 +67,7 @@ INSERT INTO `benutzer` (`BenutzerId`, `Vorname`, `Nachname`, `Benutzername`, `Pa
 (5, 'Josef', 'Max', 'jmax', 'jmax', '2016-06-21', '2016-06-21', 2, '+436641234571', 'josef.max@autohaus-max.at'),
 (6, 'Max', 'Mustermann', 'mmustermann', 'mmustermann', '2016-06-20', '2016-06-20', 2, '+436641234572', 'max.mustermann@autohaus-mustermann.at');
 
---Testdaten für Kunde
+-- Testdaten fuer Kunde
 INSERT INTO `kunde` (`KundeId`, `Kundennummer`, `Bezeichnung`, `Adresse`, `KontaktPerson`, `Mail`) VALUES
 (1, '4711', 'Autohaus Huber', 1, 4, 'office@autohaus-huber.at'),
 (2, '4712', 'Autohaus Mustermann', 2, 6, 'office@autohaus-mustermann.at'),

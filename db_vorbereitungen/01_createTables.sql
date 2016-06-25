@@ -1,11 +1,14 @@
 -- Benutzerart
+drop table if exists `Benutzerart`;
 create table `Benutzerart` (
 	`BenutzerartId`   int primary key auto_increment,
 	`Bezeichnung`     varchar(50) not null,
 	`SchreibRecht`    boolean default false
 );
 
+
 -- Benutzer
+drop table if exists `Benutzer`;
 create table `Benutzer` (
 	`BenutzerId`    int primary key auto_increment,
 	`Vorname`       varchar(50) not null,
@@ -20,6 +23,7 @@ create table `Benutzer` (
 );
 
 -- Adresse
+drop table if exists `Adresse`;
 create table `Adresse` (
 	`AdresseId`         int primary key auto_increment,
 	`Strasse`           varchar(50) not null,
@@ -31,6 +35,7 @@ create table `Adresse` (
 );
 
 -- Kunde
+drop table if exists `Kunde`;
 create table `Kunde` (
 	`KundeId`         int primary key auto_increment,
 	`Kundennummer`    varchar(20) not null unique key,
@@ -41,12 +46,14 @@ create table `Kunde` (
 );
 
 -- AnforderungsArt
+drop table if exists `AnforderungsArt`;
 create table AnforderungsArt (
 	`AnforderungsartId`      int primary key auto_increment,
 	`Bezeichnung`            varchar(100) not null
 );
 
 -- Anforderung
+drop table if exists `Anforderung`;
 create table `Anforderung` (
 	`AnforderungId`         int primary key auto_increment,
 	`Titel`                 varchar(2000) not null,
@@ -69,6 +76,7 @@ create table `Anforderung` (
 );
 
 -- Anhang
+drop table if exists `Anhang`;
 create table `Anhang` (
 	`AnhangId`       int primary key auto_increment,
 	`Datei`          blob not null,
@@ -77,6 +85,7 @@ create table `Anhang` (
 );
 
 -- Beziehungstabelle "KopieAn"
+drop table if exists `KopieAn`;
 create table `KopieAn` (
 	`AnforderungId`    int, /* FK zu Anforderungen */
 	`BenutzerId`       int, /* FK zu Benutzer*/
@@ -84,6 +93,7 @@ create table `KopieAn` (
 );
 
 -- Beziehungstabelle "verwandteAnforderung"
+drop table if exists `VerwandteAnforderung`;
 create table `VerwandteAnforderung` (
 	`MasterAnforderungId` int, /* FK zu Anforderungen */
 	`AnforderungId`       int, /* FK zu Anforderungen */
@@ -91,6 +101,7 @@ create table `VerwandteAnforderung` (
 );
 
 -- Beziehungstabelle "AnforderungAnhang"
+drop table if exists `AnforderungAnhang`;
 create table `AnforderungAnhang` (
 	`AnforderungId` int, /* FK zu Anforderungen */
 	`AnhangId`      int, /* FK zu Anhaenge */
@@ -98,6 +109,7 @@ create table `AnforderungAnhang` (
 );
 
 -- Kommentar
+drop table if exists `Kommentar`;
 create table `Kommentar` (
 	`KommentarId`      int primary key auto_increment,
 	`Anforderung`      int not null, /* FK zu Anforderungen */
@@ -110,6 +122,7 @@ create table `Kommentar` (
 );
 
 -- Beziehungstabelle "KommentarAnhang"
+drop table if exists `KommentarAnhang`;
 create table `KommentarAnhang` (
 	`KommentarId`      int, /* FK zu Kommentare */
 	`AnhangId`         int,  /* FK zu Anhaenge */
@@ -117,24 +130,28 @@ create table `KommentarAnhang` (
 );
 
 -- Status
+drop table if exists `Status`;
 create table `Status` (
 	`StatusId`      int primary key auto_increment,
 	`Bezeichnung`   varchar(100) not null
 );
 
 -- Modul
+drop table if exists `Modul`;
 create table `Modul` (
 	`ModulId`       int primary key auto_increment,
 	`Bezeichnung`   varchar(100) not null
 );
 
 -- Priorität
+drop table if exists `Prioritaet`;
 create table Prioritaet (
 	`PrioritaetId`      int primary key auto_increment,
 	`Bezeichnung`       varchar(100) not null
 );
 
 -- Version
+drop table if exists `Version`;
 create table Version (
 	`VersionId`      int primary key auto_increment,
 	`Bezeichnung`    varchar(100) not null

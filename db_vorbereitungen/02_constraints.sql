@@ -1,3 +1,28 @@
+-- Foreign Keys droppen bevor man sie neu erstellt:
+alter table Benutzer drop foreign key BenutzerBenutzerart_FK;
+alter table Kunde drop foreign key KundeAdresse_FK;
+alter table Kunde drop foreign key KundeKontaktperson_FK;
+alter table Anforderung drop foreign key AnforderungAngelegtVon_FK;
+alter table Anforderung drop foreign key AnforderungAnsprechPerson_FK;
+alter table Anforderung drop foreign key AnforderungKunde_FK;
+alter table Anforderung drop foreign key AnforderungAnforderungsArt_FK;
+alter table Anforderung drop foreign key AnforderungStatus_FK;
+alter table Anforderung drop foreign key AnforderungZugewiesenAn_FK;
+alter table Anforderung drop foreign key AnforderungModul_FK;
+alter table Anforderung drop foreign key AnforderungPrio_FK;	
+alter table Anforderung drop foreign key AnforderungVersion_FK;
+alter table KopieAn drop foreign key KopieAnAnforderung_FK;	
+alter table KopieAn drop foreign key KopieAnBenutzer_FK;
+alter table VerwandteAnforderung drop foreign key VerwandteAnfMasterAnf_FK;	
+alter table VerwandteAnforderung drop foreign key VerwandteAnfSlaveAnf_FK;
+alter table AnforderungAnhang drop foreign key AnfAnhangAnforderung_FK;
+alter table AnforderungAnhang drop foreign key AnfAnhangAnhang_FK;
+alter table Kommentar drop foreign key KommentarAnforderung_FK;
+alter table Kommentar drop foreign key KommentarBenutzer_FK;
+alter table KommentarAnhang drop foreign key KommentarAnhangKommentar_FK;
+alter table KommentarAnhang drop foreign key KommentarAnhangAnhang_FK;
+
+-- Foreign Keys neu erstellen:
 -- Benutzer
 alter table Benutzer add constraint BenutzerBenutzerart_FK
 	foreign key (Benutzerart) references Benutzerart(BenutzerartId);
