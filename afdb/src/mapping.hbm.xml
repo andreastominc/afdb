@@ -36,13 +36,6 @@
   <property column="HinzugefuegtAm" generated="never" lazy="false"
    name="hinzugefuegtAm" type="date"/>
  </class>
- <!-- mapping AnforderungAnhang -->
- <class name="data.AnforderungAnhang" table="anforderunganhang">
-  <composite-id mapped="false" unsaved-value="undefined">
-   <key-many-to-one class="data.Anforderung" column="anforderung" name="anforderung"/>
-   <key-many-to-one class="data.Anhang" column="anhang" name="anhang"/>
-  </composite-id>
- </class>
  <!-- mapping Kunde -->
  <class name="data.Kunde" table="kunde">
   <id column="KundeId" name="kundenId" type="integer">
@@ -90,6 +83,10 @@
    name="fertigIst" type="date"/>
   <property column="SchluesselBegriffe" generated="never" lazy="false"
    name="schluesselBegriffe" type="string"/>
+  <set cascade="save-update" name="anhaenge" sort="unsorted" table="AnforderungAnhang">
+   <key column="AnforderungId"/>
+   <many-to-many class="data.Anhang" column="AnhangId" unique="false"/>
+  </set>
  </class>
  <!-- mapping Benutzerart -->
  <class name="data.Benutzerart" table="benutzerart">

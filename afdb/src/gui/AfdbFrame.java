@@ -12,6 +12,7 @@ import javax.swing.border.EmptyBorder;
 
 import dal.QueryHelper;
 import data.AnforderungsArt;
+import data.Anhang;
 import data.Benutzer;
 import data.Kunde;
 import data.Modul;
@@ -38,6 +39,11 @@ import javax.swing.SwingConstants;
 import javax.swing.JFileChooser;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -68,9 +74,11 @@ public class AfdbFrame extends JFrame {
 	private JLabel lblBeschreibung;
 	private JLabel lblHelpdesknummer;
 	private JDateChooser dcFertigStellGepl;
+	private String filepath = "";
+	private File file;
 	
 	//Object for Business Logic
-	private AfdbHinzufuegen afdbBl = new AfdbHinzufuegen();
+	private AfdbHinzufuegen afdbBl;
 	private List<Benutzer> ansprPersListe;
 	private List<Benutzer> benutzerListe;
 	
@@ -113,6 +121,9 @@ public class AfdbFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public AfdbFrame() {
+		
+		this.afdbBl = new AfdbHinzufuegen();
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -338,7 +349,7 @@ public class AfdbFrame extends JFrame {
 		
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(new Date());
-		cal.add(Calendar.DATE, 15); // 15 hinzuf�gen zum aktuellen als default Wert
+		cal.add(Calendar.DATE, 15); // 15 hinzufuegen zum aktuellen als default Wert
 		dcFertigStellGepl.setDate(cal.getTime());
 		panel_16.add(dcFertigStellGepl);
 		
@@ -369,7 +380,8 @@ public class AfdbFrame extends JFrame {
 		        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		        int returnWert = chooser.showOpenDialog(null);
 		        if (returnWert == JFileChooser.APPROVE_OPTION) {
-		        	String filepath = chooser.getSelectedFile().getPath();
+		        	filepath = chooser.getSelectedFile().getPath();
+		        	file = chooser.getSelectedFile();
 		        	tfAnhang.setText(filepath);
 		        }
 			}
@@ -572,6 +584,23 @@ public class AfdbFrame extends JFrame {
 		boolean speicherung = afdbBl.createAfdb(titel, beschreibung, benutzer, erfDatum, ansprPers, kd, anfArt, prio, status, benutzer, modul, version, hdNr,
 				aufwandGesch, fertigStellGepl, fertigStellIst, schluesselBegriffe);
 		
+		System.out.println("filepath length: "+frame.filepath.length());
+		// wenn file nicht leer ist:
+		if (frame.filepath.length() > 0){
+			// Anhang hinzufuegen:
+			Anhang anh = new Anhang();
+			anh.setName(frame.getFile().getName());
+			anh.setHinzugefuegtAm(new Date());
+			// to do: anh.setDatei(new Blob(...));
+			frame.afdbBl.getAnf().addAnhang(anh);
+			
+			for(Anhang a : frame.afdbBl.getAnf().getAnhaenge()){
+				boolean anhSave = afdbBl.createAnhang(a, frame.afdbBl.getAnf());
+				System.out.println("Anhang: ("+anhSave+") ------- "+a.getName());
+			}
+		
+		}
+		
 		if(speicherung)
 		{
 			JOptionPane.showMessageDialog(this,
@@ -587,6 +616,16 @@ public class AfdbFrame extends JFrame {
 		}
 
 	}
+
+	public File getFile() {
+		return file;
+	}
+
+	public void setFile(File file) {
+		this.file = file;
+	}
+	
+	
 
 	
 	

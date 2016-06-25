@@ -13,6 +13,9 @@ import data.*;
 
 public class QueryHelper {
 	
+	private static Session anfsess;
+	private static Transaction anftx;;
+	
 	public QueryHelper() {
 		
 	}
@@ -152,7 +155,18 @@ public class QueryHelper {
 		
 		session.save(anf);
 		tx.commit();
+		
+		anfsess = session;
+		anftx = tx;
 	}
+	
+	public static void saveAnhang(Anhang anh, Anforderung anf) {
+		//Session session = HibernateUtil.session;
+		//Transaction tx = HibernateUtil.tx;
+		System.out.println("Anforderung-Anhang: "+anh.getAnhangId()+" / "+anf.getAnfId());
+		anfsess.save(anh);
+		//anftx.commit();
+	}	
 	
 	
 

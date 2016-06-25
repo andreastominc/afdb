@@ -8,6 +8,8 @@ import data.*;
 
 public class AfdbHinzufuegen {
 	
+	private Anforderung anf;
+	
 	public AfdbHinzufuegen()
 	{
 		
@@ -59,7 +61,7 @@ public class AfdbHinzufuegen {
 	}
 
 	public boolean createAfdb(String titel, String beschreibung, Benutzer benutzer, Date erfDatum, Benutzer ansprPers, Kunde kd, AnforderungsArt anfArt, Prioritaet prio, Status status, Benutzer benutzer2, Modul modul, Version version, String hdNr, float aufwandGesch, Date fertigStellGepl, Date fertigStellIst, String schluesselBegriffe) {
-		Anforderung anf = new Anforderung(titel, beschreibung, benutzer, erfDatum, ansprPers, kd, anfArt, prio, status, benutzer, modul, version, hdNr, aufwandGesch, fertigStellGepl, fertigStellIst,schluesselBegriffe);
+		anf = new Anforderung(titel, beschreibung, benutzer, erfDatum, ansprPers, kd, anfArt, prio, status, benutzer, modul, version, hdNr, aufwandGesch, fertigStellGepl, fertigStellIst,schluesselBegriffe);
 		try {
 			QueryHelper.saveAnf(anf);
 			return true;
@@ -69,6 +71,28 @@ public class AfdbHinzufuegen {
 			return false;
 		}
 	}
+
+	public boolean createAnhang(Anhang a, Anforderung anf){
+		try {
+			QueryHelper.saveAnhang(a, anf);
+			return true;
+		} catch(Exception e)
+		{
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	
+	public Anforderung getAnf() {
+		return anf;
+	}
+
+	public void setAnf(Anforderung anf) {
+		this.anf = anf;
+	}
+	
+	
 
 
 }

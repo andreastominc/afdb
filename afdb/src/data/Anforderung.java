@@ -1,6 +1,8 @@
 package data;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Anforderung {
 	private int anfId;
@@ -21,6 +23,8 @@ public class Anforderung {
 	private Date fertigIst;
 	private String hdNummer;
 	private String schluesselBegriffe;
+	
+	private Set<Anhang> anhaenge = new HashSet<Anhang>();
 	
 	
 	public Anforderung(String titel, String beschreibung, Benutzer benutzer, Date erfDatum, Benutzer ansprPers, Kunde kd, AnforderungsArt anfArt, Prioritaet prio, Status status, Benutzer zugBenutzer, Modul modul, Version version, String hdNr, float aufwandGesch, Date fertigStellGepl, Date fertigStellIst, String schluesselBegriffe) {
@@ -201,6 +205,23 @@ public class Anforderung {
 				+ hdNummer + ", aufwandGeschaetzt=" + aufwandGeschaetzt + ", fertiggeplant=" + fertiggeplant
 				+ ", fertigIst=" + fertigIst + ", auftragsnummer="  + ", schluesselBegriffe="
 				+ schluesselBegriffe + "]";
+	}
+
+	
+	/**
+	 * Einen Anhang zur Anhang-Collection hinzufuegen
+	 * @param anh
+	 */
+	public void addAnhang(Anhang anh) {
+        this.anhaenge.add(anh);
+    }
+
+	public Set<Anhang> getAnhaenge() {
+		return anhaenge;
+	}
+
+	public void setAnhaenge(Set<Anhang> anhaenge) {
+		this.anhaenge = anhaenge;
 	}
 	
 	
