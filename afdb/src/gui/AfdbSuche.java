@@ -32,6 +32,7 @@ import javax.swing.table.TableModel;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.awt.Component;
+import javax.swing.JMenuItem;
 
 public class AfdbSuche extends JFrame {
 
@@ -58,12 +59,11 @@ public class AfdbSuche extends JFrame {
 				try {
 					AfdbSuche frame = new AfdbSuche();
 					frame.setVisible(true);
-					/*
+					
 					frame.setBounds(300, 100, 1000, 600);
 					frame.setMinimumSize(new Dimension(1100, 700));
-					*/
-					frame.initializeStatus();
-					frame.initializeZugewiesen();
+					
+					frame.initializeData();
 					
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -72,7 +72,7 @@ public class AfdbSuche extends JFrame {
 		});
 	}
 	
-	// ComboBox Status befüllen
+	// ComboBox Status befÃ¼llen
 	private void initializeStatus()
 	{
 		cbStatus.addItem("");
@@ -84,7 +84,7 @@ public class AfdbSuche extends JFrame {
 		}
 	}
 	
-	// ComboBox Zugewiesen befüllen
+	// ComboBox Zugewiesen befÃ¼llen
 	private void initializeZugewiesen()
 	{
 		cbZugewiesen.addItem("");
@@ -95,6 +95,16 @@ public class AfdbSuche extends JFrame {
 			cbZugewiesen.addItem(benutzer.getBenutzername());
 		}
 	}
+	
+	/**
+	 * die initialize-Methoden zusammenfassen, sodass man dann nur diese eine Methode aufrufen muss.
+	 * protected, damit die Methode auch von den anderen Frames (im gleichen Package) aus aufgerufen werden kann.
+	 */
+	protected void initializeData(){
+		initializeZugewiesen();
+		initializeStatus();
+	}
+	
 
 	/**
 	 * Create the frame.
@@ -114,14 +124,14 @@ public class AfdbSuche extends JFrame {
 		JMenuBar menuBar = new JMenuBar();
 		panel.add(menuBar);
 		
-		JMenu menu = new JMenu("Mir zugewiesen");
-		menuBar.add(menu);
+		JMenuItem menuItem = new JMenuItem("Mir zugewiesen");
+		menuBar.add(menuItem);
 		
-		JMenu menu_1 = new JMenu("Bearbeiten");
-		menuBar.add(menu_1);
+		JMenuItem menuItem_1 = new JMenuItem("Bearbeiten");
+		menuBar.add(menuItem_1);
 		
-		JMenu menu_2 = new JMenu("Suchen");
-		menuBar.add(menu_2);
+		JMenuItem menuItem_2 = new JMenuItem("Suchen");
+		menuBar.add(menuItem_2);
 		
 		JPanel panel_1 = new JPanel();
 		contentPane.add(panel_1, BorderLayout.CENTER);
@@ -340,13 +350,13 @@ public class AfdbSuche extends JFrame {
 				{null, null, null, null, null, null, null},
 			},
 			new String[] {
-				"AnfID", "Priorität", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."
+				"AnfID", "Prioritï¿½t", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."
 			}
 		));
 		*/
 		
 		Object[][] data = { null };
-		String[] columnNames = {"AnfID", "Priorität", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
+		String[] columnNames = {"AnfID", "Prioritï¿½t", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
 		DefaultTableModel datamodel = new DefaultTableModel(data,columnNames);
 		
 		for (Anforderung anf : anforderungen)

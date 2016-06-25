@@ -73,6 +73,8 @@ public class AfdbFrame extends JFrame {
 	private AfdbHinzufuegen afdbBl = new AfdbHinzufuegen();
 	private List<Benutzer> ansprPersListe;
 	private List<Benutzer> benutzerListe;
+	
+	private static AfdbFrame frame; // als private static definieren, damit spaeter "frame.dispose" aufgerufen werden kann.
 		
 	/**
 	 * Launch the application.
@@ -81,7 +83,7 @@ public class AfdbFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AfdbFrame frame = new AfdbFrame();
+					frame = new AfdbFrame(); 
 					frame.setVisible(true);
 					frame.setBounds(300, 100, 1000, 600);
 					frame.setMinimumSize(new Dimension(1100, 700));
@@ -144,11 +146,19 @@ public class AfdbFrame extends JFrame {
 		});
 		menuBar.add(mntmBearbeiten);
 		
+		// bei Klick aufs Menue-Item "Suchen" soll das aktuelle Frame "geschlossen" werden und das 
+		// neue Frame "Suchen" geoeffnet werden.
 		JMenuItem mntmSuchen = new JMenuItem("Suchen");
 		mntmSuchen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Suchen");
-				// to do ....
+				System.out.println("Suchen"); // auf Konsole mitloggen dass "Suchen" angeklickt wurde
+				
+				frame.dispose(); // aktuelles Frame schliessen
+				AfdbSuche suche_frame = new AfdbSuche();
+				suche_frame.setBounds(300, 100, 1000, 600);
+				suche_frame.setMinimumSize(new Dimension(1100, 700));
+				suche_frame.initializeData();
+				suche_frame.setVisible(true); // das Suchen-Frame oeffnen und anzeigen
 			}
 		});
 		menuBar.add(mntmSuchen);
@@ -327,7 +337,7 @@ public class AfdbFrame extends JFrame {
 		
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(new Date());
-		cal.add(Calendar.DATE, 15); // 15 hinzufügen zum aktuellen als default Wert
+		cal.add(Calendar.DATE, 15); // 15 hinzufï¿½gen zum aktuellen als default Wert
 		dcFertigStellGepl.setDate(cal.getTime());
 		panel_16.add(dcFertigStellGepl);
 		
