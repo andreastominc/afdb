@@ -1,6 +1,8 @@
 package data;
 
-public class AnforderungAnhang {
+import java.io.Serializable;
+
+public class AnforderungAnhang implements Serializable{
 	
 	private Anforderung anforderung;
 	private Anhang anhang;
