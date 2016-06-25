@@ -52,7 +52,7 @@ public class AfdbFrame extends JFrame {
 	private JTextField tfKopieAn;
 	private JTextField tfVerwAnf;
 	private JTextField tfSchluesselbegriffe;
-	private JTextField textField;
+	private JTextField tfAnhang;
 	private JTextField tfGespAnhaenge;
 	private JTextField tfAufwand;
 	private JComboBox cbStatus;
@@ -303,7 +303,7 @@ public class AfdbFrame extends JFrame {
 		JLabel lblZugewiesen = new JLabel("Zugewiesen:");
 		panel_10.add(lblZugewiesen);
 		
-		JLabel lblAnhnge = new JLabel("Anh\u00E4nge:");
+		JLabel lblAnhnge = new JLabel("Anhang:");
 		panel_10.add(lblAnhnge);
 		
 		JLabel lblGespeicherteAnhnge = new JLabel("Gesp. Anh\u00E4nge:");
@@ -357,16 +357,21 @@ public class AfdbFrame extends JFrame {
 		panel_11.add(panel_15);
 		panel_15.setLayout(new BorderLayout(0, 0));
 		
-		textField = new JTextField();
-		panel_15.add(textField, BorderLayout.CENTER);
-		textField.setColumns(10);
+		tfAnhang = new JTextField();
+		panel_15.add(tfAnhang, BorderLayout.CENTER);
+		tfAnhang.setColumns(10);
 		
 		JButton btHinzufuegen = new JButton("Hinzuf\u00FCgen");
 		btHinzufuegen.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-		        JFileChooser chooser = new JFileChooser();
-		        chooser.showOpenDialog(null);
+				JFileChooser chooser = new JFileChooser();
+		        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		        int returnWert = chooser.showOpenDialog(null);
+		        if (returnWert == JFileChooser.APPROVE_OPTION) {
+		        	String filepath = chooser.getSelectedFile().getPath();
+		        	tfAnhang.setText(filepath);
+		        }
 			}
 		});
 		panel_15.add(btHinzufuegen, BorderLayout.EAST);
