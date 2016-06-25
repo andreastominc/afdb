@@ -49,9 +49,9 @@ INSERT INTO Version VALUES(16,'V7R1.0');
 
 -- Testdaten fuer Adresse
 INSERT INTO `adresse` (`AdresseId`, `Strasse`, `Hausnummer`, `HausnummerZusatz`, `Postleitzahl`, `Ort`, `Land`) VALUES
-(1, 'Hauptstra�e', 1, 'a', 8430, 'Leibnitz', '�sterreich'),
-(2, 'Conrad von H�tzendorf ', 10, '', 8010, 'Graz', '�sterreich'),
-(3, 'Feldweg', 5, '/5', 80331, 'M�nchen', 'Deutschland');
+(1, 'Hauptstraße', 1, 'a', 8430, 'Leibnitz', 'Österreich'),
+(2, 'Conrad von Hötzendorf ', 10, '', 8010, 'Graz', 'Österreich'),
+(3, 'Feldweg', 5, '/5', 80331, 'München', 'Deutschland');
 
 -- Testdaten fuer Benutzerart
 INSERT INTO `benutzerart` (`BenutzerartId`, `Bezeichnung`, `SchreibRecht`) VALUES
@@ -72,3 +72,5 @@ INSERT INTO `kunde` (`KundeId`, `Kundennummer`, `Bezeichnung`, `Adresse`, `Konta
 (1, '4711', 'Autohaus Huber', 1, 4, 'office@autohaus-huber.at'),
 (2, '4712', 'Autohaus Mustermann', 2, 6, 'office@autohaus-mustermann.at'),
 (3, '4713', 'Autohaus Max', 3, 5, 'office@autohaus-max.at');
+
+commit;
