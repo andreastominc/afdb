@@ -50,6 +50,9 @@ public class AfdbSuche extends JFrame {
 	private AfdbSuchen afdbSuchen = new AfdbSuchen();
 	private JTable table;
 	
+	private String username;
+	private JLabel lblUser;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -132,6 +135,12 @@ public class AfdbSuche extends JFrame {
 		
 		JMenuItem menuItem_2 = new JMenuItem("Suchen");
 		menuBar.add(menuItem_2);
+		
+		JLabel lblAngemeldeterUser = new JLabel("Angemeldeter User:");
+		menuBar.add(lblAngemeldeterUser);
+		
+		lblUser = new JLabel(this.username);
+		menuBar.add(lblUser);
 		
 		JPanel panel_1 = new JPanel();
 		contentPane.add(panel_1, BorderLayout.CENTER);
@@ -350,13 +359,13 @@ public class AfdbSuche extends JFrame {
 				{null, null, null, null, null, null, null},
 			},
 			new String[] {
-				"AnfID", "Priorit�t", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."
+				"AnfID", "Priorität", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."
 			}
 		));
 		*/
 		
 		Object[][] data = { null };
-		String[] columnNames = {"AnfID", "Priorit�t", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
+		String[] columnNames = {"AnfID", "Priorität", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
 		DefaultTableModel datamodel = new DefaultTableModel(data,columnNames);
 		
 		for (Anforderung anf : anforderungen)
@@ -367,4 +376,15 @@ public class AfdbSuche extends JFrame {
 		this.table = new JTable(datamodel);
 		this.scrollPane.setViewportView(table);
 	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+		this.lblUser.setText(username);
+	}
+	
+	
 }

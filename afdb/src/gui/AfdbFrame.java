@@ -158,6 +158,7 @@ public class AfdbFrame extends JFrame {
 				suche_frame.setBounds(300, 100, 1000, 600);
 				suche_frame.setMinimumSize(new Dimension(1100, 700));
 				suche_frame.initializeData();
+				suche_frame.setUsername("Testuser123"); // hier dann den Usernamen des eingeloggten Users uebergeben.
 				suche_frame.setVisible(true); // das Suchen-Frame oeffnen und anzeigen
 			}
 		});
