@@ -519,11 +519,6 @@ public class AfdbFrame extends JFrame {
 			lblBeschreibung.setForeground(Color.RED);
 			befuellt = false;
 		}
-		if(tfHelpdesknummer.getText().isEmpty())
-		{
-			lblHelpdesknummer.setForeground(Color.RED);
-			befuellt = false;
-		}
 		if(!befuellt)
 		{
 			return false;
@@ -561,6 +556,10 @@ public class AfdbFrame extends JFrame {
 		Version version = (Version) cbVersion.getSelectedItem();
 		
 		String hdNr = tfHelpdesknummer.getText();
+		if(hdNr.isEmpty())
+		{
+			hdNr="0";
+		}
 		String aufwand = tfAufwand.getText();
 		if(aufwand.isEmpty())
 		{
