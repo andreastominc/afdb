@@ -328,7 +328,7 @@ public class AfdbSuche extends JFrame {
 	{
 		// Selected Items
 		int anfID = 0;
-		if (this.tfAnfid.getText() == ""){
+		if (!this.tfAnfid.getText().isEmpty()){
 			anfID = Integer.parseInt(this.tfAnfid.getText());
 		}else {
 			anfID = 0;
