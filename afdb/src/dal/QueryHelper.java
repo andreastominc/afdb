@@ -31,7 +31,7 @@ public class QueryHelper {
 			
 		String stmt = "FROM Anforderung WHERE 1 = 1";
 		if (anfID != 0)
-			stmt += "and AnforderungID = :anfID";
+			stmt += " and AnforderungID = :anfID";
 		if (!titel.isEmpty())
 			stmt += " and Titel = :titel";
 		
