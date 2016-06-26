@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class Anhang {
 	
-	private int anhangId;
+	private Integer anhangId;
 	private Blob datei;
 	private String name;
 	private Date hinzugefuegtAm;
@@ -14,17 +14,17 @@ public class Anhang {
 	public Anhang(){
 	}
 	
-	public Anhang(int anhangId, Blob datei, String name, Date hinzugefuegtAm) {
+	public Anhang(Integer anhangId, Blob datei, String name, Date hinzugefuegtAm) {
 		super();
 		this.anhangId = anhangId;
 		this.datei = datei;
 		this.name = name;
 		this.hinzugefuegtAm = hinzugefuegtAm;
 	}
-	public int getAnhangId() {
+	public Integer getAnhangId() {
 		return anhangId;
 	}
-	public void setAnhangId(int anhangId) {
+	public void setAnhangId(Integer anhangId) {
 		this.anhangId = anhangId;
 	}
 	public Blob getDatei() {
@@ -53,6 +53,14 @@ public class Anhang {
 	public void setAnforderung(Anforderung anforderung) {
 		this.anforderung = anforderung;
 	}
+
+	@Override
+	public String toString() {
+		return "Anhang [anhangId=" + anhangId + ", datei=" + datei + ", name=" + name + ", hinzugefuegtAm="
+				+ hinzugefuegtAm + ", anforderung=" + anforderung + "]";
+	}
+	
+	
 
 
 

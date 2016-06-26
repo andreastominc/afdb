@@ -92,7 +92,7 @@ alter table Anhang add constraint AnhangAnforderung_FK
 	foreign key (AnforderungId) references Anforderung(AnforderungId);
     
 alter table Anhang add constraint AnhangKommentar_FK
-	foreign key (AnforderungId) references Kommentar(KommentarId); 
+	foreign key (KommentarId) references Kommentar(KommentarId); 
 	
 	
 -- Kommentar

@@ -13,7 +13,7 @@
  mapping Adresse -->
  <class name="data.Adresse" table="adresse">
   <id column="AdresseId" name="adresseId" type="integer">
-   <generator class="assigned"/>
+   <generator class="native"/>
   </id>
   <property column="Strasse" generated="never" lazy="false"
    name="strasse" type="string"/>
@@ -28,19 +28,20 @@
  </class>
  <!-- mapping Anhang -->
  <class name="data.Anhang" table="anhang">
-  <id column="AnhangId" name="anhangId" type="integer">
-   <generator class="assigned"/>
+  <id column="AnhangId" name="anhangId" type="java.lang.Integer">
+   <generator class="native"/>
   </id>
   <property column="Datei" generated="never" lazy="false" name="datei" type="blob"/>
   <property column="Name" generated="never" lazy="false" name="name" type="string"/>
   <property column="HinzugefuegtAm" generated="never" lazy="false"
    name="hinzugefuegtAm" type="date"/>
-  <many-to-one class="data.Anforderung" column="AnforderungId" name="anforderung"/>
+  <many-to-one class="data.Anforderung" column="AnforderungId"
+   name="anforderung" not-null="true"/>
  </class>
  <!-- mapping Kunde -->
  <class name="data.Kunde" table="kunde">
   <id column="KundeId" name="kundenId" type="integer">
-   <generator class="assigned"/>
+   <generator class="native"/>
   </id>
   <property column="Kundennummer" generated="never" lazy="false"
    name="kundennummer" type="string"/>
@@ -54,7 +55,7 @@
  <!-- mapping Anforderung -->
  <class name="data.Anforderung" table="anforderung">
   <id column="AnforderungId" name="anfId" type="integer">
-   <generator class="assigned"/>
+   <generator class="native"/>
   </id>
   <property column="Titel" generated="never" lazy="false" name="titel" type="string"/>
   <property column="Beschreibung" generated="never" lazy="false"
@@ -84,11 +85,18 @@
    name="fertigIst" type="date"/>
   <property column="SchluesselBegriffe" generated="never" lazy="false"
    name="schluesselBegriffe" type="string"/>
+  <set fetch="select" inverse="true" lazy="true" name="anhaenge"
+   sort="unsorted" table="Anhang">
+   <key>
+    <column name="AnforderungId" not-null="true"/>
+   </key>
+   <one-to-many class="data.Anhang"/>
+  </set>
  </class>
  <!-- mapping Benutzerart -->
  <class name="data.Benutzerart" table="benutzerart">
   <id column="BenutzerartId" name="benutzerArtId" type="integer">
-   <generator class="assigned"/>
+   <generator class="native"/>
   </id>
   <property column="Bezeichnung" generated="never" lazy="false"
    name="bezeichnung" type="string"/>
@@ -98,7 +106,7 @@
  <!-- mapping Benutzer -->
  <class name="data.Benutzer" table="benutzer">
   <id column="BenutzerId" name="benutzerId" type="integer">
-   <generator class="assigned"/>
+   <generator class="native"/>
   </id>
   <property column="Vorname" generated="never" lazy="false"
    name="vorname" type="string"/>
@@ -120,7 +128,7 @@
  <!-- mapping Status -->
  <class name="data.Status" table="status">
   <id column="StatusId" name="statusId" type="integer">
-   <generator class="assigned"/>
+   <generator class="native"/>
   </id>
   <property column="Bezeichnung" generated="never" lazy="false"
    name="bezeichnung" type="string"/>
@@ -128,7 +136,7 @@
  <!-- mapping Modul -->
  <class name="data.Modul" table="modul">
   <id column="ModulId" name="modulId" type="integer">
-   <generator class="assigned"/>
+   <generator class="native"/>
   </id>
   <property column="Bezeichnung" generated="never" lazy="false"
    name="bezeichnung" type="string"/>
@@ -136,7 +144,7 @@
  <!-- mapping AnforderungsArt -->
  <class name="data.AnforderungsArt" table="anforderungsart">
   <id column="AnforderungsartId" name="anforderungsArtId" type="integer">
-   <generator class="assigned"/>
+   <generator class="native"/>
   </id>
   <property column="Bezeichnung" generated="never" lazy="false"
    name="bezeichnung" type="string"/>
@@ -144,7 +152,7 @@
  <!-- mapping Prioritaet -->
  <class name="data.Prioritaet" table="prioritaet">
   <id column="PrioritaetId" name="prioritaetId" type="integer">
-   <generator class="assigned"/>
+   <generator class="native"/>
   </id>
   <property column="Bezeichnung" generated="never" lazy="false"
    name="bezeichnung" type="string"/>
@@ -152,7 +160,7 @@
  <!-- mapping Version -->
  <class name="data.Version" table="version">
   <id column="VersionId" name="versionId" type="integer">
-   <generator class="assigned"/>
+   <generator class="native"/>
   </id>
   <property column="Bezeichnung" generated="never" lazy="false"
    name="bezeichnung" type="string"/>

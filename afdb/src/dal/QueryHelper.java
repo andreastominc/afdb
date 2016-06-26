@@ -3,7 +3,9 @@ package dal;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.sql.Blob;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Hibernate;
@@ -155,21 +157,25 @@ public class QueryHelper {
 		}
 	}
 
+	/**
+	 * eine Anforderung speichern
+	 * @param anf
+	 */
 	public static void saveAnf(Anforderung anf) {
 		Session session = HibernateUtil.session;
 		Transaction tx = HibernateUtil.tx;
 		
 		System.out.println("saveAnf="+anf.getTitel());
 		
-		session.save(anf);
+		Serializable parentId = session.save(anf);
 		
-		System.out.println("anfid (vor commit)="+anf.getAnfId());
-		
+				
 		//session.persist(anf);
 		tx.commit();
-		System.out.println("anfid (nach commit)="+anf.getAnfId());
+		//session.close();
+		System.out.println("parentId="+parentId);
 		
-		session.flush();
+		//session.flush();
 		//session.refresh(anf);
 		
 		anfsession = session;
@@ -177,8 +183,42 @@ public class QueryHelper {
 		//anfsession.flush();
 	}
 	
+	/**
+	 * Eine Anforderung mit einem Anhang speichern
+	 * @param anf
+	 * @param anh
+	 */
+	public static void saveAnf(Anforderung anf, Anhang anh) {
+		Session session = HibernateUtil.session;
+		Transaction tx = HibernateUtil.tx;
+		
+		//Serializable parentId = session.save(anf);
+		//session.save(anf);
+		Serializable parentId = session.save(anf);
+		
+		System.out.println("serializable="+parentId);
+		
+		//Serializable parentId2 = session.save(anh);
+
+		anh.setAnforderung(anf);
+		anf.getAnhaenge().add(anh);
+		
+		System.out.println("------ Anforderung="+anf.toString());
+		for(Anhang a : anf.getAnhaenge()){
+			System.out.println("------ Anhang="+a.toString());
+		}
+		
+		session.save(anh);
+		
+		tx.commit();
+		//session.close();
+	}
 	
 	
+	/**
+	 * einen Anhang zu einer Anforderung speichern
+	 * @param anh
+	 */
 	public static void saveAnhang(Anhang anh) {
 		//Session session = HibernateUtil.session;
 		//Transaction tx = HibernateUtil.tx;
@@ -186,8 +226,8 @@ public class QueryHelper {
 		//anfsession.save(anh);
 		//anftx.commit();
 		anftx = anfsession.beginTransaction();
-		//anfsession.save(anh);
-		anfsession.persist(anh);
+		anfsession.save(anh);
+		//anfsession.persist(anh);
 		anftx.commit();
 
 		    /*

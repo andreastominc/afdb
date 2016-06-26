@@ -573,41 +573,34 @@ public class AfdbFrame extends JFrame {
 			fertigStellGepl = new Date();
 		}
 		//fertigStellIst noch implementieren
-		Date fertigStellIst = new Date();
+		Date fertigStellIst = null; //new Date();
 		String schluesselBegriffe = tfSchluesselbegriffe.getText();
 		if(schluesselBegriffe.isEmpty())
 		{
 			schluesselBegriffe = "";
 		}
 		
-		
-		
-		boolean speicherung = afdbBl.createAfdb(titel, beschreibung, benutzer, erfDatum, ansprPers, kd, anfArt, prio, status, benutzer, modul, version, hdNr,
+		boolean speicherung = false;
+		// wenn Anhang ausgewaehlt, dann die Methode mit Anhang aufrufen
+		if (frame.filepath.length() > 0){
+			System.out.println("filepath length: "+frame.filepath.length());
+			// Anhang hinzufuegen:
+			Anhang anh = new Anhang();
+			anh.setName(frame.getFile().getName());
+			anh.setHinzugefuegtAm(new Date());
+
+			speicherung = afdbBl.createAfdb(anh, titel, beschreibung, benutzer, erfDatum, ansprPers, kd, anfArt, prio, status, benutzer, modul, version, hdNr,
+					aufwandGesch, fertigStellGepl, fertigStellIst, schluesselBegriffe);			
+		} // sonst (wenn kein Anhang), dann die normale Methode aufrufen
+		else {
+			speicherung = afdbBl.createAfdb(titel, beschreibung, benutzer, erfDatum, ansprPers, kd, anfArt, prio, status, benutzer, modul, version, hdNr,
 				aufwandGesch, fertigStellGepl, fertigStellIst, schluesselBegriffe);
-		
+		}		
 
 		
 		if(speicherung)
 		{
 
-			System.out.println("filepath length: "+frame.filepath.length());
-			// wenn file nicht leer ist:
-			if (frame.filepath.length() > 0){
-				// Anhang hinzufuegen:
-				Anhang anh = new Anhang();
-				anh.setName(frame.getFile().getName());
-				anh.setHinzugefuegtAm(new Date());
-				anh.setAnforderung(afdbBl.getAnf());
-				// to do: anh.setDatei(new Blob(...));
-				boolean anhSave = afdbBl.createAnhang(anh);
-				if(anhSave){
-					System.out.println("Anhang erfolgreich gespeichert.");
-				}
-				else{
-					System.out.println("Fehler beim Speichern des Anhanges.");
-				}
-			}
-			
 			JOptionPane.showMessageDialog(this,
 				    "Speicherung erfolgreich!");
 			//todo
