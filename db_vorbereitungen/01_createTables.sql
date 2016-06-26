@@ -79,7 +79,7 @@ create table `Anforderung` (
 drop table if exists `Anhang`;
 create table `Anhang` (
 	`AnhangId`       int primary key auto_increment,
-	`Datei`          blob, -- vorerst nicht als not null definieren
+	`Datei`          longblob, -- vorerst nicht als not null definieren
 	`Name`           varchar(2000) not null,
 	`HinzugefuegtAm` date not null,
 	`AnforderungId`  int,
