@@ -369,16 +369,23 @@ public class AfdbSuche extends JFrame {
 		));
 		*/
 		
-		Object[][] data = { null };
-		String[] columnNames = {"AnfID", "Priorität", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
-		DefaultTableModel datamodel = new DefaultTableModel(data,columnNames);
+		//Object[][] data = { null };
+		//String[] columnNames = {"AnfID", "Priorität", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
+		
+		String[] columnNames = {"AnfID","Titel"};
+		//Object[][] data = { null };
+		
+		DefaultTableModel datamodel = new DefaultTableModel();
+		datamodel.setColumnIdentifiers(columnNames);
 		
 		for (Anforderung anf : anforderungen)
 		{
 			//datamodel.addRow("Test");
+			datamodel.addRow(new Object[]{anf.getAnfId()+"", anf.getTitel()});
 		}
 		
-		this.table = new JTable(datamodel);
+		this.table = new JTable();
+		this.table.setModel(datamodel);
 		this.scrollPane.setViewportView(table);
 	}
 
