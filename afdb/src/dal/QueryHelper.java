@@ -29,9 +29,9 @@ public class QueryHelper {
 	public static List<Anforderung> getFilteredAnforderungen(int anfID, String titel, String kunde, String verwandteAnf, String zugewiesen, String status, String schluesselbegriffe) {
 		Session session = HibernateUtil.session;
 			
-		String stmt = "FROM Anforderung WHERE ";
+		String stmt = "FROM Anforderung WHERE 1 = 1";
 		if (anfID != 0)
-			stmt += "AnforderungID = :anfID";
+			stmt += "and AnforderungID = :anfID";
 		if (!titel.isEmpty())
 			stmt += " and Titel = :titel";
 		
@@ -168,6 +168,9 @@ public class QueryHelper {
 		//session.persist(anf);
 		tx.commit();
 		System.out.println("anfid (nach commit)="+anf.getAnfId());
+		
+		session.flush();
+		//session.refresh(anf);
 		
 		anfsession = session;
 		//anftx = tx;

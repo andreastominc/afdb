@@ -328,7 +328,12 @@ public class AfdbSuche extends JFrame {
 	private void suchen()
 	{
 		// Selected Items
-		int anfID = Integer.parseInt(this.tfAnfid.getText());
+		int anfID = 0;
+		if (this.tfAnfid.getText() == ""){
+			anfID = Integer.parseInt(this.tfAnfid.getText());
+		}else {
+			anfID = 0;
+		}
 		String titel = this.tfTitel.getText();
 		String kunde = this.tfKunde.getText();
 		String verwandteAnf = this.tfVerwandteAnf.getText();
