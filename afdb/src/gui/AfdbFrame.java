@@ -586,29 +586,28 @@ public class AfdbFrame extends JFrame {
 			System.out.println("filepath length: "+frame.filepath.length());
 			// Anhang hinzufuegen:
 			Anhang anh = new Anhang();
-			anh.setName(frame.getFile().getName());
+			anh.setName(file.getName());
 			anh.setHinzugefuegtAm(new Date());
-
+			anh.setFile(file);
+			
+			// die createAfdb Methode mit Anhang aufrufen:
 			speicherung = afdbBl.createAfdb(anh, titel, beschreibung, benutzer, erfDatum, ansprPers, kd, anfArt, prio, status, benutzer, modul, version, hdNr,
 					aufwandGesch, fertigStellGepl, fertigStellIst, schluesselBegriffe);			
 		} // sonst (wenn kein Anhang), dann die normale Methode aufrufen
 		else {
+			// die createAfdb Methode ohne Anhang aufrufen:
 			speicherung = afdbBl.createAfdb(titel, beschreibung, benutzer, erfDatum, ansprPers, kd, anfArt, prio, status, benutzer, modul, version, hdNr,
 				aufwandGesch, fertigStellGepl, fertigStellIst, schluesselBegriffe);
 		}		
 
-		
 		if(speicherung)
 		{
-
-			JOptionPane.showMessageDialog(this,
-				    "Speicherung erfolgreich!");
+			JOptionPane.showMessageDialog(this,"Speicherung erfolgreich!");
 			//todo
 			//System.exit(0);
 		}
 		else {
-			JOptionPane.showMessageDialog(this,
-				    "Speicherung nicht erfolgreich!");
+			JOptionPane.showMessageDialog(this,"Speicherung nicht erfolgreich!");
 			//todo
 			System.exit(0);
 		}

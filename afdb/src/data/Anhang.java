@@ -1,5 +1,6 @@
 package data;
 
+import java.io.File;
 import java.sql.Blob;
 import java.util.Date;
 
@@ -10,6 +11,7 @@ public class Anhang {
 	private String name;
 	private Date hinzugefuegtAm;
 	private Anforderung anforderung;
+	private File file;
 	
 	public Anhang(){
 	}
@@ -59,6 +61,18 @@ public class Anhang {
 		return "Anhang [anhangId=" + anhangId + ", datei=" + datei + ", name=" + name + ", hinzugefuegtAm="
 				+ hinzugefuegtAm + ", anforderung=" + anforderung + "]";
 	}
+
+	public File getFile() {
+		return file;
+	}
+
+	public void setFile(File file) {
+		this.file = file;
+	}
+
+
+	
+	
 	
 	
 

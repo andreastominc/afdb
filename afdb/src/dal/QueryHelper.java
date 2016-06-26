@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
@@ -191,15 +192,26 @@ public class QueryHelper {
 	public static void saveAnf(Anforderung anf, Anhang anh) {
 		Session session = HibernateUtil.session;
 		Transaction tx = HibernateUtil.tx;
-		
-		//Serializable parentId = session.save(anf);
-		//session.save(anf);
+
 		Serializable parentId = session.save(anf);
 		
 		System.out.println("serializable="+parentId);
-		
-		//Serializable parentId2 = session.save(anh);
 
+		
+	    File anhfile = anh.getFile();
+	    FileInputStream inputStream = null;
+		try {
+			inputStream = new FileInputStream(anhfile);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+        Blob blob = Hibernate.getLobCreator(session)
+                            .createBlob(inputStream, anhfile.length());
+	    anh.setDatei(blob);
+        
+		
 		anh.setAnforderung(anf);
 		anf.getAnhaenge().add(anh);
 		
@@ -210,34 +222,17 @@ public class QueryHelper {
 		
 		session.save(anh);
 		
-		tx.commit();
-		//session.close();
-	}
-	
-	
-	/**
-	 * einen Anhang zu einer Anforderung speichern
-	 * @param anh
-	 */
-	public static void saveAnhang(Anhang anh) {
-		//Session session = HibernateUtil.session;
-		//Transaction tx = HibernateUtil.tx;
+		//Am Ende den Blob wieder freigeben
+		try {
+			blob.free();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		//anfsession.save(anh);
-		//anftx.commit();
-		anftx = anfsession.beginTransaction();
-		anfsession.save(anh);
-		//anfsession.persist(anh);
-		anftx.commit();
-
-		    /*
-		    FileInputStream inputStream = new FileInputStream(file);
-	        Blob blob = Hibernate.getLobCreator(anfsess)
-	                            .createBlob(inputStream, file.length());
-		    anh.setDatei(blob);
-	        */
-		    
-	}	
+		// Die Transaction commiten
+		tx.commit();
+	}
 	
 	
 

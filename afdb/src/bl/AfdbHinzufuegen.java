@@ -91,20 +91,6 @@ public class AfdbHinzufuegen {
 		}
 	}
 
-	/**
-	 * Anhang speichern
-	 */
-	public boolean createAnhang(Anhang a){
-		try {
-			QueryHelper.saveAnhang(a);
-			return true;
-		} catch(Exception e)
-		{
-			e.printStackTrace();
-			return false;
-		}
-	}
-	
 	
 	public Anforderung getAnf() {
 		return anf;
