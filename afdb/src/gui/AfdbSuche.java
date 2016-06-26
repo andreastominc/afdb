@@ -46,12 +46,12 @@ public class AfdbSuche extends JFrame {
 	private JComboBox cbStatus;
 	private JComboBox cbZugewiesen;
 	private JScrollPane scrollPane;
+	private JTable table;
+	private JLabel lblUser;
 
 	private AfdbSuchen afdbSuchen = new AfdbSuchen();
-	private JTable table;
-	
 	private String username;
-	private JLabel lblUser;
+	
 	
 	/**
 	 * Launch the application.
@@ -321,8 +321,7 @@ public class AfdbSuche extends JFrame {
 		panel_2.add(scrollPane, gbc_scrollPane);
 		
 		//table = new JTable();
-		
-		
+	
 	}
 
 	private void suchen()
@@ -343,11 +342,11 @@ public class AfdbSuche extends JFrame {
 		String status = this.cbStatus.getSelectedItem().toString();
 		String schluesselbegriffe = this.tfSchluesselbegriffe.getText();
 
-		// Test: Check AnfID
 		List<Anforderung> anforderungen = this.afdbSuchen.suchen(anfID,titel,kunde,verwandteAnf,zugewiesen,status,schluesselbegriffe);
 		if(anforderungen.isEmpty())
 		{
-			JOptionPane.showMessageDialog(this,"Suche nicht erfolgreich!");	
+			JOptionPane.showMessageDialog(this,"Suche nicht erfolgreich!");
+			// Tabelle ausblenden
 		}
 		else
 		{
@@ -358,30 +357,13 @@ public class AfdbSuche extends JFrame {
 	
 	private void anforderungenAnzeigen(List<Anforderung> anforderungen)
 	{
-		/*
-		this.table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null, null, null, null, null},
-			},
-			new String[] {
-				"AnfID", "Priorität", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."
-			}
-		));
-		*/
-		
-		//Object[][] data = { null };
-		//String[] columnNames = {"AnfID", "Priorität", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
-		
-		String[] columnNames = {"AnfID","Titel"};
-		//Object[][] data = { null };
-		
+		String[] columnNames = {"AnfID", "Priorit�t", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
 		DefaultTableModel datamodel = new DefaultTableModel();
 		datamodel.setColumnIdentifiers(columnNames);
 		
 		for (Anforderung anf : anforderungen)
 		{
-			//datamodel.addRow("Test");
-			datamodel.addRow(new Object[]{anf.getAnfId()+"", anf.getTitel()});
+			datamodel.addRow(new Object[]{anf.getAnfId()+"",anf.getPrio().getBezeichnung(),anf.getStatus().getBezeichnung(),anf.getTitel(),anf.getKunde().getBezeichnung(),anf.getFertiggeplant(),anf.getHdNummer()});
 		}
 		
 		this.table = new JTable();
