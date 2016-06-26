@@ -23,9 +23,6 @@ import data.*;
 
 public class QueryHelper {
 	
-	protected static Session anfsession;
-	protected static Transaction anftx;
-	
 	public QueryHelper() {
 	}
 	
@@ -165,23 +162,9 @@ public class QueryHelper {
 	public static void saveAnf(Anforderung anf) {
 		Session session = HibernateUtil.session;
 		Transaction tx = HibernateUtil.tx;
-		
-		System.out.println("saveAnf="+anf.getTitel());
-		
-		Serializable parentId = session.save(anf);
-		
-				
-		//session.persist(anf);
+
+		session.save(anf);
 		tx.commit();
-		//session.close();
-		System.out.println("parentId="+parentId);
-		
-		//session.flush();
-		//session.refresh(anf);
-		
-		anfsession = session;
-		//anftx = tx;
-		//anfsession.flush();
 	}
 	
 	/**
