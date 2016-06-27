@@ -34,7 +34,7 @@ import java.awt.Color;
 import java.awt.Component;
 import javax.swing.JMenuItem;
 
-public class AfdbSuche extends JFrame {
+public class AfdbSuchenFrame extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField tfAnfid;
@@ -60,7 +60,7 @@ public class AfdbSuche extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AfdbSuche frame = new AfdbSuche();
+					AfdbSuchenFrame frame = new AfdbSuchenFrame();
 					frame.setVisible(true);
 					
 					frame.setBounds(300, 100, 1000, 600);
@@ -112,7 +112,7 @@ public class AfdbSuche extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AfdbSuche() {
+	public AfdbSuchenFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 500);
 		contentPane = new JPanel();

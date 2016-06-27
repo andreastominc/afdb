@@ -166,7 +166,7 @@ public class AfdbHinzufuegenFrame extends JFrame {
 				System.out.println("Suchen"); // auf Konsole mitloggen dass "Suchen" angeklickt wurde
 				
 				frame.dispose(); // aktuelles Frame schliessen
-				AfdbSuche suche_frame = new AfdbSuche();
+				AfdbSuchenFrame suche_frame = new AfdbSuchenFrame();
 				suche_frame.setBounds(300, 100, 1000, 600);
 				suche_frame.setMinimumSize(new Dimension(1100, 700));
 				suche_frame.initializeData();
