@@ -51,7 +51,7 @@ import java.util.List;
 import com.toedter.calendar.JDateChooser;
 import bl.AfdbHinzufuegen;
 
-public class AfdbFrame extends JFrame {
+public class AfdbHinzufuegenFrame extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField tfTitel;
@@ -83,7 +83,7 @@ public class AfdbFrame extends JFrame {
 	private List<Benutzer> ansprPersListe;
 	private List<Benutzer> benutzerListe;
 	
-	private static AfdbFrame frame; // als private static definieren, damit spaeter "frame.dispose" aufgerufen werden kann.
+	private static AfdbHinzufuegenFrame frame; // als private static definieren, damit spaeter "frame.dispose" aufgerufen werden kann.
 		
 	/**
 	 * Launch the application.
@@ -92,7 +92,7 @@ public class AfdbFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					frame = new AfdbFrame(); 
+					frame = new AfdbHinzufuegenFrame(); 
 					frame.setVisible(true);
 					frame.setBounds(300, 100, 1000, 600);
 					frame.setMinimumSize(new Dimension(1100, 700));
@@ -121,7 +121,7 @@ public class AfdbFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AfdbFrame() {
+	public AfdbHinzufuegenFrame() {
 		
 		this.afdbBl = new AfdbHinzufuegen();
 		
