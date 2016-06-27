@@ -29,7 +29,7 @@ public class QueryHelper {
 	public static List<Anforderung> getFilteredAnforderungen(int anfID, String titel, String kunde, String verwandteAnf, String zugewiesen, String status, String schluesselbegriffe) {
 		Session session = HibernateUtil.session;
 			
-		String stmt = "FROM Anforderung anf inner join anf.kunde k WHERE 1 = 1";
+		String stmt = "SELECT anf FROM Anforderung anf inner join anf.kunde k WHERE 1 = 1";
 		if (anfID != 0)
 			stmt += " and AnforderungID = :anfID";
 		if (!titel.isEmpty())
