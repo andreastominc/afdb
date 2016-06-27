@@ -23,7 +23,7 @@ public class Status {
 		this.bezeichnung = bezeichnung;
 	}
 
-	//nötig für ComboBox Anzeige
+	//noetig fuer ComboBox Anzeige
 	public String toString() {
 		return bezeichnung;
 	}
