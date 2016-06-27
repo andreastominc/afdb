@@ -357,7 +357,7 @@ public class AfdbSuchenFrame extends JFrame {
 	
 	private void anforderungenAnzeigen(List<Anforderung> anforderungen)
 	{
-		String[] columnNames = {"AnfID", "Priorit√§t", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
+		String[] columnNames = {"AnfID", "Priorit‰t", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
 		DefaultTableModel datamodel = new DefaultTableModel();
 		datamodel.setColumnIdentifiers(columnNames);
 		

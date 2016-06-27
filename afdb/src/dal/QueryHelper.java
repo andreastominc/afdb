@@ -29,25 +29,21 @@ public class QueryHelper {
 	public static List<Anforderung> getFilteredAnforderungen(int anfID, String titel, String kunde, String verwandteAnf, String zugewiesen, String status, String schluesselbegriffe) {
 		Session session = HibernateUtil.session;
 			
-		String stmt = "SELECT anf FROM Anforderung anf "
-				+ " left outer join anf.kunde k"
-				+ " left outer join anf.status sta"
-				+ " WHERE 1 = 1";
+		String stmt = "SELECT anf FROM Anforderung anf inner join anf.kunde k WHERE 1 = 1";
 		if (anfID != 0)
-			stmt += " and anf.anfId = :anfID";
+			stmt += " and AnforderungID = :anfID";
 		if (!titel.isEmpty())
-			stmt += " and anf.titel = :titel";
+			stmt += " and Titel = :titel";
 		if (!kunde.isEmpty())
 			stmt += " and k.bezeichnung = :kunde";
-		/* Mapping noch hinzufuegen
+		/* Mapping noch hinzufügen
 		if (!verwandteAnf.isEmpty())
 			stmt += " and VerwandteAnf = :verwandteAnf";
 		if (!zugewiesen.isEmpty())
 			stmt += " and z.zugewiesen = :zugewiesen";
-		*/
 		if (!status.isEmpty())
-			stmt += " and sta.bezeichnung = :status";
-		
+			stmt += " and sta.status = :status";
+		*/
 		
 		Query query = session.createQuery(stmt);
 		if (anfID != 0)
@@ -61,10 +57,9 @@ public class QueryHelper {
 			query.setParameter("verwandteAnf", verwandteAnf);
 		if (!zugewiesen.isEmpty())
 			query.setParameter("zugewiesen", zugewiesen);
-		*/
 		if (!status.isEmpty())
 			query.setParameter("status", status);
-		
+		*/
 				
 		List<Anforderung> anforderungen = query.list();
 		logData(anforderungen);
