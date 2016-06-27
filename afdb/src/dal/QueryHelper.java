@@ -31,23 +31,28 @@ public class QueryHelper {
 			
 		String stmt = "SELECT anf FROM Anforderung anf"
 				+ " left outer join anf.kunde k"
-				+ " left outer join anf.status sta "
+				+ " left outer join anf.status sta"
+				+ " left outer join anf.zugewiesenAn z"
 				+ " WHERE 1 = 1";
+		
 		if (anfID != 0)
 			stmt += " and anf.anfId = :anfID";
 		if (!titel.isEmpty())
 			stmt += " and anf.titel = :titel";
 		if (!kunde.isEmpty())
 			stmt += " and k.bezeichnung = :kunde";
-		/* Mapping noch hinzufuegen
+		/* Mapping noch ausständig
 		if (!verwandteAnf.isEmpty())
-			stmt += " and VerwandteAnf = :verwandteAnf";
-		if (!zugewiesen.isEmpty())
-			stmt += " and z.zugewiesen = :zugewiesen";
+			stmt += " and anf.verwandteAnf = :verwandteAnf";
 		*/
+		if (!zugewiesen.isEmpty())
+			stmt += " and z.benutzername = :zugewiesen";
 		if (!status.isEmpty())
 			stmt += " and sta.bezeichnung = :status";
-		
+		/* Mapping noch ausständig
+		if (!schluesselbegriffe.isEmpty())
+			stmt += " and anf.schluesselbegriffe = :schluesselbegriffe";
+		*/
 		
 		Query query = session.createQuery(stmt);
 		if (anfID != 0)
@@ -56,15 +61,18 @@ public class QueryHelper {
 			query.setParameter("titel", titel);
 		if (!kunde.isEmpty())
 			query.setParameter("kunde", kunde);
-		/*
-	    if (!verwandteAnf.isEmpty())
+	    /*
+		if (!verwandteAnf.isEmpty())
 			query.setParameter("verwandteAnf", verwandteAnf);
+		*/
 		if (!zugewiesen.isEmpty())
 			query.setParameter("zugewiesen", zugewiesen);
-		*/
 		if (!status.isEmpty())
 			query.setParameter("status", status);
-		
+		/*
+		if (!schluesselbegriffe.isEmpty())
+			query.setParameter("schluesselbegriffe", schluesselbegriffe);
+		*/
 				
 		List<Anforderung> anforderungen = query.list();
 		logData(anforderungen);

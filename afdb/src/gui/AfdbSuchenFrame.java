@@ -345,7 +345,7 @@ public class AfdbSuchenFrame extends JFrame {
 		List<Anforderung> anforderungen = this.afdbSuchen.suchen(anfID,titel,kunde,verwandteAnf,zugewiesen,status,schluesselbegriffe);
 		if(anforderungen.isEmpty())
 		{
-			JOptionPane.showMessageDialog(this,"Suche nicht erfolgreich!");
+			JOptionPane.showMessageDialog(this,"Keine Daten gefunden!");
 			// Tabelle ausblenden
 		}
 		else
