@@ -15,6 +15,7 @@ import data.Anforderung;
 
 import javax.swing.JList;
 import java.awt.GridLayout;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -45,11 +46,12 @@ public class SelectVerwAnfFrame extends JFrame {
 	private JLabel lbSelected;
 	
 	private List<Anforderung> anforderungen;
-	public static List<Anforderung> selectedAnforderungen = new Vector<Anforderung>();
+	private ArrayList<Anforderung> selectedAnforderungen = new ArrayList<Anforderung>();
 	private JPanel panel_2;
-	private JButton bt‹bernehmen;
+	private JButton btUebernehmen;
 	
 	private static SelectVerwAnfFrame frame = new SelectVerwAnfFrame();
+	private AfdbHinzufuegenFrame hzf;
 
 	/**
 	 * Launch the application.
@@ -104,26 +106,28 @@ public class SelectVerwAnfFrame extends JFrame {
 		contentPane.add(panel_2, BorderLayout.SOUTH);
 		panel_2.setLayout(new BorderLayout(0, 0));
 		
-		bt‹bernehmen = new JButton("\u00DCbernehmen");
-		bt‹bernehmen.addMouseListener(new MouseAdapter() {
+		btUebernehmen = new JButton("\u00DCbernehmen");
+		btUebernehmen.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frame.setVisible(false);
-				AfdbHinzufuegenFrame.frame.setVisible(true);
-				String text="";
-				for(Anforderung anf : selectedAnforderungen)
-				{
-					text += anf.getAnfId()+",";
+				if(selectedAnforderungen.size() > 0){ // nur was machen wenn tatsaechlich Anf. selektiert wurden
+					//frame.setVisible(false); // braucht man nicht, wegen frame.dispose()
+					String text = "";
+					for (Anforderung anf : selectedAnforderungen) {
+						text += anf.getAnfId() + ",";
+					}
+					AfdbHinzufuegenFrame.tfVerwAnf.setText(text.substring(0, text.length() - 1));
+					
+					// die selektierten Anforderung-Objekte wieder an den Hinzufuegen-Frame uebergeben:
+					hzf.setSelAnf(selectedAnforderungen);
 				}
-				AfdbHinzufuegenFrame.tfVerwAnf.setText(text.substring(0, text.length()-1));
 				
+				frame.dispose();
+				AfdbHinzufuegenFrame.frame.setVisible(true);
 			}
 		});
-		panel_2.add(bt‹bernehmen, BorderLayout.EAST);
+		panel_2.add(btUebernehmen, BorderLayout.EAST);
 
-		
-		
-		
 		initializeTable();
 	}
 	
@@ -142,8 +146,12 @@ public class SelectVerwAnfFrame extends JFrame {
 		allAnfTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				setSelectedAnforderung();
-				
+				// to do: dass es nur bei doppelklick uebernommen wird... geht aber nur mit abstracttablemodel.
+				//if (arg0.getClickCount() == 2 && !arg0.isConsumed()) {
+				//	arg0.consume();
+					setSelectedAnforderung();
+					datamodelAll.removeRow(allAnfTable.getSelectedRow());
+				//}
 			}
 
 		
@@ -167,7 +175,10 @@ public class SelectVerwAnfFrame extends JFrame {
 		this.selectedAnfTable.setModel(datamodelSelected);
 		this.scrollPane_1.setViewportView(selectedAnfTable);
 		
-		
+	}
+
+	public void setHZF(AfdbHinzufuegenFrame frame2) {
+		hzf = frame2;
 	}
 
 }

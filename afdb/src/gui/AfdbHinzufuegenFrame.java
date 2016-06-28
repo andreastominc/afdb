@@ -46,6 +46,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -85,6 +86,7 @@ public class AfdbHinzufuegenFrame extends JFrame {
 	
 	public static AfdbHinzufuegenFrame frame; // als private static definieren, damit spaeter "frame.dispose" aufgerufen werden kann.
 	public static JTextField tfVerwAnf;
+	private ArrayList<Anforderung> selAnf = new ArrayList<Anforderung>();
 		
 	/**
 	 * Launch the application.
@@ -368,6 +370,7 @@ public class AfdbHinzufuegenFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				SelectVerwAnfFrame selected = new SelectVerwAnfFrame();
+				selected.setHZF(frame);
 				selected.setLocationRelativeTo(null);  
 				selected.setVisible(true);
 			}
@@ -558,6 +561,11 @@ public class AfdbHinzufuegenFrame extends JFrame {
 	}
 
 	private void createAfdb() {
+		
+		for(Anforderung a2 : selAnf){
+			System.out.println("-----selAnf="+a2.toString());
+		}
+		
 		String titel = tfTitel.getText();
 		String beschreibung = taBeschreibung.getText();
 		Benutzer benutzer = getBenutzerVonUsername();
@@ -586,7 +594,7 @@ public class AfdbHinzufuegenFrame extends JFrame {
 		aufwandGesch = Float.parseFloat(aufwand);
 		} catch (NumberFormatException ex)
 		{
-			JOptionPane.showMessageDialog(this,"Aufwand Wert: "+aufwand +" ist nicht gültig. Richtiges Format: 1.2");
+			JOptionPane.showMessageDialog(this,"Aufwand Wert: "+aufwand +" ist nicht gï¿½ltig. Richtiges Format: 1.2");
 			return;
 		}
 		Date fertigStellGepl = dcFertigStellGepl.getDate();
@@ -648,6 +656,15 @@ public class AfdbHinzufuegenFrame extends JFrame {
 	public void setFile(File file) {
 		this.file = file;
 	}
+
+	public ArrayList<Anforderung> getSelAnf() {
+		return selAnf;
+	}
+
+	public void setSelAnf(ArrayList<Anforderung> selAnf) {
+		this.selAnf = selAnf;
+	}
+	
 	
 	
 
