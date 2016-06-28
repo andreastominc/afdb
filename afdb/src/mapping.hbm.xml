@@ -83,6 +83,8 @@
    lazy="false" name="fertiggeplant" type="date"/>
   <property column="FertigstellungIst" generated="never" lazy="false"
    name="fertigIst" type="date"/>
+   <property column="VerwAnforderungen" generated="never" lazy="false"
+   name="verwAnforderungen" type="string"/>
   <property column="SchluesselBegriffe" generated="never" lazy="false"
    name="schluesselBegriffe" type="string"/>
   <set fetch="select" inverse="true" lazy="true" name="anhaenge"

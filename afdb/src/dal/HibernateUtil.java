@@ -7,10 +7,8 @@ import org.hibernate.cfg.Configuration;
 
 public class HibernateUtil {
 
-	    private static final SessionFactory sessionFactory = buildSessionFactory();
-	    public static final Session session = createSession();
-	    public static final Transaction tx = createTransaction();
-	 
+	    public static final SessionFactory sessionFactory = buildSessionFactory();
+	
 	    private static SessionFactory buildSessionFactory() {
 	        try {
 	            // Create the SessionFactory from connections.cfg.xml
@@ -23,14 +21,5 @@ public class HibernateUtil {
 	        }
 	    }
 	 
-	    
-	    private static Session createSession()
-	    {
-	    	return sessionFactory.openSession();
-	    }
-	    
-	    private static Transaction createTransaction()
-	    {
-	    	return session.beginTransaction();
-	    }
+
 	}

@@ -27,7 +27,7 @@ public class QueryHelper {
 	}
 	
 	public static List<Anforderung> getFilteredAnforderungen(int anfID, String titel, String kunde, String verwandteAnf, String zugewiesen, String status, String schluesselbegriffe) {
-		Session session = HibernateUtil.session;
+		Session session = HibernateUtil.sessionFactory.openSession();
 			
 		String stmt = "SELECT anf FROM Anforderung anf"
 				+ " left outer join anf.kunde k"
@@ -81,7 +81,7 @@ public class QueryHelper {
 	}
 	
 	public static List<Status> getAllStatus() {
-		Session session = HibernateUtil.session;
+		Session session = HibernateUtil.sessionFactory.openSession();
 		
 		List<Status> status = session.createQuery(" from Status").list();
 		logData(status);
@@ -90,7 +90,7 @@ public class QueryHelper {
 	}
 	
 	public static List<Prioritaet> getAllPrioritaet() {
-		Session session = HibernateUtil.session;
+		Session session = HibernateUtil.sessionFactory.openSession();
 		
 		List<Prioritaet> prioritaet = session.createQuery(" from Prioritaet").list();
 		logData(prioritaet);
@@ -99,7 +99,7 @@ public class QueryHelper {
 	}
 	
 	public static List<Modul> getAllModul() {
-		Session session = HibernateUtil.session;
+		Session session = HibernateUtil.sessionFactory.openSession();
 		
 		List<Modul> modul = session.createQuery(" from Modul").list();
 		logData(modul);
@@ -108,7 +108,7 @@ public class QueryHelper {
 	}
 	
 	public static List<AnforderungsArt> getAllAnforderungsArt() {
-		Session session = HibernateUtil.session;
+		Session session = HibernateUtil.sessionFactory.openSession();
 		
 		List<AnforderungsArt> anforderungsArt = session.createQuery(" from AnforderungsArt").list();
 		logData(anforderungsArt);
@@ -117,7 +117,7 @@ public class QueryHelper {
 	}
 	
 	public static List<Version> getAllVersion() {
-		Session session = HibernateUtil.session;
+		Session session = HibernateUtil.sessionFactory.openSession();
 		
 		List<Version> version = session.createQuery(" from Version").list();
 		logData(version);
@@ -126,7 +126,7 @@ public class QueryHelper {
 	}
 	
 	public static List<Benutzer> getBenutzerMitSchreibRecht(boolean schreibRecht) {
-		Session session = HibernateUtil.session;
+		Session session = HibernateUtil.sessionFactory.openSession();
 		
 		String stmt = "select b from Benutzer b inner join b.art ba"+
 					  " where ba.schreibRecht = :schreibrecht";
@@ -138,7 +138,7 @@ public class QueryHelper {
 	}
 	
 	public static List<Kunde> getAllKunden() {
-		Session session = HibernateUtil.session;
+		Session session = HibernateUtil.sessionFactory.openSession();
 	
 		List<Kunde> benutzer = session.createQuery(" from Kunde").list();
 		
@@ -148,7 +148,7 @@ public class QueryHelper {
 	}
 	
 	public static List<Benutzer> getAnsprechpersonVonKunde(Kunde kd) {
-		Session session = HibernateUtil.session;
+		Session session = HibernateUtil.sessionFactory.openSession();
 	
 		String stmt = "select distinct ap from Kunde kd inner join kd.kontaktPerson ap "+
 				  " where kd.kundenId= :id";
@@ -160,7 +160,7 @@ public class QueryHelper {
 	}
 	
 	public static List<Benutzer> getAllAnsprechpersonen() {
-		Session session = HibernateUtil.session;
+		Session session = HibernateUtil.sessionFactory.openSession();
 	
 		List<Benutzer> benutzer = session.createQuery("select distinct ap from Kunde kd inner join kd.kontaktPerson ap").list();
 		
@@ -182,11 +182,13 @@ public class QueryHelper {
 	 * @param anf
 	 */
 	public static void saveAnf(Anforderung anf) {
-		Session session = HibernateUtil.session;
-		Transaction tx = HibernateUtil.tx;
 
+		Session session = HibernateUtil.sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		tx.begin();
 		session.save(anf);
 		tx.commit();
+		session.close();
 	}
 	
 	/**
@@ -195,8 +197,8 @@ public class QueryHelper {
 	 * @param anh
 	 */
 	public static void saveAnf(Anforderung anf, Anhang anh) {
-		Session session = HibernateUtil.session;
-		Transaction tx = HibernateUtil.tx;
+		Session session = HibernateUtil.sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
 
 		Serializable parentId = session.save(anf);
 		

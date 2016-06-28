@@ -565,7 +565,14 @@ public class AfdbHinzufuegenFrame extends JFrame {
 		{
 			aufwand = "0";
 		}
-		float aufwandGesch = Float.parseFloat(aufwand);
+		float aufwandGesch = 0;
+		try {
+		aufwandGesch = Float.parseFloat(aufwand);
+		} catch (NumberFormatException ex)
+		{
+			JOptionPane.showMessageDialog(this,"Aufwand Wert: "+aufwand +" ist nicht gültig. Richtiges Format: 1.2");
+			return;
+		}
 		Date fertigStellGepl = dcFertigStellGepl.getDate();
 		if(fertigStellGepl == null)
 		{
@@ -573,6 +580,11 @@ public class AfdbHinzufuegenFrame extends JFrame {
 		}
 		//fertigStellIst noch implementieren
 		Date fertigStellIst = null; //new Date();
+		String verwAnforderungen = tfVerwAnf.getText();
+		if(verwAnforderungen.isEmpty())
+		{
+			verwAnforderungen="";
+		}
 		String schluesselBegriffe = tfSchluesselbegriffe.getText();
 		if(schluesselBegriffe.isEmpty())
 		{
@@ -591,12 +603,12 @@ public class AfdbHinzufuegenFrame extends JFrame {
 			
 			// die createAfdb Methode mit Anhang aufrufen:
 			speicherung = afdbBl.createAfdb(anh, titel, beschreibung, benutzer, erfDatum, ansprPers, kd, anfArt, prio, status, benutzer, modul, version, hdNr,
-					aufwandGesch, fertigStellGepl, fertigStellIst, schluesselBegriffe);			
+					aufwandGesch, fertigStellGepl, fertigStellIst, verwAnforderungen, schluesselBegriffe);			
 		} // sonst (wenn kein Anhang), dann die normale Methode aufrufen
 		else {
 			// die createAfdb Methode ohne Anhang aufrufen:
 			speicherung = afdbBl.createAfdb(titel, beschreibung, benutzer, erfDatum, ansprPers, kd, anfArt, prio, status, benutzer, modul, version, hdNr,
-				aufwandGesch, fertigStellGepl, fertigStellIst, schluesselBegriffe);
+				aufwandGesch, fertigStellGepl, fertigStellIst, verwAnforderungen, schluesselBegriffe);
 		}		
 
 		if(speicherung)

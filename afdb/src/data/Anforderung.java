@@ -22,13 +22,14 @@ public class Anforderung {
 	private Date fertiggeplant;
 	private Date fertigIst;
 	private String hdNummer;
+	private String verwAnforderungen;
 	private String schluesselBegriffe;
 	
 	private Set<Anhang> anhaenge = 
 			new HashSet<Anhang>(0);
 
 	
-	public Anforderung(String titel, String beschreibung, Benutzer benutzer, Date erfDatum, Benutzer ansprPers, Kunde kd, AnforderungsArt anfArt, Prioritaet prio, Status status, Benutzer zugBenutzer, Modul modul, Version version, String hdNr, float aufwandGesch, Date fertigStellGepl, Date fertigStellIst, String schluesselBegriffe) {
+	public Anforderung(String titel, String beschreibung, Benutzer benutzer, Date erfDatum, Benutzer ansprPers, Kunde kd, AnforderungsArt anfArt, Prioritaet prio, Status status, Benutzer zugBenutzer, Modul modul, Version version, String hdNr, float aufwandGesch, Date fertigStellGepl, Date fertigStellIst, String verwAnforderungen, String schluesselBegriffe) {
 		this.titel = titel;
 		this.beschreibung = beschreibung;
 		this.angelegtVon = benutzer;
@@ -45,6 +46,7 @@ public class Anforderung {
 		this.aufwandGeschaetzt = aufwandGesch;
 		this.fertiggeplant = fertigStellGepl;
 		this.fertigIst = fertigStellIst;
+		this.verwAnforderungen = verwAnforderungen;
 		this.schluesselBegriffe = schluesselBegriffe;
 	}
 	
@@ -196,6 +198,15 @@ public class Anforderung {
 	public void setSchluesselBegriffe(String schluesselBegriffe) {
 		this.schluesselBegriffe = schluesselBegriffe;
 	}
+	
+
+	public String getVerwAnforderungen() {
+		return verwAnforderungen;
+	}
+
+	public void setVerwAnforderungen(String verwAnforderungen) {
+		this.verwAnforderungen = verwAnforderungen;
+	}
 
 	@Override
 	public String toString() {
@@ -204,7 +215,8 @@ public class Anforderung {
 				+ ", kunde=" + kunde + ", anfArt=" + anfArt + ", prio=" + prio + ", status=" + status
 				+ ", zugewiesenAn=" + zugewiesenAn + ", modul=" + modul + ", version=" + version + ", hdNummer="
 				+ hdNummer + ", aufwandGeschaetzt=" + aufwandGeschaetzt + ", fertiggeplant=" + fertiggeplant
-				+ ", fertigIst=" + fertigIst + ", auftragsnummer="  + ", schluesselBegriffe="
+				+ ", fertigIst=" + fertigIst + ", auftragsnummer="  + ", verwAnforderungen="
+				+ verwAnforderungen + ", schluesselBegriffe="
 				+ schluesselBegriffe + "]";
 	}
 
