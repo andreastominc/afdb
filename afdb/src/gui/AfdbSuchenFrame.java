@@ -52,6 +52,8 @@ public class AfdbSuchenFrame extends JFrame {
 	private AfdbSuchen afdbSuchen = new AfdbSuchen();
 	private String username;
 	
+	private DefaultTableModel datamodel;
+	
 	
 	/**
 	 * Launch the application.
@@ -67,12 +69,22 @@ public class AfdbSuchenFrame extends JFrame {
 					frame.setMinimumSize(new Dimension(1100, 700));
 					
 					frame.initializeData();
+					frame.initializeTable();
 					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
+	}
+	
+	private void initializeTable(){
+		String[] columnNames = {"AnfID", "Priorität", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
+		datamodel = new DefaultTableModel();
+		datamodel.setColumnIdentifiers(columnNames);
+		this.table = new JTable();
+		this.table.setModel(datamodel);
+		this.scrollPane.setViewportView(table);
 	}
 	
 	// ComboBox Status befüllen
@@ -357,18 +369,18 @@ public class AfdbSuchenFrame extends JFrame {
 	
 	private void anforderungenAnzeigen(List<Anforderung> anforderungen)
 	{
-		String[] columnNames = {"AnfID", "Priorität", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
-		DefaultTableModel datamodel = new DefaultTableModel();
-		datamodel.setColumnIdentifiers(columnNames);
+		// vor jedem Aufruf der Methode die Tabelle leeren
+		while (datamodel.getRowCount() > 0) {
+			datamodel.removeRow(0);
+		}
 		
+		// Die Tabelle mit den Daten der gefundenen Anforderungen befuelllen
 		for (Anforderung anf : anforderungen)
 		{
 			datamodel.addRow(new Object[]{anf.getAnfId()+"",anf.getPrio().getBezeichnung(),anf.getStatus().getBezeichnung(),anf.getTitel(),anf.getKunde().getBezeichnung(),anf.getFertiggeplant(),anf.getHdNummer()});
 		}
 		
-		this.table = new JTable();
-		this.table.setModel(datamodel);
-		this.scrollPane.setViewportView(table);
+		
 	}
 
 	public String getUsername() {
