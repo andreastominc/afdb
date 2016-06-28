@@ -28,53 +28,32 @@ public class QueryHelper {
 	
 	public static List<Anforderung> getFilteredAnforderungen(int anfID, String titel, String kunde, String verwandteAnf, String zugewiesen, String status, String schluesselbegriffe) {
 		Session session = HibernateUtil.sessionFactory.openSession();
-			
-		String stmt = "SELECT anf FROM Anforderung anf"
-				+ " left outer join anf.kunde k"
-				+ " left outer join anf.status sta"
-				+ " left outer join anf.zugewiesenAn z"
-				+ " WHERE 1 = 1";
 		
+		String stmt = " from Anforderung WHERE 1 = 1";
 		if (anfID != 0)
-			stmt += " and anf.anfId = :anfID";
+			stmt += " and anfId = " + anfID;
 		if (!titel.isEmpty())
-			stmt += " and anf.titel = :titel";
+			stmt += " and titel = '" + titel + "'";
 		if (!kunde.isEmpty())
-			stmt += " and k.bezeichnung = :kunde";
-		/* Mapping noch ausständig
-		if (!verwandteAnf.isEmpty())
-			stmt += " and anf.verwandteAnf = :verwandteAnf";
-		*/
+			stmt += " and exists (select 1 from Anforderung a join Kunde k on a.Kunde = k.KundeId where k.bezeichnung = '" + kunde + "')";
+		if (!verwandteAnf.isEmpty()){
+			String[] verwAnf = verwandteAnf.split(",");
+			stmt += " and (";
+			for(int i=0; i < verwAnf.length; i++){
+				stmt += "instr(verwAnforderungen,'" + verwAnf[i] + "') > 0 or";
+			}
+			stmt += " 1=2)";
+		}
 		if (!zugewiesen.isEmpty())
-			stmt += " and z.benutzername = :zugewiesen";
+			stmt += " and exists (select 1 from Anforderung join Benutzer on zugewiesenan = BenutzerId where benutzername = '" + zugewiesen + "')";
 		if (!status.isEmpty())
-			stmt += " and sta.bezeichnung = :status";
+			stmt += " and exists (select 1 from Anforderung a join Status s on a.Status = s.StatusId where s.bezeichnung = '" + status + "')";
 		/* Mapping noch ausständig
 		if (!schluesselbegriffe.isEmpty())
-			stmt += " and anf.schluesselbegriffe = :schluesselbegriffe";
+			stmt += " and anf.schluesselbegriffe = " + schluesselbegriffe;
 		*/
 		
-		Query query = session.createQuery(stmt);
-		if (anfID != 0)
-			query.setParameter("anfID", anfID);
-		if (!titel.isEmpty())
-			query.setParameter("titel", titel);
-		if (!kunde.isEmpty())
-			query.setParameter("kunde", kunde);
-	    /*
-		if (!verwandteAnf.isEmpty())
-			query.setParameter("verwandteAnf", verwandteAnf);
-		*/
-		if (!zugewiesen.isEmpty())
-			query.setParameter("zugewiesen", zugewiesen);
-		if (!status.isEmpty())
-			query.setParameter("status", status);
-		/*
-		if (!schluesselbegriffe.isEmpty())
-			query.setParameter("schluesselbegriffe", schluesselbegriffe);
-		*/
-				
-		List<Anforderung> anforderungen = query.list();
+		List<Anforderung> anforderungen = session.createQuery(stmt).list();
 		logData(anforderungen);
 		
 		return anforderungen;

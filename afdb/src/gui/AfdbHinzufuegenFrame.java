@@ -147,7 +147,12 @@ public class AfdbHinzufuegenFrame extends JFrame {
 		mntmMirZugewiesen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Mir zugewiesen");
-				// to do ....
+				
+				frame.dispose(); // aktuelles Frame schliessen
+				AfdbZugewiesenFrame zugew_frame = new AfdbZugewiesenFrame();
+				zugew_frame.setBounds(300, 100, 1000, 600);
+				zugew_frame.setMinimumSize(new Dimension(1100, 700));
+				zugew_frame.setVisible(true); // das Suchen-Frame oeffnen und anzeigen
 			}
 		});
 		menuBar.add(mntmMirZugewiesen);
