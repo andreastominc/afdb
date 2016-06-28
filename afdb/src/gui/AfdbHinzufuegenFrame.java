@@ -11,6 +11,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import dal.QueryHelper;
+import data.Anforderung;
 import data.AnforderungsArt;
 import data.Anhang;
 import data.Benutzer;
@@ -57,7 +58,6 @@ public class AfdbHinzufuegenFrame extends JFrame {
 	private JTextField tfTitel;
 	private JTextField tfHelpdesknummer;
 	private JTextField tfKopieAn;
-	private JTextField tfVerwAnf;
 	private JTextField tfSchluesselbegriffe;
 	private JTextField tfAnhang;
 	private JTextField tfGespAnhaenge;
@@ -83,7 +83,8 @@ public class AfdbHinzufuegenFrame extends JFrame {
 	private List<Benutzer> ansprPersListe;
 	private List<Benutzer> benutzerListe;
 	
-	private static AfdbHinzufuegenFrame frame; // als private static definieren, damit spaeter "frame.dispose" aufgerufen werden kann.
+	public static AfdbHinzufuegenFrame frame; // als private static definieren, damit spaeter "frame.dispose" aufgerufen werden kann.
+	public static JTextField tfVerwAnf;
 		
 	/**
 	 * Launch the application.
@@ -354,9 +355,24 @@ public class AfdbHinzufuegenFrame extends JFrame {
 		dcFertigStellGepl.setDate(cal.getTime());
 		panel_16.add(dcFertigStellGepl);
 		
+		JPanel panel_17 = new JPanel();
+		panel_11.add(panel_17);
+		panel_17.setLayout(new BorderLayout(0, 0));
+		
 		tfVerwAnf = new JTextField();
-		panel_11.add(tfVerwAnf);
 		tfVerwAnf.setColumns(10);
+		panel_17.add(tfVerwAnf, BorderLayout.CENTER);
+		
+		JButton button = new JButton("Hinzuf\u00FCgen");
+		button.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				SelectVerwAnfFrame selected = new SelectVerwAnfFrame();
+				selected.setLocationRelativeTo(null);  
+				selected.setVisible(true);
+			}
+		});
+		panel_17.add(button, BorderLayout.EAST);
 		
 		tfSchluesselbegriffe = new JTextField();
 		panel_11.add(tfSchluesselbegriffe);

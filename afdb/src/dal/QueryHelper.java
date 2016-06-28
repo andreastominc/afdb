@@ -116,6 +116,15 @@ public class QueryHelper {
 		return anforderungsArt;
 	}
 	
+	public static List<Anforderung> getAllAnforderungen() {
+		Session session = HibernateUtil.sessionFactory.openSession();
+		
+		List<Anforderung> anforderungen = session.createQuery(" from Anforderung").list();
+		logData(anforderungen);
+		
+		return anforderungen;
+	}
+	
 	public static List<Version> getAllVersion() {
 		Session session = HibernateUtil.sessionFactory.openSession();
 		

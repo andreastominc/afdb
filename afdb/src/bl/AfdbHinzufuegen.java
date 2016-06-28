@@ -41,6 +41,11 @@ public class AfdbHinzufuegen {
 		return QueryHelper.getAllAnforderungsArt();
 	}
 	
+	public List<Anforderung> getAllAnforderungen()
+	{
+		return QueryHelper.getAllAnforderungen();
+	}
+	
 	public List<Benutzer> getBenutzerMitSchreibRecht(boolean schreibRecht)
 	{
 		return QueryHelper.getBenutzerMitSchreibRecht(schreibRecht);
