@@ -17,6 +17,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.JMenu;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.JLabel;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -26,6 +27,8 @@ import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -51,6 +54,7 @@ public class AfdbSuchenFrame extends JFrame {
 	private JLabel lblUser;
 
 	private AfdbSuchen afdbSuchen = new AfdbSuchen();
+	private static AfdbSuchenFrame frame;
 	private String username;
 	
 	//private DefaultTableModel datamodel2;
@@ -64,7 +68,7 @@ public class AfdbSuchenFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AfdbSuchenFrame frame = new AfdbSuchenFrame();
+					frame = new AfdbSuchenFrame();
 					frame.setVisible(true);
 					
 					frame.setBounds(300, 100, 1000, 600);
@@ -88,6 +92,31 @@ public class AfdbSuchenFrame extends JFrame {
 		this.table = new JTable();
 		this.table.setModel(datamodel);
 		this.scrollPane.setViewportView(table);
+		
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+		// Bei Doppelklick einer Zeile soll etwas gemacht werden..
+		table.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+            	if (e.getClickCount() == 2 && !e.isConsumed()) {
+            	     e.consume();
+            	     //handle double click event
+            	     System.out.println("row="+table.getSelectedRow());
+                     System.out.println("rowdata="+datamodel.getSelectedRow(table.getSelectedRow()).toString());
+                     
+                     //  neuer Frame zum Bearbeiten der angeklickten Anf. soll geoeffnet werden... Suchen-Frame wird geschlossen.
+                    frame.dispose(); // aktuelles Frame schliessen
+     				AfdbBearbeitenFrame bearb_frame = new AfdbBearbeitenFrame();
+     				bearb_frame.setBounds(300, 100, 1000, 600);
+     				bearb_frame.setMinimumSize(new Dimension(1100, 700));
+     				//bearb_frame.initializeData();
+     				//bearb_frame.setUsername("Testuser123"); // hier dann den Usernamen des eingeloggten Users uebergeben.
+     				bearb_frame.setVisible(true); // das Bearbeiten-Frame oeffnen und anzeigen
+            	
+            	}
+            }
+		});
+		
 	}
 	
 	// ComboBox Status befüllen
