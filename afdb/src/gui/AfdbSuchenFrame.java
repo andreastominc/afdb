@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
+import bl.AfdbJTableModel;
 import bl.AfdbSuchen;
 import data.*;
 
@@ -52,7 +53,8 @@ public class AfdbSuchenFrame extends JFrame {
 	private AfdbSuchen afdbSuchen = new AfdbSuchen();
 	private String username;
 	
-	private DefaultTableModel datamodel;
+	//private DefaultTableModel datamodel2;
+	private AfdbJTableModel datamodel;
 	
 	
 	/**
@@ -80,8 +82,9 @@ public class AfdbSuchenFrame extends JFrame {
 	
 	private void initializeTable(){
 		String[] columnNames = {"AnfID", "Priorität", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
-		datamodel = new DefaultTableModel();
-		datamodel.setColumnIdentifiers(columnNames);
+		//datamodel = new DefaultTableModel();
+		datamodel = new AfdbJTableModel();
+		//datamodel.setColumnIdentifiers(columnNames);
 		this.table = new JTable();
 		this.table.setModel(datamodel);
 		this.scrollPane.setViewportView(table);
@@ -357,12 +360,15 @@ public class AfdbSuchenFrame extends JFrame {
 		List<Anforderung> anforderungen = this.afdbSuchen.suchen(anfID,titel,kunde,verwandteAnf,zugewiesen,status,schluesselbegriffe);
 		if(anforderungen.isEmpty())
 		{
+			// Tabelle leeren
+			while (datamodel.getRowCount() > 0) {
+				datamodel.removeRow(0);
+			}
 			JOptionPane.showMessageDialog(this,"Keine Daten gefunden!");
-			// Tabelle ausblenden
 		}
 		else
 		{
-			JOptionPane.showMessageDialog(this,"Suche erfolgreich!");
+			//JOptionPane.showMessageDialog(this,"Suche erfolgreich!");
 			this.anforderungenAnzeigen(anforderungen);
 		}
 	}
@@ -377,10 +383,10 @@ public class AfdbSuchenFrame extends JFrame {
 		// Die Tabelle mit den Daten der gefundenen Anforderungen befuelllen
 		for (Anforderung anf : anforderungen)
 		{
-			datamodel.addRow(new Object[]{anf.getAnfId()+"",anf.getPrio().getBezeichnung(),anf.getStatus().getBezeichnung(),anf.getTitel(),anf.getKunde().getBezeichnung(),anf.getFertiggeplant(),anf.getHdNummer()});
+			// Reihenfolge der Tabellen-Ueberschriften: {"AnfID", "Priorität", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
+			//datamodel.addRow(new Object[]{anf.getAnfId()+"",anf.getPrio().getBezeichnung(),anf.getStatus().getBezeichnung(),anf.getTitel(),anf.getKunde().getBezeichnung(),anf.getFertiggeplant(),anf.getHdNummer()});
+			datamodel.addRow(anf);
 		}
-		
-		
 	}
 
 	public String getUsername() {
