@@ -81,7 +81,7 @@ public class AfdbSuchenFrame extends JFrame {
 	}
 	
 	private void initializeTable(){
-		String[] columnNames = {"AnfID", "Priorität", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
+		//String[] columnNames = {"AnfID", "Priorität", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
 		//datamodel = new DefaultTableModel();
 		datamodel = new AfdbJTableModel();
 		//datamodel.setColumnIdentifiers(columnNames);
