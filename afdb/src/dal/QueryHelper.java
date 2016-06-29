@@ -46,7 +46,7 @@ public class QueryHelper {
 			String[] verwAnf = verwandteAnf.split(",");
 			stmt += " and (";
 			for(int i=0; i < verwAnf.length; i++){
-				stmt += "instr(verwAnforderungen,'" + verwAnf[i] + "') > 0 or";
+				stmt += " instr(verwAnforderungen,'" + verwAnf[i] + "') > 0 or";
 			}
 			stmt += " 1=2)";
 		}
