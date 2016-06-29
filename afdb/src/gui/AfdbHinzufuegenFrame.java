@@ -423,6 +423,8 @@ public class AfdbHinzufuegenFrame extends JFrame {
 			}
 		});
 		panel_14.add(btnAbbrechen);
+		
+		initializeData();
 	}
 	
 	private void initializeCbStatus()
