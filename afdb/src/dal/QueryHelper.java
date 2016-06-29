@@ -29,13 +29,19 @@ public class QueryHelper {
 	public static List<Anforderung> getFilteredAnforderungen(int anfID, String titel, String kunde, String verwandteAnf, String zugewiesen, String status, String schluesselbegriffe) {
 		Session session = HibernateUtil.sessionFactory.openSession();
 		
-		String stmt = " from Anforderung WHERE 1 = 1";
+		String stmt = "SELECT anf FROM Anforderung anf"
+				+ " left outer join anf.kunde k"
+				+ " left outer join anf.status sta"
+				+ " left outer join anf.zugewiesenAn z"
+				+ " WHERE 1 = 1";
+
 		if (anfID != 0)
-			stmt += " and anfId = " + anfID;
+			stmt += " and anf.anfId = :anfID";
 		if (!titel.isEmpty())
-			stmt += " and titel = '" + titel + "'";
+			stmt += " and anf.titel = :titel";
 		if (!kunde.isEmpty())
-			stmt += " and exists (select 1 from Anforderung a join Kunde k on a.Kunde = k.KundeId where k.bezeichnung = '" + kunde + "')";
+			stmt += " and k.bezeichnung = :kunde";
+		
 		if (!verwandteAnf.isEmpty()){
 			String[] verwAnf = verwandteAnf.split(",");
 			stmt += " and (";
@@ -44,16 +50,40 @@ public class QueryHelper {
 			}
 			stmt += " 1=2)";
 		}
+
 		if (!zugewiesen.isEmpty())
-			stmt += " and exists (select 1 from Anforderung join Benutzer on zugewiesenan = BenutzerId where benutzername = '" + zugewiesen + "')";
+			stmt += " and z.benutzername = :zugewiesen";
 		if (!status.isEmpty())
-			stmt += " and exists (select 1 from Anforderung a join Status s on a.Status = s.StatusId where s.bezeichnung = '" + status + "')";
-		/* Mapping noch ausständig
+			stmt += " and sta.bezeichnung = :status";
+		
+		/* Mapping noch ausstaendig
 		if (!schluesselbegriffe.isEmpty())
 			stmt += " and anf.schluesselbegriffe = " + schluesselbegriffe;
 		*/
 		
-		List<Anforderung> anforderungen = session.createQuery(stmt).list();
+
+		Query query = session.createQuery(stmt);
+		if (anfID != 0)
+			query.setParameter("anfID", anfID);
+		if (!titel.isEmpty())
+			query.setParameter("titel", titel);
+		if (!kunde.isEmpty())
+			query.setParameter("kunde", kunde);
+
+	    /*
+		if (!verwandteAnf.isEmpty())
+			query.setParameter("verwandteAnf", verwandteAnf);
+		*/
+		if (!zugewiesen.isEmpty())
+			query.setParameter("zugewiesen", zugewiesen);
+		if (!status.isEmpty())
+			query.setParameter("status", status);
+		/*
+		if (!schluesselbegriffe.isEmpty())
+			query.setParameter("schluesselbegriffe", schluesselbegriffe);
+		*/
+				
+		List<Anforderung> anforderungen = query.list();
 		logData(anforderungen);
 		
 		return anforderungen;
