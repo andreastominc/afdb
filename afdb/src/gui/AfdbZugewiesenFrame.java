@@ -58,29 +58,8 @@ public class AfdbZugewiesenFrame extends JFrame {
 	private static AfdbZugewiesenFrame frame; // als private static definieren, damit spaeter "frame.dispose" aufgerufen werden kann.
 	private JTable tblAnforderungen;
 	private DefaultTableModel model;
-		
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					frame = new AfdbZugewiesenFrame(); 
-					frame.setVisible(true);
-					frame.setBounds(300, 100, 1000, 600);
-					frame.setMinimumSize(new Dimension(1100, 700));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-
-
-		});
-	}
 	
 	private void initializeData() {
-		BenutzerInfo.BenutzerName = "atominc"; // Benutzername aus LogIn
 		fillTable();
 	}
 
@@ -88,6 +67,7 @@ public class AfdbZugewiesenFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public AfdbZugewiesenFrame() {
+		frame = this;
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -108,7 +88,12 @@ public class AfdbZugewiesenFrame extends JFrame {
 		mntmMirZugewiesen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Mir zugewiesen");
-				// to do ....
+				
+				frame.dispose(); // aktuelles Frame schliessen
+				AfdbZugewiesenFrame zugew_frame = new AfdbZugewiesenFrame();
+				zugew_frame.setBounds(300, 100, 1000, 600);
+				zugew_frame.setMinimumSize(new Dimension(1100, 700));
+				zugew_frame.setVisible(true); // das "Mir zugewiesen"-Frame oeffnen und anzeigen
 			}
 		});
 		menuBar.add(mntmMirZugewiesen);
@@ -139,7 +124,6 @@ public class AfdbZugewiesenFrame extends JFrame {
 				suche_frame.setBounds(300, 100, 1000, 600);
 				suche_frame.setMinimumSize(new Dimension(1100, 700));
 				suche_frame.initializeData();
-				suche_frame.setUsername(BenutzerInfo.BenutzerName);
 				suche_frame.setVisible(true); // das Suchen-Frame oeffnen und anzeigen
 			}
 		});

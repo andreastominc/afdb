@@ -88,28 +88,6 @@ public class AfdbHinzufuegenFrame extends JFrame {
 	public static JTextField tfVerwAnf;
 	private ArrayList<Anforderung> selAnf = new ArrayList<Anforderung>();
 		
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					frame = new AfdbHinzufuegenFrame(); 
-					frame.setVisible(true);
-					frame.setBounds(300, 100, 1000, 600);
-					frame.setMinimumSize(new Dimension(1100, 700));
-					
-					frame.initializeData();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-
-
-		});
-	}
-	
 	private void initializeData() {
 		initializeCbStatus();
 		initializeCbModul();
@@ -125,6 +103,7 @@ public class AfdbHinzufuegenFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public AfdbHinzufuegenFrame() {
+		frame = this;
 		
 		this.afdbBl = new AfdbHinzufuegen();
 		
@@ -152,7 +131,7 @@ public class AfdbHinzufuegenFrame extends JFrame {
 				AfdbZugewiesenFrame zugew_frame = new AfdbZugewiesenFrame();
 				zugew_frame.setBounds(300, 100, 1000, 600);
 				zugew_frame.setMinimumSize(new Dimension(1100, 700));
-				zugew_frame.setVisible(true); // das Suchen-Frame oeffnen und anzeigen
+				zugew_frame.setVisible(true); // das "Mir zugewiesen"-Frame oeffnen und anzeigen
 			}
 		});
 		menuBar.add(mntmMirZugewiesen);
@@ -178,7 +157,6 @@ public class AfdbHinzufuegenFrame extends JFrame {
 				suche_frame.setBounds(300, 100, 1000, 600);
 				suche_frame.setMinimumSize(new Dimension(1100, 700));
 				suche_frame.initializeData();
-				suche_frame.setUsername("Testuser123"); // hier dann den Usernamen des eingeloggten Users uebergeben.
 				suche_frame.setVisible(true); // das Suchen-Frame oeffnen und anzeigen
 			}
 		});

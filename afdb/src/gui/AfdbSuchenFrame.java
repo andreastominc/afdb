@@ -10,6 +10,7 @@ import javax.swing.border.EmptyBorder;
 
 import bl.AfdbJTableModel;
 import bl.AfdbSuchen;
+import bl.BenutzerInfo;
 import data.*;
 
 import java.awt.GridLayout;
@@ -53,71 +54,12 @@ public class AfdbSuchenFrame extends JFrame {
 	private JTable table;
 	private JLabel lblUser;
 
-	private AfdbSuchen afdbSuchen = new AfdbSuchen();
-	private static AfdbSuchenFrame frame;
+	private AfdbSuchenFrame frame;
+	private AfdbSuchen afdbSuchen;
 	private String username;
 	
 	//private DefaultTableModel datamodel2;
 	private AfdbJTableModel datamodel;
-	
-	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					frame = new AfdbSuchenFrame();
-					frame.setVisible(true);
-					
-					frame.setBounds(300, 100, 1000, 600);
-					frame.setMinimumSize(new Dimension(1100, 700));
-					
-					frame.initializeData();
-					
-					
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-	
-	private void initializeTable(){
-		//String[] columnNames = {"AnfID", "PrioritÃ¤t", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
-		//datamodel = new DefaultTableModel();
-		datamodel = new AfdbJTableModel();
-		//datamodel.setColumnIdentifiers(columnNames);
-		this.table = new JTable();
-		this.table.setModel(datamodel);
-		this.scrollPane.setViewportView(table);
-		
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-		// Bei Doppelklick einer Zeile soll etwas gemacht werden..
-		table.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-            	if (e.getClickCount() == 2 && !e.isConsumed()) {
-            	     e.consume();
-            	     //handle double click event
-            	     System.out.println("row="+table.getSelectedRow());
-                     System.out.println("rowdata="+datamodel.getSelectedRow(table.getSelectedRow()).toString());
-                     
-                     //  neuer Frame zum Bearbeiten der angeklickten Anf. soll geoeffnet werden... Suchen-Frame wird geschlossen.
-                    frame.dispose(); // aktuelles Frame schliessen
-     				AfdbBearbeitenFrame bearb_frame = new AfdbBearbeitenFrame();
-     				bearb_frame.setBounds(300, 100, 1000, 600);
-     				bearb_frame.setMinimumSize(new Dimension(1100, 700));
-     				//bearb_frame.initializeData();
-     				//bearb_frame.setUsername("Testuser123"); // hier dann den Usernamen des eingeloggten Users uebergeben.
-     				bearb_frame.setVisible(true); // das Bearbeiten-Frame oeffnen und anzeigen
-            	
-            	}
-            }
-		});
-		
-	}
 	
 	// ComboBox Status befÃ¼llen
 	private void initializeStatus()
@@ -150,7 +92,8 @@ public class AfdbSuchenFrame extends JFrame {
 	protected void initializeData(){
 		initializeZugewiesen();
 		initializeStatus();
-		initializeTable();
+		this.username = BenutzerInfo.BenutzerName;
+		this.lblUser.setText(this.username);
 	}
 	
 
@@ -158,6 +101,9 @@ public class AfdbSuchenFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public AfdbSuchenFrame() {
+		frame = this;
+		afdbSuchen = new AfdbSuchen();
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 500);
 		contentPane = new JPanel();
@@ -169,18 +115,56 @@ public class AfdbSuchenFrame extends JFrame {
 		contentPane.add(panel, BorderLayout.NORTH);
 		panel.setLayout(new GridLayout(0, 1, 0, 0));
 		
+		//----------------------------------------------------------------
 		JMenuBar menuBar = new JMenuBar();
 		panel.add(menuBar);
 		
-		JMenuItem menuItem = new JMenuItem("Mir zugewiesen");
-		menuBar.add(menuItem);
+		JMenuItem mntmMirZugewiesen = new JMenuItem("Mir zugewiesen");
+		mntmMirZugewiesen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Mir zugewiesen");
+				
+				frame.dispose(); // aktuelles Frame schliessen
+				AfdbZugewiesenFrame zugew_frame = new AfdbZugewiesenFrame();
+				zugew_frame.setBounds(300, 100, 1000, 600);
+				zugew_frame.setMinimumSize(new Dimension(1100, 700));
+				zugew_frame.setVisible(true); // das "Mir zugewiesen"-Frame oeffnen und anzeigen
+			}
+		});
+		menuBar.add(mntmMirZugewiesen);
 		
-		JMenuItem menuItem_1 = new JMenuItem("Bearbeiten");
-		menuBar.add(menuItem_1);
+		JMenuItem mntmBearbeiten = new JMenuItem("Hinzufügen");
+		mntmBearbeiten.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Hinzufügen");
+				
+				frame.dispose(); // aktuelles Frame schliessen
+				AfdbHinzufuegenFrame hinzu_frame = new AfdbHinzufuegenFrame();
+				hinzu_frame.setBounds(300, 100, 1000, 600);
+				hinzu_frame.setMinimumSize(new Dimension(1100, 700));
+				hinzu_frame.setVisible(true); // das Suchen-Frame oeffnen und anzeigen
+			}
+		});
+		menuBar.add(mntmBearbeiten);
 		
-		JMenuItem menuItem_2 = new JMenuItem("Suchen");
-		menuBar.add(menuItem_2);
-		
+		// bei Klick aufs Menue-Item "Suchen" soll das aktuelle Frame "geschlossen" werden und das 
+		// neue Frame "Suchen" geoeffnet werden.
+		JMenuItem mntmSuchen = new JMenuItem("Suchen");
+		mntmSuchen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Suchen"); // auf Konsole mitloggen dass "Suchen" angeklickt wurde
+				
+				frame.dispose(); // aktuelles Frame schliessen
+				AfdbSuchenFrame suche_frame = new AfdbSuchenFrame();
+				suche_frame.setBounds(300, 100, 1000, 600);
+				suche_frame.setMinimumSize(new Dimension(1100, 700));
+				suche_frame.initializeData();
+				suche_frame.setVisible(true); // das Suchen-Frame oeffnen und anzeigen
+			}
+		});
+		menuBar.add(mntmSuchen);
+		//----------------------------------------------------------------
+
 		JLabel lblAngemeldeterUser = new JLabel("Angemeldeter User:");
 		menuBar.add(lblAngemeldeterUser);
 		
@@ -421,11 +405,6 @@ public class AfdbSuchenFrame extends JFrame {
 
 	public String getUsername() {
 		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-		this.lblUser.setText(username);
 	}
 	
 	
