@@ -72,7 +72,7 @@ alter table KopieAn add constraint KopieAnAnforderung_FK
 alter table KopieAn add constraint KopieAnBenutzer_FK
 	foreign key (BenutzerId) references Benutzer(BenutzerId);
 
--- VerwandteAorderungen
+-- VerwandteAnforderung
 alter table VerwandteAnforderung add constraint VerwandteAnfMasterAnf_FK
 	foreign key (MasterAnforderungId) references Anforderung(AnforderungId);
 	

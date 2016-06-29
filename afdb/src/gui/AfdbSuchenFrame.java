@@ -75,7 +75,7 @@ public class AfdbSuchenFrame extends JFrame {
 					frame.setMinimumSize(new Dimension(1100, 700));
 					
 					frame.initializeData();
-					frame.initializeTable();
+					
 					
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -150,6 +150,7 @@ public class AfdbSuchenFrame extends JFrame {
 	protected void initializeData(){
 		initializeZugewiesen();
 		initializeStatus();
+		initializeTable();
 	}
 	
 

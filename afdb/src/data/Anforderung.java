@@ -25,9 +25,9 @@ public class Anforderung {
 	private String verwAnforderungen;
 	private String schluesselBegriffe;
 	
-	private Set<Anhang> anhaenge = 
-			new HashSet<Anhang>(0);
-
+	// die one-to-many Bezieung: ein Anhang gehoert zu einer Anf.; eine Anf. kann mehrere Anhaenge haben
+	private Set<Anhang> anhaenge = new HashSet<Anhang>(0);
+	
 	
 	public Anforderung(String titel, String beschreibung, Benutzer benutzer, Date erfDatum, Benutzer ansprPers, Kunde kd, AnforderungsArt anfArt, Prioritaet prio, Status status, Benutzer zugBenutzer, Modul modul, Version version, String hdNr, float aufwandGesch, Date fertigStellGepl, Date fertigStellIst, String verwAnforderungen, String schluesselBegriffe) {
 		this.titel = titel;
@@ -227,8 +227,5 @@ public class Anforderung {
 	public void setAnhaenge(Set<Anhang> anhaenge) {
 		this.anhaenge = anhaenge;
 	}
-
-	
-	
 
 }
