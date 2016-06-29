@@ -61,6 +61,42 @@ public class AfdbSuchenFrame extends JFrame {
 	//private DefaultTableModel datamodel2;
 	private AfdbJTableModel datamodel;
 	
+
+ 	private void initializeTable(){
+ 		//String[] columnNames = {"AnfID", "PrioritÃ¤t", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
+ 		//datamodel = new DefaultTableModel();
+ 		datamodel = new AfdbJTableModel();
+ 		//datamodel.setColumnIdentifiers(columnNames);
+ 		this.table = new JTable();
+ 		this.table.setModel(datamodel);
+ 		this.scrollPane.setViewportView(table);
+ 		
+ 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+ 
+ 		// Bei Doppelklick einer Zeile soll etwas gemacht werden..
+ 		table.addMouseListener(new MouseAdapter() {
+             public void mouseClicked(MouseEvent e) {
+             	if (e.getClickCount() == 2 && !e.isConsumed()) {
+             	     e.consume();
+             	     //handle double click event
+             	     System.out.println("row="+table.getSelectedRow());
+                      System.out.println("rowdata="+datamodel.getSelectedRow(table.getSelectedRow()).toString());
+                      
+                      //  neuer Frame zum Bearbeiten der angeklickten Anf. soll geoeffnet werden... Suchen-Frame wird geschlossen.
+                     frame.dispose(); // aktuelles Frame schliessen
+      				AfdbBearbeitenFrame bearb_frame = new AfdbBearbeitenFrame();
+      				bearb_frame.setBounds(300, 100, 1000, 600);
+      				bearb_frame.setMinimumSize(new Dimension(1100, 700));
+      				//bearb_frame.initializeData();
+      				//bearb_frame.setUsername("Testuser123"); // hier dann den Usernamen des eingeloggten Users uebergeben.
+      				bearb_frame.setVisible(true); // das Bearbeiten-Frame oeffnen und anzeigen
+             	
+             	}
+             }
+ 		});
+ 		
+ 	}	
+	
 	// ComboBox Status befÃ¼llen
 	private void initializeStatus()
 	{
@@ -92,6 +128,7 @@ public class AfdbSuchenFrame extends JFrame {
 	protected void initializeData(){
 		initializeZugewiesen();
 		initializeStatus();
+		initializeTable();
 		this.username = BenutzerInfo.BenutzerName;
 		this.lblUser.setText(this.username);
 	}
@@ -133,10 +170,10 @@ public class AfdbSuchenFrame extends JFrame {
 		});
 		menuBar.add(mntmMirZugewiesen);
 		
-		JMenuItem mntmBearbeiten = new JMenuItem("Hinzufügen");
+		JMenuItem mntmBearbeiten = new JMenuItem("Hinzufï¿½gen");
 		mntmBearbeiten.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Hinzufügen");
+				System.out.println("Hinzufï¿½gen");
 				
 				frame.dispose(); // aktuelles Frame schliessen
 				AfdbHinzufuegenFrame hinzu_frame = new AfdbHinzufuegenFrame();
