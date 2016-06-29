@@ -97,12 +97,12 @@ create table `KopieAn` (
 );
 
 -- Beziehungstabelle "verwandteAnforderung"
--- drop table if exists `VerwandteAnforderung`;
--- create table `VerwandteAnforderung` (
---	`MasterAnforderungId` int, /* FK zu Anforderungen */
---	`AnforderungId`       int, /* FK zu Anforderungen */
---	primary key (`MasterAnforderungId`,`AnforderungId`)
---);
+ drop table if exists `VerwandteAnforderung`;
+ create table `VerwandteAnforderung` (
+	`MasterAnforderungId` int, /* FK zu Anforderungen */
+	`AnforderungId`       int, /* FK zu Anforderungen */
+	primary key (`MasterAnforderungId`,`AnforderungId`)
+);
 
 -- -- Beziehungstabelle "AnforderungAnhang"
 -- drop table if exists `AnforderungAnhang`;
