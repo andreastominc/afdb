@@ -11,6 +11,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import dal.QueryHelper;
+import data.Anforderung;
 import data.AnforderungsArt;
 import data.Anhang;
 import data.Benutzer;
@@ -84,7 +85,8 @@ public class AfdbBearbeitenFrame extends JFrame {
 	private List<Benutzer> benutzerListe;
 	
 	private static AfdbBearbeitenFrame frame; // als private static definieren, damit spaeter "frame.dispose" aufgerufen werden kann.
-		
+	private Anforderung anf;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -92,37 +94,52 @@ public class AfdbBearbeitenFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					frame = new AfdbBearbeitenFrame(); 
 					frame.setVisible(true);
 					frame.setBounds(300, 100, 1000, 600);
 					frame.setMinimumSize(new Dimension(1100, 700));
 					
 					frame.initializeData();
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-
-
 		});
 	}
 	
-	private void initializeData() {
-		initializeCbStatus();
-		initializeCbModul();
-		initializeCbPrio();
-		initializeCbAnforderungsArt();
-		initializeCbVersion();
-		initializecbZugewiesen();
-		initializecbKunde();
+	protected void initializeData() {
+		initializeCbStatus(anf);
+		initializeCbModul(anf);
+		initializeCbPrio(anf);
+		initializeCbAnforderungsArt(anf);
+		initializeCbVersion(anf);
+		initializecbZugewiesen(anf);
+		initializecbKunde(anf);
 		//initializecbAnsprechperson();
+		initializeOthers(anf);
+		System.out.println("---bearb-anf="+frame.getAnf().toString());
+	}
+	
+	/**
+	 * Die Textfelder, Datumsfelder etc. mit den Daten der aktuell 
+	 * zu bearbeitenden Anforderung befuellen.
+	 */
+	private void initializeOthers(Anforderung a){
+		tfTitel.setText(a.getTitel());
+		tfHelpdesknummer.setText(a.getHdNummer());
+		taBeschreibung.setText(a.getBeschreibung());
+		tfAufwand.setText(a.getAufwandGeschaetzt()+"");
+		dcFertigStellGepl.setDate(a.getFertiggeplant());
+		//tfKopieAn.setText(a.get....);
+		tfVerwAnf.setText(a.getVerwAnforderungen());
+		tfSchluesselbegriffe.setText(a.getSchluesselBegriffe());
 	}
 
 	/**
 	 * Create the frame.
 	 */
 	public AfdbBearbeitenFrame() {
-		
+		frame = this;
 		this.afdbBl = new AfdbHinzufuegen();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -277,9 +294,11 @@ public class AfdbBearbeitenFrame extends JFrame {
 		panel_6.add(tfTitel);
 		tfTitel.setColumns(10);
 		
+		
 		tfHelpdesknummer = new JTextField();
 		panel_6.add(tfHelpdesknummer);
 		tfHelpdesknummer.setColumns(10);
+		
 		
 		JPanel panel_4 = new JPanel();
 		panel_1.add(panel_4);
@@ -287,6 +306,7 @@ public class AfdbBearbeitenFrame extends JFrame {
 		
 		taBeschreibung = new JTextArea();
 		panel_4.add(taBeschreibung, BorderLayout.CENTER);
+		
 		
 		Border border = BorderFactory.createLineBorder(Color.BLACK);
 		taBeschreibung.setBorder(border);
@@ -328,6 +348,7 @@ public class AfdbBearbeitenFrame extends JFrame {
 		panel_11.add(tfKopieAn);
 		tfKopieAn.setColumns(10);
 		
+		
 		JPanel panel_12 = new JPanel();
 		panel_11.add(panel_12);
 		panel_12.setLayout(new GridLayout(0, 3, 0, 0));
@@ -335,6 +356,7 @@ public class AfdbBearbeitenFrame extends JFrame {
 		tfAufwand = new JTextField();
 		panel_12.add(tfAufwand);
 		tfAufwand.setColumns(10);
+		
 		
 		JLabel lblGeplFertigstellung = new JLabel("Gepl. Fertigstellung:");
 		lblGeplFertigstellung.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -346,20 +368,17 @@ public class AfdbBearbeitenFrame extends JFrame {
 		panel_16.setLayout(new GridLayout(0, 1, 0, 0));
 		
 		dcFertigStellGepl = new JDateChooser();
-		
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(new Date());
-		cal.add(Calendar.DATE, 15); // 15 hinzufuegen zum aktuellen als default Wert
-		dcFertigStellGepl.setDate(cal.getTime());
 		panel_16.add(dcFertigStellGepl);
 		
 		tfVerwAnf = new JTextField();
 		panel_11.add(tfVerwAnf);
 		tfVerwAnf.setColumns(10);
 		
+		
 		tfSchluesselbegriffe = new JTextField();
 		panel_11.add(tfSchluesselbegriffe);
 		tfSchluesselbegriffe.setColumns(10);
+		
 		
 		cbZugewiesen = new JComboBox();
 		panel_11.add(cbZugewiesen);
@@ -371,6 +390,8 @@ public class AfdbBearbeitenFrame extends JFrame {
 		tfAnhang = new JTextField();
 		panel_15.add(tfAnhang, BorderLayout.CENTER);
 		tfAnhang.setColumns(10);
+		//to do.. zugewiesene anhaenge anzeigen..
+		
 		
 		JButton btHinzufuegen = new JButton("Hinzuf\u00FCgen");
 		btHinzufuegen.addMouseListener(new MouseAdapter() {
@@ -422,57 +443,63 @@ public class AfdbBearbeitenFrame extends JFrame {
 		panel_14.add(btnAbbrechen);
 	}
 	
-	private void initializeCbStatus()
+	private void initializeCbStatus(Anforderung a)
 	{
 		List<Status> statusListe = afdbBl.getAllStatus();
 		for(Status status : statusListe)
 		{
 			cbStatus.addItem(status);
 		}
-
+		
+		// angezeigt/ausgewaehlt sein sollen die Daten von der aktuell zu bearbeitenden Anforderung
+		cbStatus.getModel().setSelectedItem(a.getStatus());
 	}
 	
-	private void initializeCbModul()
+	private void initializeCbModul(Anforderung a)
 	{
 		List<Modul> modulListe = afdbBl.getAllModule();
 		for(Modul modul : modulListe)
 		{
 			cbModul.addItem(modul);
 		}
-
+		// angezeigt/ausgewaehlt sein sollen die Daten von der aktuell zu bearbeitenden Anforderung
+		cbModul.getModel().setSelectedItem(a.getModul());
 	}
 	
-	private void initializeCbAnforderungsArt()
+	private void initializeCbAnforderungsArt(Anforderung a)
 	{
 		List<AnforderungsArt> anfArtListe =  afdbBl.getAllAnforderungsart();
 		for(AnforderungsArt anfArt : anfArtListe)
 		{
 			cbAnforderungsArt.addItem(anfArt);
 		}
-
+		// angezeigt/ausgewaehlt sein sollen die Daten von der aktuell zu bearbeitenden Anforderung
+		cbAnforderungsArt.getModel().setSelectedItem(a.getAnfArt());
 	}
 	
-	private void initializeCbPrio()
+	private void initializeCbPrio(Anforderung a)
 	{
 		List<Prioritaet> prioListe = afdbBl.getAllPrioritaeten();
 		for(Prioritaet prio : prioListe)
 		{
 			cbPrio.addItem(prio);
 		}
-
+		// angezeigt/ausgewaehlt sein sollen die Daten von der aktuell zu bearbeitenden Anforderung
+		cbPrio.getModel().setSelectedItem(a.getPrio());
 	}
 	
-	private void initializeCbVersion()
+	private void initializeCbVersion(Anforderung a)
 	{
 		List<Version> versionListe = afdbBl.getAllVersionen();
 		for(Version version : versionListe)
 		{
 			cbVersion.addItem(version);
 		}
-
+		// angezeigt/ausgewaehlt sein sollen die Daten von der aktuell zu bearbeitenden Anforderung
+		cbVersion.getModel().setSelectedItem(a.getVersion());
 	}
 
-	private void initializecbZugewiesen()
+	private void initializecbZugewiesen(Anforderung a)
 	{
 		boolean schreibRecht = true;
 		benutzerListe = afdbBl.getBenutzerMitSchreibRecht(schreibRecht);
@@ -480,26 +507,30 @@ public class AfdbBearbeitenFrame extends JFrame {
 		{
 			cbZugewiesen.addItem(benutzer.getBenutzername());
 		}
-
+		// angezeigt/ausgewaehlt sein sollen die Daten von der aktuell zu bearbeitenden Anforderung
+		cbZugewiesen.getModel().setSelectedItem(a.getZugewiesenAn());
 	}
 	
-	private void initializecbKunde()
+	private void initializecbKunde(Anforderung a)
 	{
 		List<Kunde> kundenListe = afdbBl.getAllKunden();
 		for(Kunde kunde : kundenListe)
 		{
 			cbKunde.addItem(kunde);
 		}
+		// angezeigt/ausgewaehlt sein sollen die Daten von der aktuell zu bearbeitenden Anforderung
+		cbKunde.getModel().setSelectedItem(a.getKunde());
 	}
 	
-	private void initializecbAnsprechperson()
+	private void initializecbAnsprechperson(Anforderung a)
 	{
 		List<Benutzer> ansprechPersionListe = afdbBl.getAllAnsprechpersonen();
 		for(Benutzer ap : ansprechPersionListe)
 		{
 			cbAnsprechperson.addItem(ap);
 		}
-		
+		// angezeigt/ausgewaehlt sein sollen die Daten von der aktuell zu bearbeitenden Anforderung
+		cbAnsprechperson.getModel().setSelectedItem(a.getAnsprechPerson());
 	}
 	
 	private boolean pruefePflichtfelder() {
@@ -569,7 +600,7 @@ public class AfdbBearbeitenFrame extends JFrame {
 		aufwandGesch = Float.parseFloat(aufwand);
 		} catch (NumberFormatException ex)
 		{
-			JOptionPane.showMessageDialog(this,"Aufwand Wert: "+aufwand +" ist nicht g�ltig. Richtiges Format: 1.2");
+			JOptionPane.showMessageDialog(this,"Aufwand Wert: "+aufwand +" ist nicht gueltig. Richtiges Format: 1.2");
 			return;
 		}
 		Date fertigStellGepl = dcFertigStellGepl.getDate();
@@ -631,6 +662,16 @@ public class AfdbBearbeitenFrame extends JFrame {
 	public void setFile(File file) {
 		this.file = file;
 	}
+
+	public Anforderung getAnf() {
+		return anf;
+	}
+
+	public void setAnf(Anforderung anf) {
+		this.anf = anf;
+	}
+	
+	
 	
 	
 

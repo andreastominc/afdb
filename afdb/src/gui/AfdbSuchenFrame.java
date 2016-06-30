@@ -63,7 +63,7 @@ public class AfdbSuchenFrame extends JFrame {
 	
 
  	private void initializeTable(){
- 		//String[] columnNames = {"AnfID", "Priorität", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
+ 		//String[] columnNames = {"AnfID", "PrioritÃ¤t", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
  		//datamodel = new DefaultTableModel();
  		datamodel = new AfdbJTableModel();
  		//datamodel.setColumnIdentifiers(columnNames);
@@ -80,15 +80,19 @@ public class AfdbSuchenFrame extends JFrame {
              	if (e.getClickCount() == 2 && !e.isConsumed()) {
              	     e.consume();
              	     //handle double click event
+             	     
              	     System.out.println("row="+table.getSelectedRow());
-                      System.out.println("rowdata="+datamodel.getSelectedRow(table.getSelectedRow()).toString());
+                     System.out.println("rowdata="+datamodel.getSelectedRow(table.getSelectedRow()).toString());
                       
-                      //  neuer Frame zum Bearbeiten der angeklickten Anf. soll geoeffnet werden... Suchen-Frame wird geschlossen.
-                     frame.dispose(); // aktuelles Frame schliessen
+                    //  neuer Frame zum Bearbeiten der angeklickten Anf. soll geoeffnet werden... Suchen-Frame wird geschlossen.
+                    frame.dispose(); // aktuelles Frame schliessen
       				AfdbBearbeitenFrame bearb_frame = new AfdbBearbeitenFrame();
+      				// die via Doppelklick in der Tabell ausgewaehlte Anforderung an das Bearbeiten-Frame uebergeben:
+      				bearb_frame.setAnf(datamodel.getSelectedRow(table.getSelectedRow()));
+      				
       				bearb_frame.setBounds(300, 100, 1000, 600);
       				bearb_frame.setMinimumSize(new Dimension(1100, 700));
-      				//bearb_frame.initializeData();
+      				bearb_frame.initializeData();
       				//bearb_frame.setUsername("Testuser123"); // hier dann den Usernamen des eingeloggten Users uebergeben.
       				bearb_frame.setVisible(true); // das Bearbeiten-Frame oeffnen und anzeigen
              	
@@ -97,7 +101,7 @@ public class AfdbSuchenFrame extends JFrame {
  		});	
  	}	
 	
-	// ComboBox Status befüllen
+	// ComboBox Status befuellen
 	private void initializeStatus()
 	{
 		cbStatus.addItem("");
@@ -109,7 +113,7 @@ public class AfdbSuchenFrame extends JFrame {
 		}
 	}
 	
-	// ComboBox Zugewiesen befüllen
+	// ComboBox Zugewiesen befuellen
 	private void initializeZugewiesen()
 	{
 		cbZugewiesen.addItem("");
@@ -169,10 +173,10 @@ public class AfdbSuchenFrame extends JFrame {
 		});
 		menuBar.add(mntmMirZugewiesen);
 		
-		JMenuItem mntmBearbeiten = new JMenuItem("Hinzufügen");
+		JMenuItem mntmBearbeiten = new JMenuItem("HinzufÃ¼gen");
 		mntmBearbeiten.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Hinzufï¿½gen");
+				System.out.println("HinzufÃ¼gen");
 				
 				frame.dispose(); // aktuelles Frame schliessen
 				AfdbHinzufuegenFrame hinzu_frame = new AfdbHinzufuegenFrame();
@@ -440,7 +444,7 @@ public class AfdbSuchenFrame extends JFrame {
 		// Die Tabelle mit den Daten der gefundenen Anforderungen befuelllen
 		for (Anforderung anf : anforderungen)
 		{
-			// Reihenfolge der Tabellen-Ueberschriften: {"AnfID", "Priorität", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
+			// Reihenfolge der Tabellen-Ueberschriften: {"AnfID", "PrioritÃ¤t", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
 			//datamodel.addRow(new Object[]{anf.getAnfId()+"",anf.getPrio().getBezeichnung(),anf.getStatus().getBezeichnung(),anf.getTitel(),anf.getKunde().getBezeichnung(),anf.getFertiggeplant(),anf.getHdNummer()});
 			datamodel.addRow(anf);
 		}
