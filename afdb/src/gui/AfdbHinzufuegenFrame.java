@@ -579,7 +579,7 @@ public class AfdbHinzufuegenFrame extends JFrame {
 		aufwandGesch = Float.parseFloat(aufwand);
 		} catch (NumberFormatException ex)
 		{
-			JOptionPane.showMessageDialog(this,"Aufwand Wert: "+aufwand +" ist nicht g�ltig. Richtiges Format: 1.2");
+			JOptionPane.showMessageDialog(this,"Aufwand Wert: "+aufwand +" ist nicht gueltig. Richtiges Format: 1.2");
 			return;
 		}
 		Date fertigStellGepl = dcFertigStellGepl.getDate();

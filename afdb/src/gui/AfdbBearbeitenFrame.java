@@ -50,6 +50,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import com.toedter.calendar.JDateChooser;
+
+import bl.AfdbBearbeiten;
 import bl.AfdbHinzufuegen;
 
 public class AfdbBearbeitenFrame extends JFrame {
@@ -80,7 +82,7 @@ public class AfdbBearbeitenFrame extends JFrame {
 	private File file;
 	
 	//Object for Business Logic
-	private AfdbHinzufuegen afdbBl;
+	private AfdbBearbeiten afdbBl;
 	private List<Benutzer> ansprPersListe;
 	private List<Benutzer> benutzerListe;
 	
@@ -140,7 +142,7 @@ public class AfdbBearbeitenFrame extends JFrame {
 	 */
 	public AfdbBearbeitenFrame() {
 		frame = this;
-		this.afdbBl = new AfdbHinzufuegen();
+		this.afdbBl = new AfdbBearbeiten();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -558,19 +560,13 @@ public class AfdbBearbeitenFrame extends JFrame {
 	
 	private Benutzer getBenutzerVonUsername()
 	{
-		String benutzername = (String) cbZugewiesen.getSelectedItem();
-		Benutzer zugewiesenAn = null;
-		for(int i = 0; i<benutzerListe.size(); i++)
-		{
-			zugewiesenAn = benutzerListe.get(i);
-			if(benutzername.equals(zugewiesenAn.getBenutzername()))
-			{
-				break;
-			}
-		}
+		Benutzer zugewiesenAn = (Benutzer) cbZugewiesen.getSelectedItem();
 		return zugewiesenAn;
 	}
 
+	/**
+	 * Die Methode speichert die bearbeiteten Daten der aktuellen Anforderung
+	 */
 	private void createAfdb() {
 		String titel = tfTitel.getText();
 		String beschreibung = taBeschreibung.getText();
@@ -586,40 +582,38 @@ public class AfdbBearbeitenFrame extends JFrame {
 		Version version = (Version) cbVersion.getSelectedItem();
 		
 		String hdNr = tfHelpdesknummer.getText();
-		if(hdNr.isEmpty())
-		{
-			hdNr="0";
-		}
+		//if(hdNr.isEmpty()) {
+		//	hdNr="0";
+		//}
 		String aufwand = tfAufwand.getText();
-		if(aufwand.isEmpty())
-		{
+		if(aufwand.isEmpty()) {
 			aufwand = "0";
 		}
 		float aufwandGesch = 0;
 		try {
-		aufwandGesch = Float.parseFloat(aufwand);
-		} catch (NumberFormatException ex)
-		{
+			aufwandGesch = Float.parseFloat(aufwand);
+		} catch (NumberFormatException ex) {
 			JOptionPane.showMessageDialog(this,"Aufwand Wert: "+aufwand +" ist nicht gueltig. Richtiges Format: 1.2");
 			return;
 		}
 		Date fertigStellGepl = dcFertigStellGepl.getDate();
-		if(fertigStellGepl == null)
-		{
+		if(fertigStellGepl == null) {
 			fertigStellGepl = new Date();
 		}
 		//fertigStellIst noch implementieren
 		Date fertigStellIst = null; //new Date();
 		String verwAnforderungen = tfVerwAnf.getText();
-		if(verwAnforderungen.isEmpty())
-		{
+		if(verwAnforderungen.isEmpty()) {
 			verwAnforderungen="";
 		}
 		String schluesselBegriffe = tfSchluesselbegriffe.getText();
-		if(schluesselBegriffe.isEmpty())
-		{
+		if(schluesselBegriffe.isEmpty()) {
 			schluesselBegriffe = "";
 		}
+		
+		//---------------------------
+		// updaten des aktuellen Anforderungs-Objektes mit den (moeglicherweise) neuen Daten:
+		//---------------------------
 		
 		boolean speicherung = false;
 		// wenn Anhang ausgewaehlt, dann die Methode mit Anhang aufrufen
@@ -632,12 +626,12 @@ public class AfdbBearbeitenFrame extends JFrame {
 			anh.setFile(file);
 			
 			// die createAfdb Methode mit Anhang aufrufen:
-			speicherung = afdbBl.createAfdb(anh, titel, beschreibung, benutzer, erfDatum, ansprPers, kd, anfArt, prio, status, benutzer, modul, version, hdNr,
+			speicherung = afdbBl.persistAfdb(anf, anh, titel, beschreibung, benutzer, erfDatum, ansprPers, kd, anfArt, prio, status, benutzer, modul, version, hdNr,
 					aufwandGesch, fertigStellGepl, fertigStellIst, verwAnforderungen, schluesselBegriffe);			
 		} // sonst (wenn kein Anhang), dann die normale Methode aufrufen
 		else {
 			// die createAfdb Methode ohne Anhang aufrufen:
-			speicherung = afdbBl.createAfdb(titel, beschreibung, benutzer, erfDatum, ansprPers, kd, anfArt, prio, status, benutzer, modul, version, hdNr,
+			speicherung = afdbBl.persistAfdb(anf, titel, beschreibung, benutzer, erfDatum, ansprPers, kd, anfArt, prio, status, benutzer, modul, version, hdNr,
 				aufwandGesch, fertigStellGepl, fertigStellIst, verwAnforderungen, schluesselBegriffe);
 		}		
 

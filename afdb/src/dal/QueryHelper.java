@@ -202,7 +202,7 @@ public class QueryHelper {
 		Session session = HibernateUtil.sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		tx.begin();
-		session.save(anf);
+		session.saveOrUpdate(anf); // saveOrUpdate anstatt save, damit auch verwendbar fuers Bearbeiten
 		tx.commit();
 		session.close();
 	}
@@ -216,9 +216,10 @@ public class QueryHelper {
 		Session session = HibernateUtil.sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 
-		Serializable parentId = session.save(anf);
+		// Serializable parentId = session.save(anf);
+		session.saveOrUpdate(anf); // saveOrUpdate anstatt save, damit auch verwendbar fuers Bearbeiten
 		
-		System.out.println("serializable="+parentId);
+		//System.out.println("serializable="+parentId);
 
 		
 	    File anhfile = anh.getFile();
@@ -243,7 +244,7 @@ public class QueryHelper {
 			System.out.println("------ Anhang="+a.toString());
 		}
 		
-		session.save(anh);
+		session.saveOrUpdate(anh); // saveOrUpdate anstatt save, damit auch verwendbar fuers Bearbeiten
 		
 		//Am Ende den Blob wieder freigeben
 		try {
