@@ -376,10 +376,17 @@ public class AfdbSuchenFrame extends JFrame {
 		gbc_btnAbbrechen.gridy = 7;
 		panel_2.add(btnAbbrechen, gbc_btnAbbrechen);
 		
+		JLabel lblErgebnisse = new JLabel("Ergebnisse:");
+		GridBagConstraints gbc_lblErgebnisse = new GridBagConstraints();
+		gbc_lblErgebnisse.anchor = GridBagConstraints.WEST;
+		gbc_lblErgebnisse.insets = new Insets(0, 0, 5, 5);
+		gbc_lblErgebnisse.gridx = 0;
+		gbc_lblErgebnisse.gridy = 8;
+		panel_2.add(lblErgebnisse, gbc_lblErgebnisse);
+		
 		this.scrollPane = new JScrollPane((Component) null);
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
 		gbc_scrollPane.gridwidth = 4;
-		gbc_scrollPane.insets = new Insets(0, 0, 0, 5);
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridx = 0;
 		gbc_scrollPane.gridy = 9;
