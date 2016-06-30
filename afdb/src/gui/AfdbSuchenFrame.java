@@ -69,6 +69,7 @@ public class AfdbSuchenFrame extends JFrame {
  		//datamodel.setColumnIdentifiers(columnNames);
  		this.table = new JTable();
  		this.table.setModel(datamodel);
+ 		this.table.setAutoCreateRowSorter(true);
  		this.scrollPane.setViewportView(table);
  		
  		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -93,8 +94,7 @@ public class AfdbSuchenFrame extends JFrame {
              	
              	}
              }
- 		});
- 		
+ 		});	
  	}	
 	
 	// ComboBox Status befüllen
