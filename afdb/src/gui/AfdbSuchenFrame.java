@@ -63,7 +63,7 @@ public class AfdbSuchenFrame extends JFrame {
 	
 
  	private void initializeTable(){
- 		//String[] columnNames = {"AnfID", "PrioritÃ¤t", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
+ 		//String[] columnNames = {"AnfID", "Priorität", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
  		//datamodel = new DefaultTableModel();
  		datamodel = new AfdbJTableModel();
  		//datamodel.setColumnIdentifiers(columnNames);
@@ -97,7 +97,7 @@ public class AfdbSuchenFrame extends JFrame {
  		
  	}	
 	
-	// ComboBox Status befÃ¼llen
+	// ComboBox Status befüllen
 	private void initializeStatus()
 	{
 		cbStatus.addItem("");
@@ -109,7 +109,7 @@ public class AfdbSuchenFrame extends JFrame {
 		}
 	}
 	
-	// ComboBox Zugewiesen befÃ¼llen
+	// ComboBox Zugewiesen befüllen
 	private void initializeZugewiesen()
 	{
 		cbZugewiesen.addItem("");
@@ -133,7 +133,6 @@ public class AfdbSuchenFrame extends JFrame {
 		this.lblUser.setText(this.username);
 	}
 	
-
 	/**
 	 * Create the frame.
 	 */
@@ -170,7 +169,7 @@ public class AfdbSuchenFrame extends JFrame {
 		});
 		menuBar.add(mntmMirZugewiesen);
 		
-		JMenuItem mntmBearbeiten = new JMenuItem("Hinzufï¿½gen");
+		JMenuItem mntmBearbeiten = new JMenuItem("Hinzufügen");
 		mntmBearbeiten.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Hinzufï¿½gen");
@@ -434,7 +433,7 @@ public class AfdbSuchenFrame extends JFrame {
 		// Die Tabelle mit den Daten der gefundenen Anforderungen befuelllen
 		for (Anforderung anf : anforderungen)
 		{
-			// Reihenfolge der Tabellen-Ueberschriften: {"AnfID", "PrioritÃ¤t", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
+			// Reihenfolge der Tabellen-Ueberschriften: {"AnfID", "Priorität", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
 			//datamodel.addRow(new Object[]{anf.getAnfId()+"",anf.getPrio().getBezeichnung(),anf.getStatus().getBezeichnung(),anf.getTitel(),anf.getKunde().getBezeichnung(),anf.getFertiggeplant(),anf.getHdNummer()});
 			datamodel.addRow(anf);
 		}

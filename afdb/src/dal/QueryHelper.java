@@ -41,7 +41,6 @@ public class QueryHelper {
 			stmt += " and anf.titel = :titel";
 		if (!kunde.isEmpty())
 			stmt += " and k.bezeichnung = :kunde";
-		
 		if (!verwandteAnf.isEmpty()){
 			String[] verwAnf = verwandteAnf.split(",");
 			stmt += " and (";
@@ -50,18 +49,19 @@ public class QueryHelper {
 			}
 			stmt += " 1=2)";
 		}
-
 		if (!zugewiesen.isEmpty())
 			stmt += " and z.benutzername = :zugewiesen";
 		if (!status.isEmpty())
 			stmt += " and sta.bezeichnung = :status";
+		if (!schluesselbegriffe.isEmpty()){
+			String[] begriffe = schluesselbegriffe.split(",");
+			stmt += " and (";
+			for(int i=0; i < begriffe.length; i++){
+				stmt += " instr(schluesselBegriffe,'" + begriffe[i] + "') > 0 or";
+			}
+			stmt += " 1=2)";
+		}
 		
-		/* Mapping noch ausstaendig
-		if (!schluesselbegriffe.isEmpty())
-			stmt += " and anf.schluesselbegriffe = " + schluesselbegriffe;
-		*/
-		
-
 		Query query = session.createQuery(stmt);
 		if (anfID != 0)
 			query.setParameter("anfID", anfID);
@@ -69,7 +69,6 @@ public class QueryHelper {
 			query.setParameter("titel", titel);
 		if (!kunde.isEmpty())
 			query.setParameter("kunde", kunde);
-
 	    /*
 		if (!verwandteAnf.isEmpty())
 			query.setParameter("verwandteAnf", verwandteAnf);
@@ -85,7 +84,6 @@ public class QueryHelper {
 				
 		List<Anforderung> anforderungen = query.list();
 		logData(anforderungen);
-		
 		return anforderungen;
 	}
 	
