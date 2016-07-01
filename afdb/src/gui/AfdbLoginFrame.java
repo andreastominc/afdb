@@ -81,7 +81,7 @@ public class AfdbLoginFrame extends JFrame {
 					}
 					else
 					{
-						JOptionPane.showMessageDialog(frame, "Benutzername falsch!");
+						JOptionPane.showMessageDialog(frame, "Benutzername oder Passwort falsch!");
 						tfBenutzer.setText("");
 						passwordField.setText("");
 					}
