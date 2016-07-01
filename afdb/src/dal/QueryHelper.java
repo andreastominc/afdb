@@ -192,6 +192,43 @@ public class QueryHelper {
 			System.out.println(liste.get(i).toString());
 		}
 	}
+	
+	public static boolean checkUser(String userToCheck)
+	{
+			Session session = HibernateUtil.sessionFactory.openSession();
+			String stmt = "from Benutzer b where b.benutzername = :user";			
+		
+			List<Benutzer> benutzer = session.createQuery(stmt).setString("user",userToCheck).list();
+			
+			if(benutzer.isEmpty())
+			{
+				return false;
+			}
+								
+				return true;
+	}
+	
+	
+	
+	public static boolean checkPasswort(String passWort)
+	{
+		
+		Session session = HibernateUtil.sessionFactory.openSession();
+		String stmt = "from Benutzer b where b.passwort = :pw";			
+	
+		List<Benutzer> benutzer = session.createQuery(stmt).setString("pw",passWort).list();
+		
+//		for (Benutzer benutzer2 : benutzer) {
+//			System.out.println("pw: " + benutzer2.getPasswort());
+//		}
+		
+		if(benutzer.isEmpty())
+		{
+			return false;
+		}
+				
+		return true;
+	}
 
 	/**
 	 * eine Anforderung speichern
@@ -257,6 +294,8 @@ public class QueryHelper {
 		// Die Transaction commiten
 		tx.commit();
 	}
+	
+	
 	
 	
 
