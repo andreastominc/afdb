@@ -24,6 +24,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.JComboBox;
 import javax.swing.JButton;
@@ -432,6 +433,17 @@ public class AfdbSuchenFrame extends JFrame {
 			//JOptionPane.showMessageDialog(this,"Suche erfolgreich!");
 			this.anforderungenAnzeigen(anforderungen);
 		}
+	}
+	
+	public AfdbSuchenFrame(Anforderung anf)
+	{
+		this();
+		initializeData();
+		List<Anforderung> list = new Vector<Anforderung>();
+		list.add(anf);
+		tfAnfid.setText(Integer.toString(anf.getAnfId()));
+		tfTitel.setText(anf.getTitel());
+		anforderungenAnzeigen(list);
 	}
 	
 	private void anforderungenAnzeigen(List<Anforderung> anforderungen)

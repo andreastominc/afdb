@@ -623,13 +623,12 @@ public class AfdbHinzufuegenFrame extends JFrame {
 		if(speicherung)
 		{
 			JOptionPane.showMessageDialog(this,"Speicherung erfolgreich!");
-			//todo
-			//System.exit(0);
+			frame.dispose(); // aktuelles Frame schliessen
+			AfdbSuchenFrame suche_frame = new AfdbSuchenFrame(afdbBl.getAnf());
+			suche_frame.setVisible(true);
 		}
 		else {
 			JOptionPane.showMessageDialog(this,"Speicherung nicht erfolgreich!");
-			//todo
-			System.exit(0);
 		}
 
 	}
