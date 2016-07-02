@@ -83,17 +83,17 @@
    lazy="false" name="fertiggeplant" type="date"/>
   <property column="FertigstellungIst" generated="never" lazy="false"
    name="fertigIst" type="date"/>
-   <property column="VerwAnforderungen" generated="never" lazy="false"
+  <property column="VerwAnforderungen" generated="never" lazy="false"
    name="verwAnforderungen" type="string"/>
   <property column="SchluesselBegriffe" generated="never" lazy="false"
    name="schluesselBegriffe" type="string"/>
   <set fetch="select" inverse="true" lazy="true" name="anhaenge"
    sort="unsorted" table="Anhang">
    <key>
-    <column name="AnforderungId" not-null="true"/>
+    <column name="AnforderungId" not-null="false"/>
    </key>
    <one-to-many class="data.Anhang"/>
-  </set>
+  </set>  
  </class>
  <!-- mapping Benutzerart -->
  <class name="data.Benutzerart" table="benutzerart">

@@ -16,6 +16,8 @@ import javax.swing.border.EmptyBorder;
 
 import bl.AfdbLogin;
 import bl.BenutzerInfo;
+import data.Benutzer;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -30,6 +32,7 @@ public class AfdbLoginFrame extends JFrame {
 	private JTextField tfBenutzer;
 	private JPasswordField passwordField;
 	private AfdbLogin AfdbBl;
+	private Benutzer b;
 	
 	/**
 	 * Launch the application.
@@ -112,12 +115,56 @@ public class AfdbLoginFrame extends JFrame {
 	private void StartApplication() {
 		frame.dispose(); // aktuelles Frame schliessen
 		AfdbZugewiesenFrame zugew_frame = new AfdbZugewiesenFrame();
+		zugew_frame.setEingeloggterUser(b);
 		zugew_frame.setBounds(300, 100, 1000, 600);
 		zugew_frame.setMinimumSize(new Dimension(1100, 700));
 		zugew_frame.setVisible(true); // das "Mir zugewiesen"-Frame oeffnen und anzeigen
 	}
 	
+	
+	// neue Version
 	private void performLogin(){
+		String benutzer = tfBenutzer.getText();			
+		String passwort = new String (passwordField.getPassword());	
+		if( ! (benutzer.isEmpty() && passwort.isEmpty()) ){
+			try {
+				b = AfdbBl.authUser(benutzer,passwort);
+				if(b != null)
+				{
+					System.out.println("b="+b.toString());
+				    frame.StartApplication();
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(frame, "Benutzername oder Passwort falsch!");
+					tfBenutzer.setText("");
+					passwordField.setText("");
+				}
+			} catch (HeadlessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			JOptionPane.showMessageDialog(frame, "Kein Benutzername und kein Passwort eingegeben!");
+		}
+	}
+	
+	
+	
+	public Benutzer getB() {
+		return b;
+	}
+
+	public void setB(Benutzer b) {
+		this.b = b;
+	}
+	
+
+	// alte Version
+	private void performLogin_old(){
 
 		String benutzer = tfBenutzer.getText();			
 		String passwort = new String (passwordField.getPassword());
@@ -144,6 +191,5 @@ public class AfdbLoginFrame extends JFrame {
 		} else {
 			JOptionPane.showMessageDialog(frame, "Kein Benutzername und kein Passwort eingegeben!");
 		}
-		
 	}
 }

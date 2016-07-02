@@ -230,6 +230,35 @@ public class QueryHelper {
 				
 		return true;
 	}
+	
+	
+	/**
+	 * Aus der DB den Benutzer ermitteln, der den Usernamen mit dem Passwort hat.
+	 * Als Rueckgabewert erhaelt man den ermittelten Benutzer.
+	 * @param benutzername
+	 * @param passwort
+	 * @return
+	 */
+	public static Benutzer authenticateUser(String benutzername, String passwort){
+		Session session = HibernateUtil.sessionFactory.openSession();
+		String stmt = "from Benutzer b where b.benutzername = :user and b.passwort = :pw";	
+		Query query = session.createQuery(stmt);
+		if (!benutzername.isEmpty()){
+			query.setParameter("user", benutzername);
+		}
+		if (!passwort.isEmpty()){
+			query.setParameter("pw", passwort);
+		}
+		
+		List<Benutzer> ben = query.list();
+		if(ben.isEmpty()){
+			return null;
+		}else{
+			Benutzer benutzer = (Benutzer) query.list().get(0);
+			return benutzer;
+		}
+	}
+	
 
 	/**
 	 * eine Anforderung speichern

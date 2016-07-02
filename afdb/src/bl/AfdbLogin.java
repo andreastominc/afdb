@@ -1,6 +1,8 @@
 package bl;
 
 import dal.QueryHelper;
+import data.Benutzer;
+
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -19,7 +21,17 @@ public class AfdbLogin {
 		return QueryHelper.checkPasswort(hexString.toString());
 	}
 	
-	
+	/**
+	 * 
+	 * @param user
+	 * @param password
+	 * @return
+	 * @throws NoSuchAlgorithmException
+	 */
+	public Benutzer authUser(String user, String password) throws NoSuchAlgorithmException{
+		StringBuffer hexString = encrypt(password);	
+		return QueryHelper.authenticateUser(user, hexString.toString());
+	}
 	
 
 	private StringBuffer encrypt(String passwort) throws NoSuchAlgorithmException {
