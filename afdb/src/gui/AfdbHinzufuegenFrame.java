@@ -483,7 +483,7 @@ public class AfdbHinzufuegenFrame extends JFrame {
 		benutzerListe = afdbBl.getBenutzerMitSchreibRecht(schreibRecht);
 		for(Benutzer benutzer : benutzerListe)
 		{
-			cbZugewiesen.addItem(benutzer.getBenutzername());
+			cbZugewiesen.addItem(benutzer);
 		}
 
 	}

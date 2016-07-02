@@ -84,33 +84,38 @@ public class AfdbZugewiesenFrame extends JFrame {
 		JMenuBar menuBar = new JMenuBar();
 		panel.add(menuBar);
 		
+		
 		JMenuItem mntmMirZugewiesen = new JMenuItem("Mir zugewiesen");
 		mntmMirZugewiesen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Mir zugewiesen");
 				
+				/* // macht keinen Sinn das gleiche Fenster zu schliessen und nochmal zu oeffnen... 
 				frame.dispose(); // aktuelles Frame schliessen
 				AfdbZugewiesenFrame zugew_frame = new AfdbZugewiesenFrame();
 				zugew_frame.setBounds(300, 100, 1000, 600);
 				zugew_frame.setMinimumSize(new Dimension(1100, 700));
 				zugew_frame.setVisible(true); // das "Mir zugewiesen"-Frame oeffnen und anzeigen
+				*/
 			}
 		});
 		menuBar.add(mntmMirZugewiesen);
 		
-		JMenuItem mntmBearbeiten = new JMenuItem("Hinzufügen");
-		mntmBearbeiten.addActionListener(new ActionListener() {
+		// bei Klick aufs Menue-Item "Hinzufuegen" soll das aktuelle Frame "geschlossen" werden und das 
+		// neue Frame "Hinzufuegen" geoeffnet werden.
+		JMenuItem mntmHinzufuegen = new JMenuItem("HinzufÃ¼gen");
+		mntmHinzufuegen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Hinzufügen");
+				System.out.println("Hinzufuegen");
 				
 				frame.dispose(); // aktuelles Frame schliessen
 				AfdbHinzufuegenFrame hinzu_frame = new AfdbHinzufuegenFrame();
 				hinzu_frame.setBounds(300, 100, 1000, 600);
 				hinzu_frame.setMinimumSize(new Dimension(1100, 700));
-				hinzu_frame.setVisible(true); // das Suchen-Frame oeffnen und anzeigen
+				hinzu_frame.setVisible(true); // das Hinzufuegen-Frame oeffnen und anzeigen
 			}
 		});
-		menuBar.add(mntmBearbeiten);
+		menuBar.add(mntmHinzufuegen);
 		
 		// bei Klick aufs Menue-Item "Suchen" soll das aktuelle Frame "geschlossen" werden und das 
 		// neue Frame "Suchen" geoeffnet werden.
@@ -136,7 +141,7 @@ public class AfdbZugewiesenFrame extends JFrame {
 		
 		Object[] columnNames = 
 			{"AfNr",
-             "Priorität",
+             "PrioritÃ¤t",
              "Status",
              "Titel",
              "Kunde",
