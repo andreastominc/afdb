@@ -20,6 +20,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class AfdbLoginFrame extends JFrame {
 	
@@ -70,29 +72,7 @@ public class AfdbLoginFrame extends JFrame {
 		btnLogin.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				
-				String benutzer = tfBenutzer.getText();			
-				String passwort = new String (passwordField.getPassword());
-								
-				try {
-					if(AfdbBl.checkUser(benutzer) && AfdbBl.checkPasswort(passwort))
-					{
-					    frame.StartApplication();
-					}
-					else
-					{
-						JOptionPane.showMessageDialog(frame, "Benutzername oder Passwort falsch!");
-						tfBenutzer.setText("");
-						passwordField.setText("");
-					}
-				} catch (HeadlessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (NoSuchAlgorithmException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
+				performLogin();
 			}
 		});
 		contentPane.add(btnLogin, BorderLayout.SOUTH);
@@ -112,6 +92,15 @@ public class AfdbLoginFrame extends JFrame {
 		panel_1.add(lblPasswort);
 		
 		passwordField = new JPasswordField();
+		// wenn man im Passwort-Feld Enter drueckt, dann soll man auch eingeloggt werden
+		passwordField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER){
+					performLogin();
+				}
+			}
+		});
 		panel_1.add(passwordField);
 		
 		
@@ -126,5 +115,35 @@ public class AfdbLoginFrame extends JFrame {
 		zugew_frame.setBounds(300, 100, 1000, 600);
 		zugew_frame.setMinimumSize(new Dimension(1100, 700));
 		zugew_frame.setVisible(true); // das "Mir zugewiesen"-Frame oeffnen und anzeigen
+	}
+	
+	private void performLogin(){
+
+		String benutzer = tfBenutzer.getText();			
+		String passwort = new String (passwordField.getPassword());
+						
+		if( ! (benutzer.isEmpty() && passwort.isEmpty()) ){
+			try {
+				if(AfdbBl.checkUser(benutzer) && AfdbBl.checkPasswort(passwort))
+				{
+				    frame.StartApplication();
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(frame, "Benutzername oder Passwort falsch!");
+					tfBenutzer.setText("");
+					passwordField.setText("");
+				}
+			} catch (HeadlessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			JOptionPane.showMessageDialog(frame, "Kein Benutzername und kein Passwort eingegeben!");
+		}
+		
 	}
 }
