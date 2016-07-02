@@ -46,9 +46,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+
 import com.toedter.calendar.JDateChooser;
 
 import bl.AfdbBearbeiten;
@@ -63,7 +66,6 @@ public class AfdbBearbeitenFrame extends JFrame {
 	private JTextField tfVerwAnf;
 	private JTextField tfSchluesselbegriffe;
 	private JTextField tfAnhang;
-	private JTextField tfGespAnhaenge;
 	private JTextField tfAufwand;
 	private JComboBox cbStatus;
 	private JComboBox cbModul;
@@ -73,6 +75,7 @@ public class AfdbBearbeitenFrame extends JFrame {
 	private JComboBox cbZugewiesen;
 	private JComboBox cbKunde;
 	private JComboBox cbAnsprechperson;
+	private JComboBox cbGespeicherteAnh;
 	private JTextArea taBeschreibung;
 	private JLabel lblTitel;
 	private JLabel lblBeschreibung;
@@ -87,7 +90,9 @@ public class AfdbBearbeitenFrame extends JFrame {
 	private List<Benutzer> benutzerListe;
 	
 	private static AfdbBearbeitenFrame frame; // als private static definieren, damit spaeter "frame.dispose" aufgerufen werden kann.
-	private Anforderung anf;
+	private Anforderung anf; // die aktuell zu bearbeitende Anforderung
+	private Set<Anhang> anhg; // speichert mehrere Anhaenge zur aktuellen Anforderung
+	private Anhang ah1;
 	
 	/**
 	 * Launch the application.
@@ -99,9 +104,7 @@ public class AfdbBearbeitenFrame extends JFrame {
 					frame.setVisible(true);
 					frame.setBounds(300, 100, 1000, 600);
 					frame.setMinimumSize(new Dimension(1100, 700));
-					
 					frame.initializeData();
-					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -110,6 +113,8 @@ public class AfdbBearbeitenFrame extends JFrame {
 	}
 	
 	protected void initializeData() {
+		anhg = anf.getAnhaenge();
+		
 		initializeCbStatus(anf);
 		initializeCbModul(anf);
 		initializeCbPrio(anf);
@@ -118,6 +123,7 @@ public class AfdbBearbeitenFrame extends JFrame {
 		initializecbZugewiesen(anf);
 		initializecbKunde(anf);
 		//initializecbAnsprechperson();
+		initializecbGespeicherteAnh(anf);
 		initializeOthers(anf);
 		System.out.println("---bearb-anf="+frame.getAnf().toString());
 	}
@@ -135,6 +141,7 @@ public class AfdbBearbeitenFrame extends JFrame {
 		//tfKopieAn.setText(a.get....);
 		tfVerwAnf.setText(a.getVerwAnforderungen());
 		tfSchluesselbegriffe.setText(a.getSchluesselBegriffe());
+		
 	}
 
 	/**
@@ -145,7 +152,7 @@ public class AfdbBearbeitenFrame extends JFrame {
 		this.afdbBl = new AfdbBearbeiten();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 720, 558);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -158,24 +165,28 @@ public class AfdbBearbeitenFrame extends JFrame {
 		//----------------------------------------------------------------
 		JMenuBar menuBar = new JMenuBar();
 		panel.add(menuBar);
-		
+	
+		// bei Klick aufs Menue-Item "Mir zugewiesen" soll das aktuelle Frame "geschlossen" werden und das 
+		// neue Frame "Mir zugewiesen" geoeffnet werden.
 		JMenuItem mntmMirZugewiesen = new JMenuItem("Mir zugewiesen");
 		mntmMirZugewiesen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Mir zugewiesen");
-				// to do ....
+				openZugewiesenFrame();
 			}
 		});
 		menuBar.add(mntmMirZugewiesen);
 		
-		JMenuItem mntmBearbeiten = new JMenuItem("Bearbeiten");
-		mntmBearbeiten.addActionListener(new ActionListener() {
+		// bei Klick aufs Menue-Item "Hinzufuegen" soll das aktuelle Frame "geschlossen" werden und das 
+		// neue Frame "Hinzufuegen" geoeffnet werden.
+		JMenuItem mntmHinzufuegen = new JMenuItem("Hinzufügen");
+		mntmHinzufuegen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Bearbeiten");
-				// to do ....
+				System.out.println("Hinzufuegen");
+				openHinzufuegenFrame();
 			}
 		});
-		menuBar.add(mntmBearbeiten);
+		menuBar.add(mntmHinzufuegen);
 		
 		// bei Klick aufs Menue-Item "Suchen" soll das aktuelle Frame "geschlossen" werden und das 
 		// neue Frame "Suchen" geoeffnet werden.
@@ -183,13 +194,7 @@ public class AfdbBearbeitenFrame extends JFrame {
 		mntmSuchen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Suchen"); // auf Konsole mitloggen dass "Suchen" angeklickt wurde
-				
-				frame.dispose(); // aktuelles Frame schliessen
-				AfdbSuchenFrame suche_frame = new AfdbSuchenFrame();
-				suche_frame.setBounds(300, 100, 1000, 600);
-				suche_frame.setMinimumSize(new Dimension(1100, 700));
-				suche_frame.initializeData();
-				suche_frame.setVisible(true); // das Suchen-Frame oeffnen und anzeigen
+				openSuchenFrame();
 			}
 		});
 		menuBar.add(mntmSuchen);
@@ -247,8 +252,7 @@ public class AfdbBearbeitenFrame extends JFrame {
 				//Ansprechpersonen des Kunden setzen
 				ansprPersListe = afdbBl.getAnsprechpersonVonKunde(selektierterKd);
 				cbAnsprechperson.removeAllItems();
-				for(Benutzer ansprPers : ansprPersListe)
-				{
+				for(Benutzer ansprPers : ansprPersListe){
 					cbAnsprechperson.addItem(ansprPers);
 				}
 			}
@@ -399,21 +403,10 @@ public class AfdbBearbeitenFrame extends JFrame {
 		btHinzufuegen.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				JFileChooser chooser = new JFileChooser();
-		        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		        int returnWert = chooser.showOpenDialog(null);
-		        if (returnWert == JFileChooser.APPROVE_OPTION) {
-		        	filepath = chooser.getSelectedFile().getPath();
-		        	file = chooser.getSelectedFile();
-		        	tfAnhang.setText(filepath);
-		        }
+				addAnhang();
 			}
 		});
 		panel_15.add(btHinzufuegen, BorderLayout.EAST);
-		
-		tfGespAnhaenge = new JTextField();
-		panel_11.add(tfGespAnhaenge);
-		tfGespAnhaenge.setColumns(10);
 		
 		JPanel panel_13 = new JPanel();
 		panel_11.add(panel_13);
@@ -427,8 +420,7 @@ public class AfdbBearbeitenFrame extends JFrame {
 		btnSpeichern.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				if(pruefePflichtfelder())
-				{
+				if(pruefePflichtfelder()){
 					createAfdb();
 				};
 			}
@@ -443,96 +435,114 @@ public class AfdbBearbeitenFrame extends JFrame {
 			}
 		});
 		panel_14.add(btnAbbrechen);
+		
+		cbGespeicherteAnh = new JComboBox();
+		panel_13.add(cbGespeicherteAnh, BorderLayout.CENTER);
 	}
 	
-	private void initializeCbStatus(Anforderung a)
-	{
+	/**
+	 * Hinzufuegen eines Anhanges zum Set anhg
+	 */
+	protected void addAnhang() {
+		tfAnhang.setText("");
+		JFileChooser chooser = new JFileChooser();
+		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		int returnWert = chooser.showOpenDialog(null);
+		if (returnWert == JFileChooser.APPROVE_OPTION) {
+			filepath = chooser.getSelectedFile().getPath();
+			file = chooser.getSelectedFile();
+			tfAnhang.setText(filepath);
+		}
+		// Anhang hinzufuegen:
+		Anhang anh = new Anhang();
+		anh.setName(file.getName());
+		anh.setHinzugefuegtAm(new Date());
+		anh.setFile(file);
+		anh.setAnforderung(anf);
+		
+		anhg.add(anh);
+		anf.getAnhaenge().add(anh);
+		initializecbGespeicherteAnh(anf);
+	}
+
+	private void initializeCbStatus(Anforderung a){
 		List<Status> statusListe = afdbBl.getAllStatus();
-		for(Status status : statusListe)
-		{
+		for(Status status : statusListe){
 			cbStatus.addItem(status);
 		}
-		
 		// angezeigt/ausgewaehlt sein sollen die Daten von der aktuell zu bearbeitenden Anforderung
 		cbStatus.getModel().setSelectedItem(a.getStatus());
 	}
 	
-	private void initializeCbModul(Anforderung a)
-	{
+	private void initializeCbModul(Anforderung a){
 		List<Modul> modulListe = afdbBl.getAllModule();
-		for(Modul modul : modulListe)
-		{
+		for(Modul modul : modulListe){
 			cbModul.addItem(modul);
 		}
 		// angezeigt/ausgewaehlt sein sollen die Daten von der aktuell zu bearbeitenden Anforderung
 		cbModul.getModel().setSelectedItem(a.getModul());
 	}
 	
-	private void initializeCbAnforderungsArt(Anforderung a)
-	{
+	private void initializeCbAnforderungsArt(Anforderung a){
 		List<AnforderungsArt> anfArtListe =  afdbBl.getAllAnforderungsart();
-		for(AnforderungsArt anfArt : anfArtListe)
-		{
+		for(AnforderungsArt anfArt : anfArtListe){
 			cbAnforderungsArt.addItem(anfArt);
 		}
 		// angezeigt/ausgewaehlt sein sollen die Daten von der aktuell zu bearbeitenden Anforderung
 		cbAnforderungsArt.getModel().setSelectedItem(a.getAnfArt());
 	}
 	
-	private void initializeCbPrio(Anforderung a)
-	{
+	private void initializeCbPrio(Anforderung a){
 		List<Prioritaet> prioListe = afdbBl.getAllPrioritaeten();
-		for(Prioritaet prio : prioListe)
-		{
+		for(Prioritaet prio : prioListe){
 			cbPrio.addItem(prio);
 		}
 		// angezeigt/ausgewaehlt sein sollen die Daten von der aktuell zu bearbeitenden Anforderung
 		cbPrio.getModel().setSelectedItem(a.getPrio());
 	}
 	
-	private void initializeCbVersion(Anforderung a)
-	{
+	private void initializeCbVersion(Anforderung a){
 		List<Version> versionListe = afdbBl.getAllVersionen();
-		for(Version version : versionListe)
-		{
+		for(Version version : versionListe){
 			cbVersion.addItem(version);
 		}
 		// angezeigt/ausgewaehlt sein sollen die Daten von der aktuell zu bearbeitenden Anforderung
 		cbVersion.getModel().setSelectedItem(a.getVersion());
 	}
 
-	private void initializecbZugewiesen(Anforderung a)
-	{
+	private void initializecbZugewiesen(Anforderung a){
 		boolean schreibRecht = true;
 		benutzerListe = afdbBl.getBenutzerMitSchreibRecht(schreibRecht);
-		for(Benutzer benutzer : benutzerListe)
-		{
-			cbZugewiesen.addItem(benutzer.getBenutzername());
+		for(Benutzer benutzer : benutzerListe){
+			cbZugewiesen.addItem(benutzer);
 		}
 		// angezeigt/ausgewaehlt sein sollen die Daten von der aktuell zu bearbeitenden Anforderung
 		cbZugewiesen.getModel().setSelectedItem(a.getZugewiesenAn());
 	}
 	
-	private void initializecbKunde(Anforderung a)
-	{
+	private void initializecbKunde(Anforderung a){
 		List<Kunde> kundenListe = afdbBl.getAllKunden();
-		for(Kunde kunde : kundenListe)
-		{
+		for(Kunde kunde : kundenListe){
 			cbKunde.addItem(kunde);
 		}
 		// angezeigt/ausgewaehlt sein sollen die Daten von der aktuell zu bearbeitenden Anforderung
 		cbKunde.getModel().setSelectedItem(a.getKunde());
 	}
 	
-	private void initializecbAnsprechperson(Anforderung a)
-	{
+	private void initializecbAnsprechperson(Anforderung a){
 		List<Benutzer> ansprechPersionListe = afdbBl.getAllAnsprechpersonen();
-		for(Benutzer ap : ansprechPersionListe)
-		{
+		for(Benutzer ap : ansprechPersionListe){
 			cbAnsprechperson.addItem(ap);
 		}
 		// angezeigt/ausgewaehlt sein sollen die Daten von der aktuell zu bearbeitenden Anforderung
 		cbAnsprechperson.getModel().setSelectedItem(a.getAnsprechPerson());
+	}
+	
+	private void initializecbGespeicherteAnh(Anforderung a){
+		cbGespeicherteAnh.removeAllItems();
+		for(Anhang anha1 : anhg){
+			cbGespeicherteAnh.addItem(anha1);
+		}
 	}
 	
 	private boolean pruefePflichtfelder() {
@@ -541,25 +551,21 @@ public class AfdbBearbeitenFrame extends JFrame {
 		lblBeschreibung.setForeground(Color.BLACK);
 		lblHelpdesknummer.setForeground(Color.BLACK);
 		
-		if(tfTitel.getText().isEmpty())
-		{
+		if(tfTitel.getText().isEmpty()){
 			lblTitel.setForeground(Color.RED);
 			befuellt = false;
 		}
-		if(taBeschreibung.getText().isEmpty())
-		{
+		if(taBeschreibung.getText().isEmpty()){
 			lblBeschreibung.setForeground(Color.RED);
 			befuellt = false;
 		}
-		if(!befuellt)
-		{
+		if(!befuellt){
 			return false;
 		}
 		return true;
 	}
 	
-	private Benutzer getBenutzerVonUsername()
-	{
+	private Benutzer getBenutzerVonUsername(){
 		Benutzer zugewiesenAn = (Benutzer) cbZugewiesen.getSelectedItem();
 		return zugewiesenAn;
 	}
@@ -593,7 +599,7 @@ public class AfdbBearbeitenFrame extends JFrame {
 		try {
 			aufwandGesch = Float.parseFloat(aufwand);
 		} catch (NumberFormatException ex) {
-			JOptionPane.showMessageDialog(this,"Aufwand Wert: "+aufwand +" ist nicht gueltig. Richtiges Format: 1.2");
+			JOptionPane.showMessageDialog(this,"Aufwand Wert: "+aufwand+" ist nicht gueltig. Richtiges Format: 1.2");
 			return;
 		}
 		Date fertigStellGepl = dcFertigStellGepl.getDate();
@@ -616,27 +622,42 @@ public class AfdbBearbeitenFrame extends JFrame {
 		//---------------------------
 		
 		boolean speicherung = false;
-		// wenn Anhang ausgewaehlt, dann die Methode mit Anhang aufrufen
-		if (frame.filepath.length() > 0){
-			System.out.println("filepath length: "+frame.filepath.length());
-			// Anhang hinzufuegen:
-			Anhang anh = new Anhang();
-			anh.setName(file.getName());
-			anh.setHinzugefuegtAm(new Date());
-			anh.setFile(file);
-			
-			// die createAfdb Methode mit Anhang aufrufen:
-			speicherung = afdbBl.persistAfdb(anf, anh, titel, beschreibung, benutzer, erfDatum, ansprPers, kd, anfArt, prio, status, benutzer, modul, version, hdNr,
-					aufwandGesch, fertigStellGepl, fertigStellIst, verwAnforderungen, schluesselBegriffe);			
-		} // sonst (wenn kein Anhang), dann die normale Methode aufrufen
-		else {
-			// die createAfdb Methode ohne Anhang aufrufen:
-			speicherung = afdbBl.persistAfdb(anf, titel, beschreibung, benutzer, erfDatum, ansprPers, kd, anfArt, prio, status, benutzer, modul, version, hdNr,
-				aufwandGesch, fertigStellGepl, fertigStellIst, verwAnforderungen, schluesselBegriffe);
-		}		
+		boolean speicherungAnh = false;
 
-		if(speicherung)
-		{
+		System.out.println("anhg.isEmpty()="+anhg.isEmpty());
+		if(anhg.isEmpty()){
+			speicherungAnh = true;
+		}else{ 
+			// to do ... funktioniert noch nicht richtig, wenn es bereits Anhaenge gibt...
+			for (Anhang ag1 : anhg){
+				if(ag1.getFile() != null){
+					System.out.println("...anforderung und neuen anhang speichern...");
+					System.out.println("speicherungAnh: "+ag1.getFile().getName()+" / "+speicherungAnh);
+					speicherungAnh = afdbBl.persistAnhang(anf, ag1);
+				}
+				else{
+					System.out.println("...anforderung und schon vorhandene anhaenge speichern...");
+				}
+			}
+		}
+		
+		// die persistAfdb Methode ohne Anhang aufrufen:
+		speicherung = afdbBl.persistAfdb(anf, titel, beschreibung, benutzer, erfDatum, ansprPers, kd, anfArt, prio,
+				status, benutzer, modul, version, hdNr, aufwandGesch, fertigStellGepl, fertigStellIst,
+				verwAnforderungen, schluesselBegriffe);
+		
+
+		if(speicherungAnh){
+			JOptionPane.showMessageDialog(this,"Anhang Speicherung erfolgreich!");
+		}
+		else {
+			JOptionPane.showMessageDialog(this,"Anhang Speicherung nicht erfolgreich!");
+			System.exit(0);
+		}
+		
+		// -------
+		
+		if(speicherung && speicherungAnh){
 			JOptionPane.showMessageDialog(this,"Speicherung erfolgreich!");
 			//todo
 			//System.exit(0);
@@ -646,8 +667,42 @@ public class AfdbBearbeitenFrame extends JFrame {
 			//todo
 			System.exit(0);
 		}
-
 	}
+
+	/**
+	 * aktuelles Frame schliessen und Suchen Frame oeffnen
+	 */
+	private void openSuchenFrame() {
+		frame.dispose(); // aktuelles Frame schliessen
+		AfdbSuchenFrame suche_frame = new AfdbSuchenFrame();
+		suche_frame.setBounds(300, 100, 1000, 600);
+		suche_frame.setMinimumSize(new Dimension(1100, 700));
+		suche_frame.initializeData();
+		suche_frame.setVisible(true); // das Suchen-Frame oeffnen und anzeigen
+	}
+
+	/**
+	 * aktuelles Frame schliessen und Hinzufuegen Frame oeffnen
+	 */
+	private void openHinzufuegenFrame() {
+		frame.dispose(); // aktuelles Frame schliessen
+		AfdbHinzufuegenFrame hinzu_frame = new AfdbHinzufuegenFrame();
+		hinzu_frame.setBounds(300, 100, 1000, 600);
+		hinzu_frame.setMinimumSize(new Dimension(1100, 700));
+		hinzu_frame.setVisible(true); // das Hinzufuegen-Frame oeffnen und anzeigen
+	}
+
+	/**
+	 * aktuelles Frame schliessen und Mir Zugewiesen Frame oeffnen
+	 */
+	private void openZugewiesenFrame() {
+		frame.dispose(); // aktuelles Frame schliessen
+		AfdbZugewiesenFrame zugew_frame = new AfdbZugewiesenFrame();
+		zugew_frame.setBounds(300, 100, 1000, 600);
+		zugew_frame.setMinimumSize(new Dimension(1100, 700));
+		zugew_frame.setVisible(true); // das "Mir zugewiesen"-Frame oeffnen und anzeigen
+	}
+
 
 	public File getFile() {
 		return file;
@@ -664,12 +719,5 @@ public class AfdbBearbeitenFrame extends JFrame {
 	public void setAnf(Anforderung anf) {
 		this.anf = anf;
 	}
-	
-	
-	
-	
 
-	
-	
-	
 }

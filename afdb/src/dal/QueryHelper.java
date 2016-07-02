@@ -3,6 +3,7 @@ package dal;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Blob;
 import java.sql.SQLException;
@@ -239,6 +240,7 @@ public class QueryHelper {
 		Session session = HibernateUtil.sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		tx.begin();
+
 		session.saveOrUpdate(anf); // saveOrUpdate anstatt save, damit auch verwendbar fuers Bearbeiten
 		tx.commit();
 		session.close();
@@ -252,8 +254,9 @@ public class QueryHelper {
 	public static void saveAnf(Anforderung anf, Anhang anh) {
 		Session session = HibernateUtil.sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
-
+		
 		// Serializable parentId = session.save(anf);
+
 		session.saveOrUpdate(anf); // saveOrUpdate anstatt save, damit auch verwendbar fuers Bearbeiten
 		
 		//System.out.println("serializable="+parentId);
@@ -287,6 +290,115 @@ public class QueryHelper {
 		try {
 			blob.free();
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		// Die Transaction commiten
+		tx.commit();
+	}
+	
+	// ------------------------------------------------
+
+	/**
+	 * eine Anforderung updaten
+	 * @param anf
+	 */
+	public static void updateAnf(Anforderung anf) {
+		System.out.println("---save Anforderung ohne Anhang.");
+		Session session = HibernateUtil.sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		tx.begin();
+		
+		// die Anforderung muss aus der Hibernate Session geladen werden:
+		Anforderung a1 = (Anforderung) session.get(Anforderung.class, anf.getAnfId());
+		
+		//Anforderung a = (Anforderung) session.merge(anf);
+		//System.out.println("---save Anforderung ohne Anhang="+a.getAnfId());
+		
+		System.out.println("---vorher:session.get="+a1.toString());
+		
+		// dann die Daten der geladenen Anforderung mit den Daten der upgedateten Anforderung setzen:
+		a1.setAnfArt(anf.getAnfArt());
+		a1.setAngelegtVon(anf.getAngelegtVon());
+		a1.setAnsprechPerson(anf.getAnsprechPerson());
+		a1.setAufwandGeschaetzt(anf.getAufwandGeschaetzt());
+		a1.setBeschreibung(anf.getBeschreibung());
+		a1.setErfassungsDatum(anf.getErfassungsDatum());
+		a1.setFertiggeplant(anf.getFertiggeplant());
+		a1.setFertigIst(anf.getFertigIst());
+		a1.setHdNummer(anf.getHdNummer());
+		a1.setKunde(anf.getKunde());
+		a1.setModul(anf.getModul());
+		a1.setPrio(anf.getPrio());
+		a1.setModul(anf.getModul());
+		a1.setSchluesselBegriffe(anf.getSchluesselBegriffe());
+		a1.setStatus(anf.getStatus());
+		a1.setTitel(anf.getTitel());
+		a1.setVersion(anf.getVersion());
+		a1.setVerwAnforderungen(anf.getVerwAnforderungen());
+		a1.setZugewiesenAn(anf.getZugewiesenAn());
+		
+		// to do ... anhaenge ... geht noch nicht.
+		//a1.getAnhaenge().clear();
+		//a1.setAnhaenge(anf.getAnhaenge());
+		
+		System.out.println("---nachher:session.get="+a1.toString());
+
+		// dann die geladene und upgedatete Anforderung speichern:
+		session.update(a1); // saveOrUpdate anstatt save, damit auch verwendbar fuers Bearbeiten
+		tx.commit();
+		session.close();
+	}
+	
+	/**
+	 * Eine Anforderung mit Anhang updaten
+	 * @param anf
+	 * @param anh
+	 */
+	public static void updateAnf(Anforderung anf, Anhang anh) {
+		System.out.println("---save Anforderung mit Anhang.");
+		Session session = HibernateUtil.sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		session.clear();
+		
+		// Serializable parentId = session.save(anf);
+		Anforderung a1 = (Anforderung) session.merge(anf);
+		System.out.println("---save Anforderung mit Anhang="+a1.getAnfId());
+		//session.saveOrUpdate(anf); // saveOrUpdate anstatt save, damit auch verwendbar fuers Bearbeiten
+		
+		//System.out.println("serializable="+parentId);
+
+		
+	    File anhfile = anh.getFile();
+	    System.out.println("anhfile="+anh.getFile().getName());
+	    FileInputStream inputStream = null;
+		try {
+			inputStream = new FileInputStream(anhfile);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+        Blob blob = Hibernate.getLobCreator(session)
+                            .createBlob(inputStream, anhfile.length());
+	    anh.setDatei(blob);
+	    
+
+		System.out.println("im queyhelper: anhang: "+anh.getAnhangId()+", "+anh.getAnforderung().getAnfId());
+		session.saveOrUpdate(anh); // saveOrUpdate anstatt save, damit auch verwendbar fuers Bearbeiten
+		
+		//Am Ende den Blob wieder freigeben
+		try {
+			blob.free();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			inputStream.close();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
