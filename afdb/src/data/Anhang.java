@@ -58,8 +58,9 @@ public class Anhang {
 
 	@Override
 	public String toString() {
-		return "Anhang [anhangId=" + anhangId + ", datei=" + datei + ", name=" + name + ", hinzugefuegtAm="
-				+ hinzugefuegtAm + ", anforderung=" + anforderung + "]";
+		//return "Anhang [anhangId=" + anhangId + ", name=" + name + ", hinzugefuegtAm="
+		//		+ hinzugefuegtAm + ", anforderung=" + anforderung.getAnfId() + "]";
+		return name;
 	}
 
 	public File getFile() {

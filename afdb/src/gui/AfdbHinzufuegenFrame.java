@@ -530,18 +530,8 @@ public class AfdbHinzufuegenFrame extends JFrame {
 		return true;
 	}
 	
-	private Benutzer getBenutzerVonUsername()
-	{
-		String benutzername = (String) cbZugewiesen.getSelectedItem();
-		Benutzer zugewiesenAn = null;
-		for(int i = 0; i<benutzerListe.size(); i++)
-		{
-			zugewiesenAn = benutzerListe.get(i);
-			if(benutzername.equals(zugewiesenAn.getBenutzername()))
-			{
-				break;
-			}
-		}
+	private Benutzer getBenutzerVonUsername(){
+		Benutzer zugewiesenAn = (Benutzer) cbZugewiesen.getSelectedItem();
 		return zugewiesenAn;
 	}
 
