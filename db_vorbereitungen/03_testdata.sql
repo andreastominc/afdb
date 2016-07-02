@@ -74,3 +74,12 @@ INSERT INTO `kunde` (`KundeId`, `Kundennummer`, `Bezeichnung`, `Adresse`, `Konta
 (3, '4713', 'Autohaus Max', 3, 5, 'office@autohaus-max.at');
 
 commit;
+
+-- Passwoerter MD5 verschluesseln:
+update Benutzer set passwort = '40747cf43bd98b345006ba683fadbe63' where passwort = 'atominc';
+update Benutzer set passwort = 'a21c21e40c01ff8bb48c8ac8c049df5c' where passwort = 'phierzer';
+update Benutzer set passwort = '145791fba13d4acb36a6dd930e6e5079' where passwort = 'tmuster';
+update Benutzer set passwort = '39d2a08723625c2654c88ca75ec677a5' where passwort = 'fhuber';
+update Benutzer set passwort = '16f3f36cbb67e88ee9a025eac72bae53' where passwort = 'jmax';
+update Benutzer set passwort = 'f2c16fe5d29c4d13d9d6e2412f69c97b' where passwort = 'mmustermann';
+commit;
