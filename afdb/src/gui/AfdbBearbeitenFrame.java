@@ -56,6 +56,9 @@ import com.toedter.calendar.JDateChooser;
 
 import bl.AfdbBearbeiten;
 import bl.AfdbHinzufuegen;
+import java.awt.Component;
+import javax.swing.Box;
+import javax.swing.JSeparator;
 
 public class AfdbBearbeitenFrame extends JFrame {
 
@@ -95,6 +98,7 @@ public class AfdbBearbeitenFrame extends JFrame {
 	private Anhang ah1;
 	
 	private Benutzer eingeloggterUser;
+	private JLabel lblEingeloggterUser;
 	
 	/**
 	 * Launch the application.
@@ -150,6 +154,7 @@ public class AfdbBearbeitenFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public AfdbBearbeitenFrame() {
+		setTitle("Anforderung bearbeiten");
 		frame = this;
 		this.afdbBl = new AfdbBearbeiten();
 		
@@ -188,6 +193,10 @@ public class AfdbBearbeitenFrame extends JFrame {
 				openHinzufuegenFrame();
 			}
 		});
+		
+		JSeparator separator = new JSeparator();
+		separator.setOrientation(SwingConstants.VERTICAL);
+		menuBar.add(separator);
 		menuBar.add(mntmHinzufuegen);
 		
 		// bei Klick aufs Menue-Item "Suchen" soll das aktuelle Frame "geschlossen" werden und das 
@@ -199,7 +208,21 @@ public class AfdbBearbeitenFrame extends JFrame {
 				openSuchenFrame();
 			}
 		});
+		
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setOrientation(SwingConstants.VERTICAL);
+		menuBar.add(separator_1);
 		menuBar.add(mntmSuchen);
+		
+		JSeparator separator_2 = new JSeparator();
+		separator_2.setOrientation(SwingConstants.VERTICAL);
+		menuBar.add(separator_2);
+		
+		JLabel lblAngemeldetAls = new JLabel("Angemeldet als: ");
+		menuBar.add(lblAngemeldetAls);
+		
+		lblEingeloggterUser = new JLabel("");
+		menuBar.add(lblEingeloggterUser);
 		//----------------------------------------------------------------
 
 		
@@ -732,6 +755,7 @@ public class AfdbBearbeitenFrame extends JFrame {
 
 	public void setEingeloggterUser(Benutzer eingeloggterUser) {
 		this.eingeloggterUser = eingeloggterUser;
+		this.lblEingeloggterUser.setText(eingeloggterUser.getBenutzername());
 	}
 
 	

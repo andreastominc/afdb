@@ -52,6 +52,7 @@ import java.util.Date;
 import java.util.List;
 import com.toedter.calendar.JDateChooser;
 import bl.AfdbHinzufuegen;
+import javax.swing.JSeparator;
 
 public class AfdbHinzufuegenFrame extends JFrame {
 
@@ -89,6 +90,7 @@ public class AfdbHinzufuegenFrame extends JFrame {
 	private ArrayList<Anforderung> selAnf = new ArrayList<Anforderung>();
 	
 	private Benutzer eingeloggterUser;
+	private JLabel lblEingeloggterUser;
 		
 	private void initializeData() {
 		initializeCbStatus();
@@ -105,6 +107,7 @@ public class AfdbHinzufuegenFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public AfdbHinzufuegenFrame() {
+		setTitle("Anforderung hinzufügen");
 		frame = this;
 		
 		this.afdbBl = new AfdbHinzufuegen();
@@ -147,6 +150,10 @@ public class AfdbHinzufuegenFrame extends JFrame {
 				// to do ....
 			}
 		});
+		
+		JSeparator separator = new JSeparator();
+		separator.setOrientation(SwingConstants.VERTICAL);
+		menuBar.add(separator);
 		menuBar.add(mntmBearbeiten);
 		
 		// bei Klick aufs Menue-Item "Suchen" soll das aktuelle Frame "geschlossen" werden und das 
@@ -165,7 +172,21 @@ public class AfdbHinzufuegenFrame extends JFrame {
 				suche_frame.setVisible(true); // das Suchen-Frame oeffnen und anzeigen
 			}
 		});
+		
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setOrientation(SwingConstants.VERTICAL);
+		menuBar.add(separator_1);
 		menuBar.add(mntmSuchen);
+		
+		JSeparator separator_2 = new JSeparator();
+		separator_2.setOrientation(SwingConstants.VERTICAL);
+		menuBar.add(separator_2);
+		
+		JLabel lblAngemeldetAls = new JLabel("Angemeldet als: ");
+		menuBar.add(lblAngemeldetAls);
+		
+		lblEingeloggterUser = new JLabel("");
+		menuBar.add(lblEingeloggterUser);
 		//----------------------------------------------------------------
 
 		
@@ -650,6 +671,7 @@ public class AfdbHinzufuegenFrame extends JFrame {
 
 	public void setEingeloggterUser(Benutzer eingeloggterUser) {
 		this.eingeloggterUser = eingeloggterUser;
+		this.lblEingeloggterUser.setText(eingeloggterUser.getBenutzername());
 	}
 
 

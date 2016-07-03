@@ -39,6 +39,8 @@ import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.awt.Component;
 import javax.swing.JMenuItem;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
 
 public class AfdbSuchenFrame extends JFrame {
 
@@ -53,7 +55,7 @@ public class AfdbSuchenFrame extends JFrame {
 	private JComboBox cbZugewiesen;
 	private JScrollPane scrollPane;
 	private JTable table;
-	private JLabel lblUser;
+	private JLabel lblEingeloggterUser;
 
 	private AfdbSuchenFrame frame;
 	private AfdbSuchen afdbSuchen;
@@ -137,14 +139,15 @@ public class AfdbSuchenFrame extends JFrame {
 		initializeZugewiesen();
 		initializeStatus();
 		initializeTable();
-		this.username = BenutzerInfo.BenutzerName;
-		this.lblUser.setText(this.username);
+		//this.username = BenutzerInfo.BenutzerName;
+		//this.lblEingeloggterUser.setText(this.username);
 	}
 	
 	/**
 	 * Create the frame.
 	 */
 	public AfdbSuchenFrame() {
+		setTitle("Anforderungen suchen");
 		frame = this;
 		afdbSuchen = new AfdbSuchen();
 		
@@ -192,6 +195,10 @@ public class AfdbSuchenFrame extends JFrame {
 				hinzu_frame.setVisible(true); // das Suchen-Frame oeffnen und anzeigen
 			}
 		});
+		
+		JSeparator separator = new JSeparator();
+		separator.setOrientation(SwingConstants.VERTICAL);
+		menuBar.add(separator);
 		menuBar.add(mntmBearbeiten);
 		
 		// bei Klick aufs Menue-Item "Suchen" soll das aktuelle Frame "geschlossen" werden und das 
@@ -210,14 +217,22 @@ public class AfdbSuchenFrame extends JFrame {
 				suche_frame.setVisible(true); // das Suchen-Frame oeffnen und anzeigen
 			}
 		});
+		
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setOrientation(SwingConstants.VERTICAL);
+		menuBar.add(separator_1);
 		menuBar.add(mntmSuchen);
+		
+		JSeparator separator_2 = new JSeparator();
+		separator_2.setOrientation(SwingConstants.VERTICAL);
+		menuBar.add(separator_2);
 		//----------------------------------------------------------------
 
-		JLabel lblAngemeldeterUser = new JLabel("Angemeldeter User:");
+		JLabel lblAngemeldeterUser = new JLabel("Angemeldet als: ");
 		menuBar.add(lblAngemeldeterUser);
 		
-		lblUser = new JLabel(this.username);
-		menuBar.add(lblUser);
+		lblEingeloggterUser = new JLabel();
+		menuBar.add(lblEingeloggterUser);
 		
 		JPanel panel_1 = new JPanel();
 		contentPane.add(panel_1, BorderLayout.CENTER);
@@ -479,6 +494,7 @@ public class AfdbSuchenFrame extends JFrame {
 
 	public void setEingeloggterUser(Benutzer eingeloggterUser) {
 		this.eingeloggterUser = eingeloggterUser;
+		this.lblEingeloggterUser.setText(eingeloggterUser.getBenutzername());
 	}
 	
 	

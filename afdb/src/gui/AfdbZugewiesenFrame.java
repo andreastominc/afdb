@@ -55,11 +55,13 @@ import data.Status;
 import data.Version;
 import javax.swing.JTable;
 import java.awt.GridBagLayout;
+import javax.swing.JSeparator;
 
 public class AfdbZugewiesenFrame extends JFrame {
 
 	private JPanel contentPane;
 	private Benutzer eingeloggterUser;
+	private JLabel lblEingeloggterUser;
 	
 	private static AfdbZugewiesenFrame frame; // als private static definieren, damit spaeter "frame.dispose" aufgerufen werden kann.
 	private JTable tblAnforderungen;
@@ -79,6 +81,7 @@ public class AfdbZugewiesenFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public AfdbZugewiesenFrame() {
+		setTitle("Mir zugewiesene Anforderungen");
 		frame = this;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -126,6 +129,10 @@ public class AfdbZugewiesenFrame extends JFrame {
 				hinzu_frame.setVisible(true); // das Hinzufuegen-Frame oeffnen und anzeigen
 			}
 		});
+		
+		JSeparator separator = new JSeparator();
+		separator.setOrientation(SwingConstants.VERTICAL);
+		menuBar.add(separator);
 		menuBar.add(mntmHinzufuegen);
 		
 		// bei Klick aufs Menue-Item "Suchen" soll das aktuelle Frame "geschlossen" werden und das 
@@ -143,7 +150,21 @@ public class AfdbZugewiesenFrame extends JFrame {
 				suche_frame.setVisible(true); // das Suchen-Frame oeffnen und anzeigen
 			}
 		});
+		
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setOrientation(SwingConstants.VERTICAL);
+		menuBar.add(separator_1);
 		menuBar.add(mntmSuchen);
+		
+		JSeparator separator_2 = new JSeparator();
+		separator_2.setOrientation(SwingConstants.VERTICAL);
+		menuBar.add(separator_2);
+		
+		JLabel lblAngemeldetAls = new JLabel("Angemeldet als: ");
+		menuBar.add(lblAngemeldetAls);
+		
+		lblEingeloggterUser = new JLabel("");
+		menuBar.add(lblEingeloggterUser);
 		//----------------------------------------------------------------
 
 		
@@ -246,7 +267,7 @@ public class AfdbZugewiesenFrame extends JFrame {
 
 	public void setEingeloggterUser(Benutzer eingeloggterUser) {
 		this.eingeloggterUser = eingeloggterUser;
-		System.out.println("eingeloggterUser="+eingeloggterUser);
+		this.lblEingeloggterUser.setText(eingeloggterUser.getBenutzername());
 	}
 	
 	

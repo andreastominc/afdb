@@ -58,6 +58,7 @@ public class AfdbLoginFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public AfdbLoginFrame() {
+		setTitle("AFDB Login");
 		
 		this.AfdbBl = new AfdbLogin();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

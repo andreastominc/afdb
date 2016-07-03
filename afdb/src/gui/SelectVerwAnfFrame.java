@@ -79,6 +79,7 @@ public class SelectVerwAnfFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public SelectVerwAnfFrame() {
+		setTitle("Verwandte Anforderungen auswÃ¤hlen");
 		this.afdbBl = new AfdbHinzufuegen();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -155,7 +156,7 @@ public class SelectVerwAnfFrame extends JFrame {
 				// to do: dass es nur bei doppelklick uebernommen wird... geht aber nur mit abstracttablemodel.
 				//if (arg0.getClickCount() == 2 && !arg0.isConsumed()) {
 				//	arg0.consume();
-					//verwandte Anforderung in Selektierte Liste hinzufügen
+					//verwandte Anforderung in Selektierte Liste hinzufï¿½gen
 					setSelectedAnforderung();
 				//}
 			}
@@ -173,7 +174,7 @@ public class SelectVerwAnfFrame extends JFrame {
 		selectedAnfTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//verwandte selektierte Anforderung in Gesamt List zurückgeben
+				//verwandte selektierte Anforderung in Gesamt List zurï¿½ckgeben
 				returnSelectedAnforderung();
 			}
 		});
@@ -187,7 +188,7 @@ public class SelectVerwAnfFrame extends JFrame {
 		//selektierte Anforderung von Gesamt Tabelle
 		Anforderung anf = anforderungen.get(allAnfTable.getSelectedRow());
 		
-		//Anforderung zu Selektierte Liste hinzufügen und aus Gesamt List entfernen
+		//Anforderung zu Selektierte Liste hinzufï¿½gen und aus Gesamt List entfernen
 		selectedAnforderungen.add(anf);
 		anforderungen.remove(anf);
 		
@@ -201,7 +202,7 @@ public class SelectVerwAnfFrame extends JFrame {
 	private void returnSelectedAnforderung() {	
 		//selektierte Anforderung von Select Tabelle
 		Anforderung anf = selectedAnforderungen.get(selectedAnfTable.getSelectedRow());
-		//Anforderung aus Selektierte Liste entfernen und zu Gesamt List hinzufügen
+		//Anforderung aus Selektierte Liste entfernen und zu Gesamt List hinzufï¿½gen
 		selectedAnforderungen.remove(anf);
 		anforderungen.add(anf);
 		
@@ -212,7 +213,7 @@ public class SelectVerwAnfFrame extends JFrame {
 		sortAndBuildTables();
 	}
 		
-	//Tabelle nach Änderung neu erstellen - bei Sortierung gab es Probleme
+	//Tabelle nach ï¿½nderung neu erstellen - bei Sortierung gab es Probleme
 	private DefaultTableModel updateDataModel(DefaultTableModel model, List<Anforderung> list)
 	{
 		String[] columnNames = {"AnfID", "Titel"};
