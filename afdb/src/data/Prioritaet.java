@@ -7,6 +7,11 @@ public class Prioritaet {
 	public Prioritaet() {
 	}
 
+	public Prioritaet(int prioId, String bez) {
+		this.prioritaetId = prioId;
+		this.bezeichnung = bez;
+	}
+	
 	public int getPrioritaetId() {
 		return prioritaetId;
 	}

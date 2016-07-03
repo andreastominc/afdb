@@ -7,6 +7,10 @@ public class Version {
 	public Version() {
 	}
 
+	public Version(int verId, String bez) {
+		this.versionId = verId;
+		this.bezeichnung = bez;
+	}
 
 	public int getVersionId() {
 		return versionId;

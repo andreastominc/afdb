@@ -7,6 +7,11 @@ public class AnforderungsArt {
 	
 	public AnforderungsArt() {
 	}
+	
+	public AnforderungsArt(int anfArtId, String bez) {
+		this.anforderungsArtId = anfArtId;
+		this.bezeichnung = bez;
+	}
 
 	public int getAnforderungsArtId() {
 		return anforderungsArtId;

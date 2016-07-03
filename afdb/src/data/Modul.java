@@ -4,10 +4,14 @@ public class Modul {
 	private int modulId;
 	private String bezeichnung;
 	
-	public Modul()
-	{
+	public Modul(){
 	}
 
+	public Modul(int modId, String bez){
+		this.modulId = modId;
+		this.bezeichnung = bez;
+	}
+	
 	public int getModulId() {
 		return modulId;
 	}

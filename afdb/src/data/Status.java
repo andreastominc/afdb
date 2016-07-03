@@ -10,6 +10,11 @@ public class Status {
 	public Status() {
 	}
 	
+	public Status(int staId, String bez) {
+		this.statusId = staId;
+		this.bezeichnung = bez;
+	}
+	
 	public int getStatusId() {
 		return statusId;
 	}
