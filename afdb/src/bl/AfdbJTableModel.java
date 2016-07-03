@@ -8,7 +8,7 @@ import data.Anforderung;
 
 public class AfdbJTableModel extends AbstractTableModel{
 	
-	public String[] columnNames = {"AnfID", "Priorität", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
+	public String[] columnNames = {"AnfID", "Prioritaet", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
 	private ArrayList<Anforderung> anfList;
 	
     public AfdbJTableModel() {

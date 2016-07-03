@@ -69,8 +69,8 @@ public class AfdbHinzufuegen {
 	/**
 	 * Anforderung speichern
 	 */
-	public boolean createAfdb(String titel, String beschreibung, Benutzer benutzer, Date erfDatum, Benutzer ansprPers, Kunde kd, AnforderungsArt anfArt, Prioritaet prio, Status status, Benutzer benutzer2, Modul modul, Version version, String hdNr, float aufwandGesch, Date fertigStellGepl, Date fertigStellIst, String verwAnforderungen, String schluesselBegriffe) {
-		anf = new Anforderung(titel, beschreibung, benutzer, erfDatum, ansprPers, kd, anfArt, prio, status, benutzer, modul, version, hdNr, aufwandGesch, fertigStellGepl, fertigStellIst, verwAnforderungen, schluesselBegriffe);
+	public boolean createAfdb(String titel, String beschreibung, Benutzer anlegeBenutzer, Date erfDatum, Benutzer ansprPers, Kunde kd, AnforderungsArt anfArt, Prioritaet prio, Status status, Benutzer zugBenutzer, Modul modul, Version version, String hdNr, float aufwandGesch, Date fertigStellGepl, Date fertigStellIst, String verwAnforderungen, String schluesselBegriffe) {
+		anf = new Anforderung(titel, beschreibung, anlegeBenutzer, erfDatum, ansprPers, kd, anfArt, prio, status, zugBenutzer, modul, version, hdNr, aufwandGesch, fertigStellGepl, fertigStellIst, verwAnforderungen, schluesselBegriffe);
 		try {
 			QueryHelper.saveAnf(anf);
 			return true;
@@ -84,8 +84,8 @@ public class AfdbHinzufuegen {
 	/**
 	 * Anforderung und Anhang speichern
 	 */
-	public boolean createAfdb(Anhang anh, String titel, String beschreibung, Benutzer benutzer, Date erfDatum, Benutzer ansprPers, Kunde kd, AnforderungsArt anfArt, Prioritaet prio, Status status, Benutzer benutzer2, Modul modul, Version version, String hdNr, float aufwandGesch, Date fertigStellGepl, Date fertigStellIst, String verwAnforderungen, String schluesselBegriffe) {
-		anf = new Anforderung(titel, beschreibung, benutzer, erfDatum, ansprPers, kd, anfArt, prio, status, benutzer, modul, version, hdNr, aufwandGesch, fertigStellGepl, fertigStellIst, verwAnforderungen, schluesselBegriffe);
+	public boolean createAfdb(Anhang anh, String titel, String beschreibung, Benutzer anlegeBenutzer, Date erfDatum, Benutzer ansprPers, Kunde kd, AnforderungsArt anfArt, Prioritaet prio, Status status, Benutzer zugBenutzer, Modul modul, Version version, String hdNr, float aufwandGesch, Date fertigStellGepl, Date fertigStellIst, String verwAnforderungen, String schluesselBegriffe) {
+		anf = new Anforderung(titel, beschreibung, anlegeBenutzer, erfDatum, ansprPers, kd, anfArt, prio, status, zugBenutzer, modul, version, hdNr, aufwandGesch, fertigStellGepl, fertigStellIst, verwAnforderungen, schluesselBegriffe);
 		try {
 			QueryHelper.saveAnf(anf, anh);
 			return true;

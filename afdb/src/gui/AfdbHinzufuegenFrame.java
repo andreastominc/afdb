@@ -134,12 +134,7 @@ public class AfdbHinzufuegenFrame extends JFrame {
 				System.out.println("Mir zugewiesen");
 				
 				frame.dispose(); // aktuelles Frame schliessen
-				AfdbZugewiesenFrame zugew_frame = new AfdbZugewiesenFrame();
-				zugew_frame.setEingeloggterUser(eingeloggterUser);
-				zugew_frame.initializeData();
-				zugew_frame.setBounds(300, 100, 1000, 600);
-				zugew_frame.setMinimumSize(new Dimension(1100, 700));
-				zugew_frame.setVisible(true); // das "Mir zugewiesen"-Frame oeffnen und anzeigen
+				openZugewiesenFrame();
 			}
 		});
 		menuBar.add(mntmMirZugewiesen);
@@ -446,7 +441,8 @@ public class AfdbHinzufuegenFrame extends JFrame {
 		btnAbbrechen.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				System.exit(0);
+				frame.dispose();
+				openZugewiesenFrame();
 			}
 		});
 		panel_14.add(btnAbbrechen);
@@ -570,14 +566,14 @@ public class AfdbHinzufuegenFrame extends JFrame {
 		
 		String titel = tfTitel.getText();
 		String beschreibung = taBeschreibung.getText();
-		Benutzer benutzer = getBenutzerVonUsername();
+		Benutzer zugBenutzer = getBenutzerVonUsername();
 		Date erfDatum = new Date();
 		Benutzer ansprPers = (Benutzer) cbAnsprechperson.getSelectedItem();
 		Kunde kd = (Kunde) cbKunde.getSelectedItem();
 		AnforderungsArt anfArt = (AnforderungsArt) cbAnforderungsArt.getSelectedItem();
 		Prioritaet prio = (Prioritaet) cbPrio.getSelectedItem();
 		Status status = (Status) cbStatus.getSelectedItem();
-		//zugewiesen an = anlegeBenutzer
+		Benutzer anlegeBenutzer = getEingeloggterUser();
 		Modul modul = (Modul) cbModul.getSelectedItem();
 		Version version = (Version) cbVersion.getSelectedItem();
 		
@@ -628,12 +624,12 @@ public class AfdbHinzufuegenFrame extends JFrame {
 			anh.setFile(file);
 			
 			// die createAfdb Methode mit Anhang aufrufen:
-			speicherung = afdbBl.createAfdb(anh, titel, beschreibung, benutzer, erfDatum, ansprPers, kd, anfArt, prio, status, benutzer, modul, version, hdNr,
+			speicherung = afdbBl.createAfdb(anh, titel, beschreibung, anlegeBenutzer, erfDatum, ansprPers, kd, anfArt, prio, status,zugBenutzer, modul, version, hdNr,
 					aufwandGesch, fertigStellGepl, fertigStellIst, verwAnforderungen, schluesselBegriffe);			
 		} // sonst (wenn kein Anhang), dann die normale Methode aufrufen
 		else {
 			// die createAfdb Methode ohne Anhang aufrufen:
-			speicherung = afdbBl.createAfdb(titel, beschreibung, benutzer, erfDatum, ansprPers, kd, anfArt, prio, status, benutzer, modul, version, hdNr,
+			speicherung = afdbBl.createAfdb(titel, beschreibung, anlegeBenutzer, erfDatum, ansprPers, kd, anfArt, prio, status, zugBenutzer, modul, version, hdNr,
 				aufwandGesch, fertigStellGepl, fertigStellIst, verwAnforderungen, schluesselBegriffe);
 		}		
 
@@ -675,12 +671,12 @@ public class AfdbHinzufuegenFrame extends JFrame {
 		this.lblEingeloggterUser.setText(eingeloggterUser.getBenutzername());
 	}
 
-
-	
-	
-	
-
-	
-	
-	
+	private void openZugewiesenFrame() {
+		AfdbZugewiesenFrame zugew_frame = new AfdbZugewiesenFrame();
+		zugew_frame.setEingeloggterUser(eingeloggterUser);
+		zugew_frame.initializeData();
+		zugew_frame.setBounds(300, 100, 1000, 600);
+		zugew_frame.setMinimumSize(new Dimension(1100, 700));
+		zugew_frame.setVisible(true); // das "Mir zugewiesen"-Frame oeffnen und anzeigen
+	}
 }

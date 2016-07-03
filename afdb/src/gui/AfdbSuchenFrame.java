@@ -68,7 +68,7 @@ public class AfdbSuchenFrame extends JFrame {
 	
 
  	private void initializeTable(){
- 		//String[] columnNames = {"AnfID", "Priorität", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
+ 		//String[] columnNames = {"AnfID", "Prioritaet", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
  		//datamodel = new DefaultTableModel();
  		datamodel = new AfdbJTableModel();
  		//datamodel.setColumnIdentifiers(columnNames);
@@ -173,12 +173,7 @@ public class AfdbSuchenFrame extends JFrame {
 				System.out.println("Mir zugewiesen");
 				
 				frame.dispose(); // aktuelles Frame schliessen
-				AfdbZugewiesenFrame zugew_frame = new AfdbZugewiesenFrame();
-				zugew_frame.setEingeloggterUser(eingeloggterUser);
-				zugew_frame.initializeData();
-				zugew_frame.setBounds(300, 100, 1000, 600);
-				zugew_frame.setMinimumSize(new Dimension(1100, 700));
-				zugew_frame.setVisible(true); // das "Mir zugewiesen"-Frame oeffnen und anzeigen
+				openZugewiesenFrame();				
 			}
 		});
 		menuBar.add(mntmMirZugewiesen);
@@ -394,7 +389,8 @@ public class AfdbSuchenFrame extends JFrame {
 		JButton btnAbbrechen = new JButton("Abbrechen");
 		btnAbbrechen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
+				frame.dispose();
+				openZugewiesenFrame();
 			}
 		});
 		GridBagConstraints gbc_btnAbbrechen = new GridBagConstraints();
@@ -479,7 +475,7 @@ public class AfdbSuchenFrame extends JFrame {
 		// Die Tabelle mit den Daten der gefundenen Anforderungen befuelllen
 		for (Anforderung anf : anforderungen)
 		{
-			// Reihenfolge der Tabellen-Ueberschriften: {"AnfID", "Priorität", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
+			// Reihenfolge der Tabellen-Ueberschriften: {"AnfID", "Prioritaet", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
 			//datamodel.addRow(new Object[]{anf.getAnfId()+"",anf.getPrio().getBezeichnung(),anf.getStatus().getBezeichnung(),anf.getTitel(),anf.getKunde().getBezeichnung(),anf.getFertiggeplant(),anf.getHdNummer()});
 			datamodel.addRow(anf);
 		}
@@ -498,6 +494,14 @@ public class AfdbSuchenFrame extends JFrame {
 		this.lblEingeloggterUser.setText(eingeloggterUser.getBenutzername());
 	}
 	
-	
+
+	private void openZugewiesenFrame() {
+		AfdbZugewiesenFrame zugew_frame = new AfdbZugewiesenFrame();
+		zugew_frame.setEingeloggterUser(eingeloggterUser);
+		zugew_frame.initializeData();
+		zugew_frame.setBounds(300, 100, 1000, 600);
+		zugew_frame.setMinimumSize(new Dimension(1100, 700));
+		zugew_frame.setVisible(true); // das "Mir zugewiesen"-Frame oeffnen und anzeigen
+	}
 	
 }

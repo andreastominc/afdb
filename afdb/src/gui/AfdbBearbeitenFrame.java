@@ -457,7 +457,8 @@ public class AfdbBearbeitenFrame extends JFrame {
 		btnAbbrechen.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				System.exit(0);
+				frame.dispose();
+				openZugewiesenFrame();
 			}
 		});
 		panel_14.add(btnAbbrechen);
@@ -678,20 +679,16 @@ public class AfdbBearbeitenFrame extends JFrame {
 		}
 		else {
 			JOptionPane.showMessageDialog(this,"Anhang Speicherung nicht erfolgreich!");
-			System.exit(0);
 		}
 		
 		// -------
 		
 		if(speicherung && speicherungAnh){
 			JOptionPane.showMessageDialog(this,"Speicherung erfolgreich!");
-			//todo
-			//System.exit(0);
+
 		}
 		else {
 			JOptionPane.showMessageDialog(this,"Speicherung nicht erfolgreich!");
-			//todo
-			System.exit(0);
 		}
 	}
 

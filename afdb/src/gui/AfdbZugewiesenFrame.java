@@ -203,7 +203,7 @@ public class AfdbZugewiesenFrame extends JFrame {
 	
 
  	private void initializeTable(){
- 		//String[] columnNames = {"AnfID", "Priorität", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
+ 		//String[] columnNames = {"AnfID", "Prioritaet", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
  		datamodel = new AfdbJTableModel();
 
 		this.tblAnforderungen = new JTable();
@@ -256,7 +256,7 @@ public class AfdbZugewiesenFrame extends JFrame {
 		// Die Tabelle mit den Daten der gefundenen Anforderungen befuelllen
 		for (Anforderung anf : anforderungen)
 		{
-			// Reihenfolge der Tabellen-Ueberschriften: {"AnfID", "Priorität", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
+			// Reihenfolge der Tabellen-Ueberschriften: {"AnfID", "Prioritaet", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
 			//datamodel.addRow(new Object[]{anf.getAnfId()+"",anf.getPrio().getBezeichnung(),anf.getStatus().getBezeichnung(),anf.getTitel(),anf.getKunde().getBezeichnung(),anf.getFertiggeplant(),anf.getHdNummer()});
 			datamodel.addRow(anf);
 		}
