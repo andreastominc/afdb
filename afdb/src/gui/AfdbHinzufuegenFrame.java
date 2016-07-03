@@ -638,6 +638,10 @@ public class AfdbHinzufuegenFrame extends JFrame {
 			JOptionPane.showMessageDialog(this,"Speicherung erfolgreich!");
 			frame.dispose(); // aktuelles Frame schliessen
 			AfdbSuchenFrame suche_frame = new AfdbSuchenFrame(afdbBl.getAnf());
+			suche_frame.setEingeloggterUser(eingeloggterUser);
+			suche_frame.setBounds(300, 100, 1000, 600);
+			suche_frame.setMinimumSize(new Dimension(1100, 700));
+			suche_frame.initializeData();
 			suche_frame.setVisible(true);
 		}
 		else {
