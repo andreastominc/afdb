@@ -77,10 +77,10 @@ public class AfdbBearbeiten {
 	 * (geaenderte) Daten der Anforderung speichern
 	 * to do ... funktioniert noch nicht
 	 */
-	public boolean persistAfdb(Anforderung anf, String titel, String beschreibung, Benutzer benutzer, Date erfDatum, Benutzer ansprPers, Kunde kd, AnforderungsArt anfArt, Prioritaet prio, Status status, Benutzer benutzer2, Modul modul, Version version, String hdNr, float aufwandGesch, Date fertigStellGepl, Date fertigStellIst, String verwAnforderungen, String schluesselBegriffe) {
+	public boolean persistAfdb(Anforderung anf, String titel, String beschreibung, Benutzer benutzer, Date erfDatum, Benutzer ansprPers, Kunde kd, AnforderungsArt anfArt, Prioritaet prio, Status status, Benutzer zugewiesenAn, Modul modul, Version version, String hdNr, float aufwandGesch, Date fertigStellGepl, Date fertigStellIst, String verwAnforderungen, String schluesselBegriffe) {
 		System.out.println("----persistAfdb ohne Anhang");
 		anf.setAnfArt(anfArt);
-		anf.setAngelegtVon(benutzer);
+		//anf.setAngelegtVon(benutzer); // den Benutzer, der die Anf angelegt hat, kann man nicht aendern.
 		anf.setTitel(titel);
 		anf.setBeschreibung(beschreibung);
 		anf.setErfassungsDatum(erfDatum);
@@ -95,6 +95,7 @@ public class AfdbBearbeiten {
 		anf.setFertiggeplant(fertigStellGepl);
 		anf.setFertigIst(fertigStellIst);
 		anf.setSchluesselBegriffe(schluesselBegriffe);
+		anf.setZugewiesenAn(zugewiesenAn);
 						
 		try {
 			QueryHelper.updateAnf(anf);

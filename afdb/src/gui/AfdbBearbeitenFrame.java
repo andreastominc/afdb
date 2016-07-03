@@ -603,7 +603,7 @@ public class AfdbBearbeitenFrame extends JFrame {
 	private void createAfdb() {
 		String titel = tfTitel.getText();
 		String beschreibung = taBeschreibung.getText();
-		Benutzer benutzer = getBenutzerVonUsername();
+		Benutzer benutzer = anf.getAngelegtVon(); // Anlege-Benutzer bleibt gleich, ist nicht aenderbar.
 		Date erfDatum = new Date();
 		Benutzer ansprPers = (Benutzer) cbAnsprechperson.getSelectedItem();
 		Kunde kd = (Kunde) cbKunde.getSelectedItem();
@@ -611,6 +611,7 @@ public class AfdbBearbeitenFrame extends JFrame {
 		Prioritaet prio = (Prioritaet) cbPrio.getSelectedItem();
 		Status status = (Status) cbStatus.getSelectedItem();
 		//zugewiesen an = anlegeBenutzer
+		Benutzer zugewiesen = getBenutzerVonUsername();
 		Modul modul = (Modul) cbModul.getSelectedItem();
 		Version version = (Version) cbVersion.getSelectedItem();
 		
@@ -670,7 +671,7 @@ public class AfdbBearbeitenFrame extends JFrame {
 		
 		// die persistAfdb Methode ohne Anhang aufrufen:
 		speicherung = afdbBl.persistAfdb(anf, titel, beschreibung, benutzer, erfDatum, ansprPers, kd, anfArt, prio,
-				status, benutzer, modul, version, hdNr, aufwandGesch, fertigStellGepl, fertigStellIst,
+				status, zugewiesen, modul, version, hdNr, aufwandGesch, fertigStellGepl, fertigStellIst,
 				verwAnforderungen, schluesselBegriffe);
 		
 
