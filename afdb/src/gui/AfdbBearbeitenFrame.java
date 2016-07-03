@@ -94,6 +94,8 @@ public class AfdbBearbeitenFrame extends JFrame {
 	private Set<Anhang> anhg; // speichert mehrere Anhaenge zur aktuellen Anforderung
 	private Anhang ah1;
 	
+	private Benutzer eingeloggterUser;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -675,6 +677,7 @@ public class AfdbBearbeitenFrame extends JFrame {
 	private void openSuchenFrame() {
 		frame.dispose(); // aktuelles Frame schliessen
 		AfdbSuchenFrame suche_frame = new AfdbSuchenFrame();
+		suche_frame.setEingeloggterUser(eingeloggterUser);
 		suche_frame.setBounds(300, 100, 1000, 600);
 		suche_frame.setMinimumSize(new Dimension(1100, 700));
 		suche_frame.initializeData();
@@ -687,6 +690,7 @@ public class AfdbBearbeitenFrame extends JFrame {
 	private void openHinzufuegenFrame() {
 		frame.dispose(); // aktuelles Frame schliessen
 		AfdbHinzufuegenFrame hinzu_frame = new AfdbHinzufuegenFrame();
+		hinzu_frame.setEingeloggterUser(eingeloggterUser);
 		hinzu_frame.setBounds(300, 100, 1000, 600);
 		hinzu_frame.setMinimumSize(new Dimension(1100, 700));
 		hinzu_frame.setVisible(true); // das Hinzufuegen-Frame oeffnen und anzeigen
@@ -698,6 +702,8 @@ public class AfdbBearbeitenFrame extends JFrame {
 	private void openZugewiesenFrame() {
 		frame.dispose(); // aktuelles Frame schliessen
 		AfdbZugewiesenFrame zugew_frame = new AfdbZugewiesenFrame();
+		zugew_frame.setEingeloggterUser(eingeloggterUser);
+		zugew_frame.initializeData();
 		zugew_frame.setBounds(300, 100, 1000, 600);
 		zugew_frame.setMinimumSize(new Dimension(1100, 700));
 		zugew_frame.setVisible(true); // das "Mir zugewiesen"-Frame oeffnen und anzeigen
@@ -720,4 +726,13 @@ public class AfdbBearbeitenFrame extends JFrame {
 		this.anf = anf;
 	}
 
+	public Benutzer getEingeloggterUser() {
+		return eingeloggterUser;
+	}
+
+	public void setEingeloggterUser(Benutzer eingeloggterUser) {
+		this.eingeloggterUser = eingeloggterUser;
+	}
+
+	
 }

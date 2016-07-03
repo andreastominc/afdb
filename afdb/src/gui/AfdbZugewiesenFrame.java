@@ -2,8 +2,10 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,6 +30,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
@@ -38,6 +41,7 @@ import javax.swing.table.TableColumn;
 import com.toedter.calendar.JDateChooser;
 
 import bl.AfdbHinzufuegen;
+import bl.AfdbJTableModel;
 import bl.AfdbSuchen;
 import bl.BenutzerInfo;
 import data.Anforderung;
@@ -50,16 +54,24 @@ import data.Prioritaet;
 import data.Status;
 import data.Version;
 import javax.swing.JTable;
+import java.awt.GridBagLayout;
 
 public class AfdbZugewiesenFrame extends JFrame {
 
 	private JPanel contentPane;
+	private Benutzer eingeloggterUser;
 	
 	private static AfdbZugewiesenFrame frame; // als private static definieren, damit spaeter "frame.dispose" aufgerufen werden kann.
 	private JTable tblAnforderungen;
-	private DefaultTableModel model;
+	private JScrollPane scrollPane;
+	private AfdbJTableModel datamodel;
 	
-	private void initializeData() {
+	/**
+	 * diese Methode muss aufgerufen werden, damit die Tabelle mit den Anforderungen 
+	 * des aktuell eingeloggten Benutzers befuellt und angezeigt wird.
+	 */
+	protected void initializeData() {
+		initializeTable();
 		fillTable();
 	}
 
@@ -68,7 +80,6 @@ public class AfdbZugewiesenFrame extends JFrame {
 	 */
 	public AfdbZugewiesenFrame() {
 		frame = this;
-		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -80,6 +91,7 @@ public class AfdbZugewiesenFrame extends JFrame {
 		contentPane.add(panel, BorderLayout.NORTH);
 		panel.setLayout(new GridLayout(0, 1, 0, 0));
 		
+		
 		//----------------------------------------------------------------
 		JMenuBar menuBar = new JMenuBar();
 		panel.add(menuBar);
@@ -89,7 +101,6 @@ public class AfdbZugewiesenFrame extends JFrame {
 		mntmMirZugewiesen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Mir zugewiesen");
-				
 				/* // macht keinen Sinn das gleiche Fenster zu schliessen und nochmal zu oeffnen... 
 				frame.dispose(); // aktuelles Frame schliessen
 				AfdbZugewiesenFrame zugew_frame = new AfdbZugewiesenFrame();
@@ -107,9 +118,9 @@ public class AfdbZugewiesenFrame extends JFrame {
 		mntmHinzufuegen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Hinzufuegen");
-				
 				frame.dispose(); // aktuelles Frame schliessen
 				AfdbHinzufuegenFrame hinzu_frame = new AfdbHinzufuegenFrame();
+				hinzu_frame.setEingeloggterUser(eingeloggterUser);
 				hinzu_frame.setBounds(300, 100, 1000, 600);
 				hinzu_frame.setMinimumSize(new Dimension(1100, 700));
 				hinzu_frame.setVisible(true); // das Hinzufuegen-Frame oeffnen und anzeigen
@@ -123,9 +134,9 @@ public class AfdbZugewiesenFrame extends JFrame {
 		mntmSuchen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Suchen"); // auf Konsole mitloggen dass "Suchen" angeklickt wurde
-				
 				frame.dispose(); // aktuelles Frame schliessen
 				AfdbSuchenFrame suche_frame = new AfdbSuchenFrame();
+				suche_frame.setEingeloggterUser(eingeloggterUser);
 				suche_frame.setBounds(300, 100, 1000, 600);
 				suche_frame.setMinimumSize(new Dimension(1100, 700));
 				suche_frame.initializeData();
@@ -138,43 +149,106 @@ public class AfdbZugewiesenFrame extends JFrame {
 		
 		JPanel panel_1 = new JPanel();
 		contentPane.add(panel_1, BorderLayout.CENTER);
+		panel_1.setLayout(new BorderLayout(0, 0));
 		
-		Object[] columnNames = 
-			{"AfNr",
-             "Priorität",
-             "Status",
-             "Titel",
-             "Kunde",
-             "gepl. Fertigstellung",
-             "Helpdesknummer"};
+		this.scrollPane = new JScrollPane((Component) null);
+		panel_1.add(scrollPane); 
 		
-		tblAnforderungen = new JTable(new DefaultTableModel(columnNames,0));
-		panel_1.add(tblAnforderungen);
-		
-		panel_1.setLayout(new BorderLayout());
-		panel_1.add(tblAnforderungen.getTableHeader(), BorderLayout.PAGE_START);
-		panel_1.add(tblAnforderungen, BorderLayout.CENTER);
-		
-		Border border = BorderFactory.createLineBorder(Color.BLACK);
-		
-		initializeData();
 	}
 	
-	private void fillTable (){
-		model = (DefaultTableModel) tblAnforderungen.getModel();
+	/**
+	 * Befuellen der Tabelle mit jenen Anforderungen,
+	 * zu denen der aktuell eingeloggte Benutzer zugewiesen ist.
+	 */
+	private void fillTable(){
 		AfdbSuchen blSuchen = new AfdbSuchen();
-		List<Anforderung> anfList = blSuchen.suchen(0, "", "", "", "", "", "");//BenutzerInfo.BenutzerName
-		for(int i = 0; i < anfList.size(); i++){
-			Anforderung anf = anfList.get(i);
-			
-			model.addRow(new Object[]{
-				 	String.valueOf(anf.getAnfId()), 
-				 	anf.getPrio().toString(), 
-					anf.getStatus().toString(), 
-					anf.getTitel(), 
-					anf.getKunde().getBezeichnung(), 
-					anf.getFertiggeplant(),
-					anf.getHdNummer()});	
+		
+		List<Anforderung> anforderungen = blSuchen.suchen(0,"","","",eingeloggterUser.getBenutzername(),"","");
+		if(anforderungen.isEmpty())
+		{
+			// Tabelle leeren
+			while (datamodel.getRowCount() > 0) {
+				datamodel.removeRow(0);
+			}
+			//JOptionPane.showMessageDialog(this,"Keine Daten gefunden!");
+		}
+		else
+		{
+			//JOptionPane.showMessageDialog(this,"Suche erfolgreich!");
+			this.anforderungenAnzeigen(anforderungen);
 		}
 	}
+	
+
+ 	private void initializeTable(){
+ 		//String[] columnNames = {"AnfID", "Priorität", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
+ 		datamodel = new AfdbJTableModel();
+
+		this.tblAnforderungen = new JTable();
+		this.tblAnforderungen.setModel(datamodel);
+		this.tblAnforderungen.setAutoCreateRowSorter(true);
+		this.scrollPane.setViewportView(tblAnforderungen);
+		
+		tblAnforderungen.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
+				// Bei Doppelklick einer Zeile soll etwas gemacht werden..
+				tblAnforderungen.addMouseListener(new MouseAdapter() {
+		            public void mouseClicked(MouseEvent e) {
+		            	if (e.getClickCount() == 2 && !e.isConsumed()) {
+		            	     e.consume();
+		            	     //handle double click event
+		            	     
+		            	     System.out.println("row="+tblAnforderungen.getSelectedRow());
+		                    System.out.println("rowdata="+datamodel.getSelectedRow(tblAnforderungen.getSelectedRow()).toString());
+		                     
+		                   //  neuer Frame zum Bearbeiten der angeklickten Anf. soll geoeffnet werden... Suchen-Frame wird geschlossen.
+		                   frame.dispose(); // aktuelles Frame schliessen
+		     				AfdbBearbeitenFrame bearb_frame = new AfdbBearbeitenFrame();
+		     				bearb_frame.setEingeloggterUser(eingeloggterUser);
+		     				// die via Doppelklick in der Tabell ausgewaehlte Anforderung an das Bearbeiten-Frame uebergeben:
+		     				bearb_frame.setAnf(datamodel.getSelectedRow(tblAnforderungen.getSelectedRow()));
+		     				
+		     				bearb_frame.setBounds(300, 100, 1000, 600);
+		     				bearb_frame.setMinimumSize(new Dimension(1100, 700));
+		     				bearb_frame.initializeData();
+		     				//bearb_frame.setUsername("Testuser123"); // hier dann den Usernamen des eingeloggten Users uebergeben.
+		     				bearb_frame.setVisible(true); // das Bearbeiten-Frame oeffnen und anzeigen
+		            	
+		            	}
+		            }
+				});	
+ 		
+ 	}	
+ 	
+ 	/**
+ 	 * Anzeigen der Anforderungen, die in der Liste vorhanden sind
+ 	 * @param anforderungen
+ 	 */
+	private void anforderungenAnzeigen(List<Anforderung> anforderungen)
+	{
+		// vor jedem Aufruf der Methode die Tabelle leeren
+		while (datamodel.getRowCount() > 0) {
+			datamodel.removeRow(0);
+		}
+		
+		// Die Tabelle mit den Daten der gefundenen Anforderungen befuelllen
+		for (Anforderung anf : anforderungen)
+		{
+			// Reihenfolge der Tabellen-Ueberschriften: {"AnfID", "Priorität", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
+			//datamodel.addRow(new Object[]{anf.getAnfId()+"",anf.getPrio().getBezeichnung(),anf.getStatus().getBezeichnung(),anf.getTitel(),anf.getKunde().getBezeichnung(),anf.getFertiggeplant(),anf.getHdNummer()});
+			datamodel.addRow(anf);
+		}
+	}
+
+	public Benutzer getEingeloggterUser() {
+		return eingeloggterUser;
+	}
+
+	public void setEingeloggterUser(Benutzer eingeloggterUser) {
+		this.eingeloggterUser = eingeloggterUser;
+		System.out.println("eingeloggterUser="+eingeloggterUser);
+	}
+	
+	
+	
 }

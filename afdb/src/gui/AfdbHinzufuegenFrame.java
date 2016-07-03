@@ -87,6 +87,8 @@ public class AfdbHinzufuegenFrame extends JFrame {
 	public static AfdbHinzufuegenFrame frame; // als private static definieren, damit spaeter "frame.dispose" aufgerufen werden kann.
 	public static JTextField tfVerwAnf;
 	private ArrayList<Anforderung> selAnf = new ArrayList<Anforderung>();
+	
+	private Benutzer eingeloggterUser;
 		
 	private void initializeData() {
 		initializeCbStatus();
@@ -129,6 +131,8 @@ public class AfdbHinzufuegenFrame extends JFrame {
 				
 				frame.dispose(); // aktuelles Frame schliessen
 				AfdbZugewiesenFrame zugew_frame = new AfdbZugewiesenFrame();
+				zugew_frame.setEingeloggterUser(eingeloggterUser);
+				zugew_frame.initializeData();
 				zugew_frame.setBounds(300, 100, 1000, 600);
 				zugew_frame.setMinimumSize(new Dimension(1100, 700));
 				zugew_frame.setVisible(true); // das "Mir zugewiesen"-Frame oeffnen und anzeigen
@@ -154,6 +158,7 @@ public class AfdbHinzufuegenFrame extends JFrame {
 				
 				frame.dispose(); // aktuelles Frame schliessen
 				AfdbSuchenFrame suche_frame = new AfdbSuchenFrame();
+				suche_frame.setEingeloggterUser(eingeloggterUser);
 				suche_frame.setBounds(300, 100, 1000, 600);
 				suche_frame.setMinimumSize(new Dimension(1100, 700));
 				suche_frame.initializeData();
@@ -638,6 +643,16 @@ public class AfdbHinzufuegenFrame extends JFrame {
 	public void setSelAnf(ArrayList<Anforderung> selAnf) {
 		this.selAnf = selAnf;
 	}
+
+	public Benutzer getEingeloggterUser() {
+		return eingeloggterUser;
+	}
+
+	public void setEingeloggterUser(Benutzer eingeloggterUser) {
+		this.eingeloggterUser = eingeloggterUser;
+	}
+
+
 	
 	
 	

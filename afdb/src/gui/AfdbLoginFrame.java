@@ -116,6 +116,7 @@ public class AfdbLoginFrame extends JFrame {
 		frame.dispose(); // aktuelles Frame schliessen
 		AfdbZugewiesenFrame zugew_frame = new AfdbZugewiesenFrame();
 		zugew_frame.setEingeloggterUser(b);
+		zugew_frame.initializeData();
 		zugew_frame.setBounds(300, 100, 1000, 600);
 		zugew_frame.setMinimumSize(new Dimension(1100, 700));
 		zugew_frame.setVisible(true); // das "Mir zugewiesen"-Frame oeffnen und anzeigen

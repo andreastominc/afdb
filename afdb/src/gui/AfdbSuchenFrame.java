@@ -62,6 +62,8 @@ public class AfdbSuchenFrame extends JFrame {
 	//private DefaultTableModel datamodel2;
 	private AfdbJTableModel datamodel;
 	
+	private Benutzer eingeloggterUser;
+	
 
  	private void initializeTable(){
  		//String[] columnNames = {"AnfID", "Priorität", "Status", "Titel", "Kunde", "Gepl. Fertigstellung", "Helpdesknr."};
@@ -88,6 +90,7 @@ public class AfdbSuchenFrame extends JFrame {
                     //  neuer Frame zum Bearbeiten der angeklickten Anf. soll geoeffnet werden... Suchen-Frame wird geschlossen.
                     frame.dispose(); // aktuelles Frame schliessen
       				AfdbBearbeitenFrame bearb_frame = new AfdbBearbeitenFrame();
+      				bearb_frame.setEingeloggterUser(eingeloggterUser);
       				// die via Doppelklick in der Tabell ausgewaehlte Anforderung an das Bearbeiten-Frame uebergeben:
       				bearb_frame.setAnf(datamodel.getSelectedRow(table.getSelectedRow()));
       				
@@ -167,6 +170,8 @@ public class AfdbSuchenFrame extends JFrame {
 				
 				frame.dispose(); // aktuelles Frame schliessen
 				AfdbZugewiesenFrame zugew_frame = new AfdbZugewiesenFrame();
+				zugew_frame.setEingeloggterUser(eingeloggterUser);
+				zugew_frame.initializeData();
 				zugew_frame.setBounds(300, 100, 1000, 600);
 				zugew_frame.setMinimumSize(new Dimension(1100, 700));
 				zugew_frame.setVisible(true); // das "Mir zugewiesen"-Frame oeffnen und anzeigen
@@ -181,6 +186,7 @@ public class AfdbSuchenFrame extends JFrame {
 				
 				frame.dispose(); // aktuelles Frame schliessen
 				AfdbHinzufuegenFrame hinzu_frame = new AfdbHinzufuegenFrame();
+				hinzu_frame.setEingeloggterUser(eingeloggterUser);
 				hinzu_frame.setBounds(300, 100, 1000, 600);
 				hinzu_frame.setMinimumSize(new Dimension(1100, 700));
 				hinzu_frame.setVisible(true); // das Suchen-Frame oeffnen und anzeigen
@@ -197,6 +203,7 @@ public class AfdbSuchenFrame extends JFrame {
 				
 				frame.dispose(); // aktuelles Frame schliessen
 				AfdbSuchenFrame suche_frame = new AfdbSuchenFrame();
+				suche_frame.setEingeloggterUser(eingeloggterUser);
 				suche_frame.setBounds(300, 100, 1000, 600);
 				suche_frame.setMinimumSize(new Dimension(1100, 700));
 				suche_frame.initializeData();
@@ -465,6 +472,15 @@ public class AfdbSuchenFrame extends JFrame {
 	public String getUsername() {
 		return username;
 	}
+
+	public Benutzer getEingeloggterUser() {
+		return eingeloggterUser;
+	}
+
+	public void setEingeloggterUser(Benutzer eingeloggterUser) {
+		this.eingeloggterUser = eingeloggterUser;
+	}
+	
 	
 	
 }
