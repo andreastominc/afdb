@@ -425,7 +425,7 @@ public class AfdbBearbeitenFrame extends JFrame {
 		//to do.. zugewiesene anhaenge anzeigen..
 		
 		
-		JButton btHinzufuegen = new JButton("Hinzuf\u00FCgen");
+		JButton btHinzufuegen = new JButton("Anhang hinzufuegen");
 		btHinzufuegen.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -442,7 +442,7 @@ public class AfdbBearbeitenFrame extends JFrame {
 		panel_13.add(panel_14, BorderLayout.EAST);
 		panel_14.setLayout(new GridLayout(0, 2, 0, 0));
 		
-		JButton btnSpeichern = new JButton("Speichern");
+		JButton btnSpeichern = new JButton("Anforderung speichern");
 		btnSpeichern.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {

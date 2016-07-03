@@ -370,8 +370,8 @@ public class AfdbHinzufuegenFrame extends JFrame {
 		tfVerwAnf.setColumns(10);
 		panel_17.add(tfVerwAnf, BorderLayout.CENTER);
 		
-		JButton button = new JButton("Hinzuf\u00FCgen");
-		button.addMouseListener(new MouseAdapter() {
+		JButton btnVerwAnfHinzufuegen = new JButton("verw. Anf. hinzufuegen");
+		btnVerwAnfHinzufuegen.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				SelectVerwAnfFrame selected = new SelectVerwAnfFrame();
@@ -380,7 +380,7 @@ public class AfdbHinzufuegenFrame extends JFrame {
 				selected.setVisible(true);
 			}
 		});
-		panel_17.add(button, BorderLayout.EAST);
+		panel_17.add(btnVerwAnfHinzufuegen, BorderLayout.EAST);
 		
 		tfSchluesselbegriffe = new JTextField();
 		panel_11.add(tfSchluesselbegriffe);
@@ -397,7 +397,7 @@ public class AfdbHinzufuegenFrame extends JFrame {
 		panel_15.add(tfAnhang, BorderLayout.CENTER);
 		tfAnhang.setColumns(10);
 		
-		JButton btHinzufuegen = new JButton("Hinzuf\u00FCgen");
+		JButton btHinzufuegen = new JButton("Anhang hinzufuegen");
 		btHinzufuegen.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -425,7 +425,7 @@ public class AfdbHinzufuegenFrame extends JFrame {
 		panel_13.add(panel_14, BorderLayout.EAST);
 		panel_14.setLayout(new GridLayout(0, 2, 0, 0));
 		
-		JButton btnSpeichern = new JButton("Speichern");
+		JButton btnSpeichern = new JButton("Anforderung erstellen");
 		btnSpeichern.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
