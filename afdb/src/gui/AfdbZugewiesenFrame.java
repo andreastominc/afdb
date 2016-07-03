@@ -83,6 +83,7 @@ public class AfdbZugewiesenFrame extends JFrame {
 	public AfdbZugewiesenFrame() {
 		setTitle("Mir zugewiesene Anforderungen");
 		frame = this;
+		frame.setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -117,7 +118,7 @@ public class AfdbZugewiesenFrame extends JFrame {
 		
 		// bei Klick aufs Menue-Item "Hinzufuegen" soll das aktuelle Frame "geschlossen" werden und das 
 		// neue Frame "Hinzufuegen" geoeffnet werden.
-		JMenuItem mntmHinzufuegen = new JMenuItem("Hinzufügen");
+		JMenuItem mntmHinzufuegen = new JMenuItem("Hinzufuegen");
 		mntmHinzufuegen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Hinzufuegen");

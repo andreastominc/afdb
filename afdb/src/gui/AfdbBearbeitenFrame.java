@@ -111,6 +111,7 @@ public class AfdbBearbeitenFrame extends JFrame {
 					frame.setBounds(300, 100, 1000, 600);
 					frame.setMinimumSize(new Dimension(1100, 700));
 					frame.initializeData();
+					frame.setLocationRelativeTo(null);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -186,7 +187,7 @@ public class AfdbBearbeitenFrame extends JFrame {
 		
 		// bei Klick aufs Menue-Item "Hinzufuegen" soll das aktuelle Frame "geschlossen" werden und das 
 		// neue Frame "Hinzufuegen" geoeffnet werden.
-		JMenuItem mntmHinzufuegen = new JMenuItem("Hinzufügen");
+		JMenuItem mntmHinzufuegen = new JMenuItem("Hinzufuegen");
 		mntmHinzufuegen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Hinzufuegen");

@@ -67,6 +67,7 @@ public class SelectVerwAnfFrame extends JFrame {
 			public void run() {
 				try {
 					frame.setVisible(true);
+					frame.setLocationRelativeTo(null);
 					
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -79,7 +80,7 @@ public class SelectVerwAnfFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public SelectVerwAnfFrame() {
-		setTitle("Verwandte Anforderungen auswählen");
+		setTitle("Verwandte Anforderungen auswaehlen");
 		this.afdbBl = new AfdbHinzufuegen();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

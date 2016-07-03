@@ -44,9 +44,10 @@ public class AfdbLoginFrame extends JFrame {
 					frame = new AfdbLoginFrame(); 
 					frame.setVisible(true);
 					frame.setBounds(300, 100, 1000, 600);
-					frame.setSize(new Dimension (300,200));
-					frame.setMinimumSize(new Dimension(30,20)); // 1100,700
-					frame.setMaximumSize(new Dimension (40,30));
+					frame.setSize(new Dimension (250,120));
+					frame.setMinimumSize(new Dimension (250,120));
+					frame.setMaximumSize(new Dimension (250,120));
+					frame.setLocationRelativeTo(null);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

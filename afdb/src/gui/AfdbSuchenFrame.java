@@ -149,6 +149,7 @@ public class AfdbSuchenFrame extends JFrame {
 	public AfdbSuchenFrame() {
 		setTitle("Anforderungen suchen");
 		frame = this;
+		frame.setLocationRelativeTo(null);
 		afdbSuchen = new AfdbSuchen();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -182,10 +183,10 @@ public class AfdbSuchenFrame extends JFrame {
 		});
 		menuBar.add(mntmMirZugewiesen);
 		
-		JMenuItem mntmBearbeiten = new JMenuItem("Hinzufügen");
+		JMenuItem mntmBearbeiten = new JMenuItem("Hinzufuegen");
 		mntmBearbeiten.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Hinzufügen");
+				System.out.println("Hinzufuegen");
 				
 				frame.dispose(); // aktuelles Frame schliessen
 				AfdbHinzufuegenFrame hinzu_frame = new AfdbHinzufuegenFrame();

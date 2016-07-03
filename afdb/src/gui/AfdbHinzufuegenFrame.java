@@ -107,8 +107,9 @@ public class AfdbHinzufuegenFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public AfdbHinzufuegenFrame() {
-		setTitle("Anforderung hinzufügen");
+		setTitle("Anforderung hinzufuegen");
 		frame = this;
+		frame.setLocationRelativeTo(null);
 		
 		this.afdbBl = new AfdbHinzufuegen();
 		
